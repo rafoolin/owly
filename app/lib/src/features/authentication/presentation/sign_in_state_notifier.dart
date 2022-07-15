@@ -64,4 +64,27 @@ class SignInStateNotifier extends StateNotifier<SignInEntry> {
       loading: () => state = state.copyWith(isLoading: true),
     );
   }
+
+  Future<void> resetPassword() async {
+    // Ignore this function if [email] is invalid
+    if (!state.canSubmitForgotPassword) {
+      return;
+    }
+    state = state.copyWith(isLoading: true, submitError: null);
+    final response = await _authService.resetPassword(state.email!);
+
+    state = response.when(
+      data: (_) => state.copyWith(
+        isLoading: false,
+        submitError: null,
+        email: null,
+        resetPasswordMessage: 'Please check your email',
+      ),
+      error: (error, _) => state.copyWith(
+        isLoading: false,
+        submitError: (error as AppException).errorMessage,
+      ),
+      loading: () => state.copyWith(isLoading: true),
+    );
+  }
 }

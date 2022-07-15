@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/widgets/app_logo.dart';
 import 'auth_providers.dart';
+import 'forgot_password_view.dart';
 import 'sign_up_with_email_view.dart';
 import 'widgets/email_text_field.dart';
 import 'widgets/password_text_field.dart';
@@ -23,6 +24,17 @@ class SignInView extends HookConsumerWidget {
         if (submitError != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(submitError)),
+          );
+        }
+      },
+    );
+
+    ref.listen<String?>(
+      signInStateNotifierProvider.select((state) => state.resetPasswordMessage),
+      (_, resetMessage) {
+        if (resetMessage != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(resetMessage)),
           );
         }
       },
@@ -70,7 +82,13 @@ class SignInView extends HookConsumerWidget {
                     );
                   },
                 ),
-                const SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => context.push(ForgotPasswordView.fullPath),
+                    child: const Text('Forgot password?'),
+                  ),
+                ),
                 // Submit
                 Consumer(
                   builder: (context, ref, _) => ElevatedButton(

@@ -25,6 +25,8 @@ mixin _$SignInEntry {
   String? get passwordError =>
       throw _privateConstructorUsedError; // Error related to sign up action
   String? get submitError =>
+      throw _privateConstructorUsedError; // An error message or a message to user to check their email
+  String? get resetPasswordMessage =>
       throw _privateConstructorUsedError; // Whether hide the password on the form or not
   bool get obscurePassword =>
       throw _privateConstructorUsedError; // whether it's processing the sign up or not
@@ -46,6 +48,7 @@ abstract class $SignInEntryCopyWith<$Res> {
       String? emailError,
       String? passwordError,
       String? submitError,
+      String? resetPasswordMessage,
       bool obscurePassword,
       bool isLoading});
 }
@@ -65,6 +68,7 @@ class _$SignInEntryCopyWithImpl<$Res> implements $SignInEntryCopyWith<$Res> {
     Object? emailError = freezed,
     Object? passwordError = freezed,
     Object? submitError = freezed,
+    Object? resetPasswordMessage = freezed,
     Object? obscurePassword = freezed,
     Object? isLoading = freezed,
   }) {
@@ -88,6 +92,10 @@ class _$SignInEntryCopyWithImpl<$Res> implements $SignInEntryCopyWith<$Res> {
       submitError: submitError == freezed
           ? _value.submitError
           : submitError // ignore: cast_nullable_to_non_nullable
+              as String?,
+      resetPasswordMessage: resetPasswordMessage == freezed
+          ? _value.resetPasswordMessage
+          : resetPasswordMessage // ignore: cast_nullable_to_non_nullable
               as String?,
       obscurePassword: obscurePassword == freezed
           ? _value.obscurePassword
@@ -114,6 +122,7 @@ abstract class _$$_SignInEntryCopyWith<$Res>
       String? emailError,
       String? passwordError,
       String? submitError,
+      String? resetPasswordMessage,
       bool obscurePassword,
       bool isLoading});
 }
@@ -135,6 +144,7 @@ class __$$_SignInEntryCopyWithImpl<$Res> extends _$SignInEntryCopyWithImpl<$Res>
     Object? emailError = freezed,
     Object? passwordError = freezed,
     Object? submitError = freezed,
+    Object? resetPasswordMessage = freezed,
     Object? obscurePassword = freezed,
     Object? isLoading = freezed,
   }) {
@@ -159,6 +169,10 @@ class __$$_SignInEntryCopyWithImpl<$Res> extends _$SignInEntryCopyWithImpl<$Res>
           ? _value.submitError
           : submitError // ignore: cast_nullable_to_non_nullable
               as String?,
+      resetPasswordMessage: resetPasswordMessage == freezed
+          ? _value.resetPasswordMessage
+          : resetPasswordMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
       obscurePassword: obscurePassword == freezed
           ? _value.obscurePassword
           : obscurePassword // ignore: cast_nullable_to_non_nullable
@@ -180,6 +194,7 @@ class _$_SignInEntry extends _SignInEntry {
       this.emailError,
       this.passwordError,
       this.submitError,
+      this.resetPasswordMessage,
       this.obscurePassword = true,
       this.isLoading = true})
       : super._();
@@ -199,6 +214,9 @@ class _$_SignInEntry extends _SignInEntry {
 // Error related to sign up action
   @override
   final String? submitError;
+// An error message or a message to user to check their email
+  @override
+  final String? resetPasswordMessage;
 // Whether hide the password on the form or not
   @override
   @JsonKey()
@@ -210,7 +228,7 @@ class _$_SignInEntry extends _SignInEntry {
 
   @override
   String toString() {
-    return 'SignInEntry(email: $email, password: $password, emailError: $emailError, passwordError: $passwordError, submitError: $submitError, obscurePassword: $obscurePassword, isLoading: $isLoading)';
+    return 'SignInEntry(email: $email, password: $password, emailError: $emailError, passwordError: $passwordError, submitError: $submitError, resetPasswordMessage: $resetPasswordMessage, obscurePassword: $obscurePassword, isLoading: $isLoading)';
   }
 
   @override
@@ -227,6 +245,8 @@ class _$_SignInEntry extends _SignInEntry {
             const DeepCollectionEquality()
                 .equals(other.submitError, submitError) &&
             const DeepCollectionEquality()
+                .equals(other.resetPasswordMessage, resetPasswordMessage) &&
+            const DeepCollectionEquality()
                 .equals(other.obscurePassword, obscurePassword) &&
             const DeepCollectionEquality().equals(other.isLoading, isLoading));
   }
@@ -239,6 +259,7 @@ class _$_SignInEntry extends _SignInEntry {
       const DeepCollectionEquality().hash(emailError),
       const DeepCollectionEquality().hash(passwordError),
       const DeepCollectionEquality().hash(submitError),
+      const DeepCollectionEquality().hash(resetPasswordMessage),
       const DeepCollectionEquality().hash(obscurePassword),
       const DeepCollectionEquality().hash(isLoading));
 
@@ -255,6 +276,7 @@ abstract class _SignInEntry extends SignInEntry {
       final String? emailError,
       final String? passwordError,
       final String? submitError,
+      final String? resetPasswordMessage,
       final bool obscurePassword,
       final bool isLoading}) = _$_SignInEntry;
   const _SignInEntry._() : super._();
@@ -269,6 +291,8 @@ abstract class _SignInEntry extends SignInEntry {
   String? get passwordError;
   @override // Error related to sign up action
   String? get submitError;
+  @override // An error message or a message to user to check their email
+  String? get resetPasswordMessage;
   @override // Whether hide the password on the form or not
   bool get obscurePassword;
   @override // whether it's processing the sign up or not

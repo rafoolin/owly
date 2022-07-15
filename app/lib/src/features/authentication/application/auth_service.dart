@@ -127,6 +127,11 @@ class AuthService {
     _authenticationState.add(AuthenticationState.signedOut);
   }
 
+  /// Reset password for [email].
+  Future<AsyncValue<void>> resetPassword(String email) async {
+    return _remoteRepository.resetPassword(email);
+  }
+
   void dispose() {
     _accessToken.close();
     _authenticationState.close();

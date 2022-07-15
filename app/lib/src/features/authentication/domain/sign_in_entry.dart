@@ -15,6 +15,8 @@ class SignInEntry with _$SignInEntry {
     String? passwordError,
     // Error related to sign up action
     String? submitError,
+    // An error message or a message to user to check their email
+    String? resetPasswordMessage,
     // Whether hide the password on the form or not
     @Default(true) bool obscurePassword,
     // whether it's processing the sign up or not
@@ -29,4 +31,7 @@ class SignInEntry with _$SignInEntry {
       password != null &&
       emailError == null &&
       passwordError == null;
+
+  /// Wether user can ask for resetting the password or not.
+  bool get canSubmitForgotPassword => email != null && emailError == null;
 }

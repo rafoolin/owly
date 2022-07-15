@@ -59,4 +59,14 @@ class RemoteAuthRepository {
       return AsyncError(AuthException.toDomain(err));
     }
   }
+
+  /// Reset password for [email].
+  Future<AsyncValue<void>> resetPassword(String email) async {
+    try {
+      final response = await _nhostClient.auth.resetPassword(email: email);
+      return AsyncData(response);
+    } catch (err) {
+      return AsyncError(AuthException.toDomain(err));
+    }
+  }
 }

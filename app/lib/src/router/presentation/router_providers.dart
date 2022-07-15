@@ -7,6 +7,7 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 import '../../common/screens/error_view.dart';
 import '../../common/screens/in_progress_view.dart';
 import '../../features/authentication/presentation/auth_providers.dart';
+import '../../features/authentication/presentation/forgot_password_view.dart';
 import '../../features/authentication/presentation/sign_in_view.dart';
 import '../../features/authentication/presentation/sign_up_with_email_view.dart';
 import '../../features/home/home_view.dart';
@@ -38,6 +39,13 @@ final routerProvider = Provider<GoRouter>(
               builder: (BuildContext context, GoRouterState state) =>
                   const SignUpWithEmailView(),
             ),
+
+            /// Forgot password
+            GoRoute(
+              path: ForgotPasswordView.path,
+              builder: (BuildContext context, GoRouterState state) =>
+                  const ForgotPasswordView(),
+            ),
           ],
         ),
 
@@ -61,10 +69,8 @@ final routerProvider = Provider<GoRouter>(
       redirect: (state) {
         final authState = ref.read(authenticationStateProvider);
         // // User is in sign in view
-        final signingIn = state.subloc == SignInView.path;
+        final signingIn = state.subloc.startsWith(SignInView.path);
 
-        // user is in sign up view
-        final signingUp = state.subloc == SignUpWithEmailView.path;
         // Route name for home view
         const rootView = HomeView.path;
         // user is in progress view
@@ -73,7 +79,7 @@ final routerProvider = Provider<GoRouter>(
         switch (authState) {
           case AuthenticationState.signedIn:
             // Navigate to root view if the location is sign up/ sign in view
-            if (signingUp || signingIn || inProgressView) {
+            if (signingIn || inProgressView) {
               return rootView;
             }
             return null;
@@ -81,7 +87,7 @@ final routerProvider = Provider<GoRouter>(
           case AuthenticationState.signedOut:
             // Only change the location to sign in view if already is not in
             // login or sign up view.
-            if (signingUp || signingIn) {
+            if (signingIn) {
               return null;
             }
             return SignInView.path;
