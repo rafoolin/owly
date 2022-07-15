@@ -1,0 +1,22 @@
+name: Production workflow
+on:
+  push:
+    branches: [ production ]
+    paths:
+      - '**/app/**'
+      - '**/server/**'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - run: flutter doctor
+      - run: flutter pub get
+      - run: dart analyze
+      - run: flutter test

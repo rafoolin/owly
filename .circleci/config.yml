@@ -1,0 +1,49 @@
+version: 2.1
+
+# --- Parameters ---
+parameters:
+  GHA_Event:
+    type: string
+    default: ""
+  GHA_Actor:
+    type: string
+    default: ""
+  GHA_Action:
+    type: string
+    default: ""
+  GHA_Meta:
+    type: string
+    default: ""
+
+# --- Workflows ---
+workflows:
+  production:
+    when:
+      and:
+        # This is the [id] in the [circleci.yml] in the [.github/workflows]
+        - and: [<< pipeline.parameters.GHA_Action >>]
+        - equal: ["release", << pipeline.parameters.GHA_Event >>]
+    jobs:
+      - test:
+          filters:
+            tags:
+              only: /^v.*/
+            # only: /.*v[0-9]+\.[0-9]+\.[0-9]+.*/
+            branches: 
+              only: production
+
+# --- Jobs ---
+executors:
+  flutter-exec:
+    docker:
+      - image: cirrusci/flutter
+jobs:
+  test:
+    working_directory: ~/owly/app
+    executor: flutter-exec
+    steps:
+      - checkout:
+          path: ~/owly
+      - run: flutter doctor
+      - run: flutter pub get
+      - run: flutter test
