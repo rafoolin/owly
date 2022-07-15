@@ -53,11 +53,42 @@ android {
         versionName flutterVersionName
     }
 
+    flavorDimensions "version"
+    productFlavors {
+        dev {
+            dimension "version"
+            resValue "string", "app_name", "Owly dev"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+        }
+        free {
+            dimension "version"
+            resValue "string", "app_name", "Owly free"
+            applicationIdSuffix ".free"
+            versionNameSuffix "-free"
+        }
+        paid {
+            dimension "version"
+            resValue "string", "app_name", "Owly"
+            applicationIdSuffix ".paid"
+            versionNameSuffix "-paid"
+        }
+    }
+
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+        }
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
+            ndk {
+                debugSymbolLevel 'FULL'
+                // Ignore x86 architecture for release builds.
+                abiFilters 'armeabi-v7a','arm64-v8a','x86_64'
+            }
         }
     }
 }
