@@ -1,0 +1,16 @@
+name: CircleCI
+on:
+  release:
+    types: [released]
+    branches:
+      - production
+      
+jobs:
+  trigger-circleci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CircleCI
+        id: production-release
+        uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.0.4
+        env:
+          CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
