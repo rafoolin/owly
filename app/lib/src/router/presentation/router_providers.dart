@@ -11,6 +11,8 @@ import '../../features/authentication/presentation/forgot_password_view.dart';
 import '../../features/authentication/presentation/sign_in_view.dart';
 import '../../features/authentication/presentation/sign_up_with_email_view.dart';
 import '../../features/home/home_view.dart';
+import '../../features/profile/presentation/edit_profile_view.dart';
+import '../../features/profile/presentation/profile_view.dart';
 import 'router_notifier.dart';
 
 /// A provider for router notifier
@@ -54,6 +56,21 @@ final routerProvider = Provider<GoRouter>(
           path: HomeView.path,
           builder: (BuildContext context, GoRouterState state) =>
               const HomeView(),
+        ),
+
+        ///  Profile View
+        GoRoute(
+          path: ProfileView.path,
+          builder: (BuildContext context, GoRouterState state) =>
+              const ProfileView(),
+          routes: [
+            ///  Edit Profile View
+            GoRoute(
+              path: EditProfileView.path,
+              builder: (BuildContext context, GoRouterState state) =>
+                  const EditProfileView(),
+            ),
+          ],
         ),
 
         /// In progress view

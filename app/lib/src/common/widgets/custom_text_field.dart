@@ -2,16 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../features/authentication/presentation/sign_in_view.dart';
+import '../../features/profile/presentation/edit_profile_view.dart';
 import '../../utils/action_debounce.dart';
 
 class CustomTextField extends HookConsumerWidget {
+  final TextEditingController? controller;
   final void Function(String)? onChanged;
+  final bool? filled;
+  final Color? fillColor;
   final bool autocorrect;
   final bool obscureText;
   final String? hintText;
   final String? errorText;
+  final InputBorder? border;
   final bool enableSuggestions;
   final TextInputType? keyboardType;
+  final EdgeInsets? contentPadding;
 
   /// Wether show suffix visibility icon or not.
   ///
@@ -20,10 +27,15 @@ class CustomTextField extends HookConsumerWidget {
   final VoidCallback? toggleObscurePassword;
   const CustomTextField({
     Key? key,
+    this.border,
+    this.filled,
     this.hintText,
+    this.fillColor,
     this.errorText,
     this.onChanged,
     this.keyboardType,
+    this.contentPadding,
+    this.controller,
     this.toggleObscurePassword,
     this.autocorrect = true,
     this.obscureText = false,
@@ -35,11 +47,28 @@ class CustomTextField extends HookConsumerWidget {
         ),
         super(key: key);
 
+  /// A type of [TextField] used in forms.
+  ///
+  /// Like in [EditProfileView] or [SignInView] and etc.
+  factory CustomTextField.form({TextEditingController? controller}) =>
+      CustomTextField(
+        controller: controller,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: BorderSide.none,
+          gapPadding: 0.0,
+        ),
+        fillColor: Colors.grey.shade200,
+        filled: true,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
+      );
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final debounce = useMemoized(() => ActionDebounce());
 
     return TextFormField(
+      controller: controller,
       autocorrect: autocorrect,
       obscureText: obscureText,
       keyboardType: keyboardType,
@@ -50,7 +79,15 @@ class CustomTextField extends HookConsumerWidget {
       decoration: InputDecoration(
         hintText: hintText,
         errorText: errorText,
-        border: const OutlineInputBorder(),
+        border: border,
+        contentPadding: contentPadding,
+        errorBorder: border,
+        enabledBorder: border,
+        focusedBorder: border,
+        disabledBorder: border,
+        focusedErrorBorder: border,
+        fillColor: fillColor,
+        filled: filled,
         suffixIcon: !showVisibilitySuffixIcon
             ? null
             : IconButton(

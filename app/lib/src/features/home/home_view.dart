@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../authentication/presentation/auth_providers.dart';
+import '../profile/presentation/profile_view.dart';
 
 class HomeView extends HookConsumerWidget {
   static const path = '/';
@@ -13,10 +14,8 @@ class HomeView extends HookConsumerWidget {
     return Scaffold(
       body: Center(
         child: TextButton(
-          onPressed: () async {
-            ref.read(signInStateNotifierProvider.notifier).signOut();
-          },
-          child: const Text('Log out'),
+          onPressed: () => context.push(ProfileView.path),
+          child: const Text('Profile'),
         ),
       ),
     );
