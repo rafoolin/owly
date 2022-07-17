@@ -24,7 +24,9 @@ class LocalAuthRepository {
   }
 
   /// Update saved and auto login credentials in the local storage.
-  Future<AsyncValue> updateCredential(AppCredential credential) async {
+  Future<AsyncValue<AppCredential>> updateCredential(
+    AppCredential credential,
+  ) async {
     try {
       // Update auto login password
       await _storage.write(
