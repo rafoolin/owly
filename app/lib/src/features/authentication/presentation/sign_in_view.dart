@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/widgets/app_logo.dart';
+import '../../../common/widgets/buttons.dart';
 import 'auth_providers.dart';
 import 'forgot_password_view.dart';
 import 'sign_up_with_email_view.dart';
@@ -91,12 +92,12 @@ class SignInView extends HookConsumerWidget {
                 ),
                 // Submit
                 Consumer(
-                  builder: (context, ref, _) => ElevatedButton(
+                  builder: (context, ref, _) => RoundedButton(
                     onPressed: ref.watch(signInStateNotifierProvider
                             .select((e) => e.canSubmit))
                         ? notifier.signIn
                         : null,
-                    child: const Text('log in'),
+                    text: 'log in',
                   ),
                 ),
                 const SizedBox(height: 16.0),

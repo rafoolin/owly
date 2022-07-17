@@ -18,7 +18,7 @@ class PasswordTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomTextField(
+    return CustomTextField.form(
       obscureText: obscureText,
       hintText: 'Password',
       onChanged: onChanged,

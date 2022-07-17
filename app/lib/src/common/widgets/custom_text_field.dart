@@ -50,9 +50,25 @@ class CustomTextField extends HookConsumerWidget {
   /// A type of [TextField] used in forms.
   ///
   /// Like in [EditProfileView] or [SignInView] and etc.
-  factory CustomTextField.form({TextEditingController? controller}) =>
+  factory CustomTextField.form({
+    TextEditingController? controller,
+    void Function(String)? onChanged,
+    bool? filled,
+    Color? fillColor,
+    String? hintText,
+    String? errorText,
+    InputBorder? border,
+    TextInputType? keyboardType,
+    EdgeInsets? contentPadding,
+    VoidCallback? toggleObscurePassword,
+    bool autocorrect = true,
+    bool obscureText = false,
+    bool enableSuggestions = true,
+    bool showVisibilitySuffixIcon = false,
+  }) =>
       CustomTextField(
         controller: controller,
+        onChanged: onChanged,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
           borderSide: BorderSide.none,
@@ -61,6 +77,14 @@ class CustomTextField extends HookConsumerWidget {
         fillColor: Colors.grey.shade200,
         filled: true,
         contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
+        autocorrect: autocorrect,
+        enableSuggestions: enableSuggestions,
+        errorText: errorText,
+        hintText: hintText,
+        keyboardType: keyboardType,
+        obscureText: obscureText,
+        toggleObscurePassword: toggleObscurePassword,
+        showVisibilitySuffixIcon: showVisibilitySuffixIcon,
       );
 
   @override
@@ -91,6 +115,7 @@ class CustomTextField extends HookConsumerWidget {
         suffixIcon: !showVisibilitySuffixIcon
             ? null
             : IconButton(
+                splashColor: Colors.transparent,
                 onPressed: toggleObscurePassword,
                 icon: Icon(
                   obscureText ? Icons.visibility_off : Icons.visibility,

@@ -14,7 +14,7 @@ class EmailTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomTextField(
+    return CustomTextField.form(
       hintText: 'Email',
       autocorrect: false,
       errorText: errorText,
