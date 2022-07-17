@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/widgets/app_logo.dart';
+import '../../../common/widgets/app_padding.dart';
 import '../../../common/widgets/buttons.dart';
 import 'auth_providers.dart';
 import 'forgot_password_view.dart';
@@ -62,7 +63,7 @@ class SignInView extends HookConsumerWidget {
                         ref.watch(signInStateNotifierProvider).emailError,
                   ),
                 ),
-                const SizedBox(height: 10.0),
+                AppPadding.vertical(),
                 // Password
                 Consumer(
                   builder: (context, ref, _) {
@@ -100,7 +101,7 @@ class SignInView extends HookConsumerWidget {
                     text: 'log in',
                   ),
                 ),
-                const SizedBox(height: 16.0),
+                AppPadding.vertical(),
                 RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(

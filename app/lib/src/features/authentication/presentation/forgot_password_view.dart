@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/widgets/app_logo.dart';
+import '../../../common/widgets/app_padding.dart';
+import '../../../common/widgets/buttons.dart';
 import '../../home/home_view.dart';
 import 'auth_providers.dart';
 import 'sign_in_view.dart';
@@ -39,10 +41,10 @@ class ForgotPasswordView extends HookConsumerWidget {
                         ref.watch(signInStateNotifierProvider).emailError,
                   ),
                 ),
-                const SizedBox(height: 20),
+                AppPadding.vertical(),
                 // Submit
                 Consumer(
-                  builder: (context, ref, _) => ElevatedButton(
+                  builder: (context, ref, _) => RoundedButton(
                     onPressed: ref.watch(signInStateNotifierProvider
                             .select((e) => e.canSubmitForgotPassword))
                         ? () async {
@@ -50,7 +52,7 @@ class ForgotPasswordView extends HookConsumerWidget {
                             notifier.resetPassword();
                           }
                         : null,
-                    child: const Text('Submit'),
+                    text: 'Submit',
                   ),
                 ),
 

@@ -51,6 +51,7 @@ class SignUpStateNotifier extends StateNotifier<SignUpEntry> {
     final response = await _authService.signUpEmailPassword(
       email: state.email!,
       password: state.password!,
+      displayName: state.displayName,
     );
 
     response.when(

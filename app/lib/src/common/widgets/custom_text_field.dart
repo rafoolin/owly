@@ -116,6 +116,7 @@ class CustomTextField extends HookConsumerWidget {
             ? null
             : IconButton(
                 splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
                 onPressed: toggleObscurePassword,
                 icon: Icon(
                   obscureText ? Icons.visibility_off : Icons.visibility,

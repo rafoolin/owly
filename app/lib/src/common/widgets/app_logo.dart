@@ -12,8 +12,8 @@ class AppLogo extends HookConsumerWidget {
     final state = ref.watch(flavorConfigProvider);
 
     return SizedBox(
-      width: 150.0,
-      height: 150.0,
+      width: 200.0,
+      height: 200.0,
       child: ExtendedImage(image: ExactAssetImage(state.flavor.asset)),
     );
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/widgets/app_logo.dart';
+import '../../../common/widgets/app_padding.dart';
+import '../../../common/widgets/buttons.dart';
 import '../../../common/widgets/custom_text_field.dart';
 import 'auth_providers.dart';
 import 'sign_in_view.dart';
@@ -29,7 +31,6 @@ class SignUpWithEmailView extends HookConsumerWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(),
       body: Form(
         child: FocusTraversalGroup(
           policy: ReadingOrderTraversalPolicy(),
@@ -44,7 +45,7 @@ class SignUpWithEmailView extends HookConsumerWidget {
                 const Spacer(),
                 // Name
                 Consumer(
-                  builder: (context, ref, _) => CustomTextField(
+                  builder: (context, ref, _) => CustomTextField.form(
                     onChanged: notifier.changeDisplayName,
                     hintText: 'Name',
                     errorText: ref.watch(
@@ -54,7 +55,7 @@ class SignUpWithEmailView extends HookConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10.0),
+                AppPadding.vertical(),
                 // Email
                 Consumer(
                   builder: (context, ref, _) => EmailTextField(
@@ -63,16 +64,16 @@ class SignUpWithEmailView extends HookConsumerWidget {
                         ref.watch(signUpStateNotifierProvider).emailError,
                   ),
                 ),
-                const SizedBox(height: 10.0),
+                AppPadding.vertical(),
                 // Password
                 Consumer(
                   builder: (context, ref, _) {
                     final passwordError = ref.watch(
-                      signInStateNotifierProvider
+                      signUpStateNotifierProvider
                           .select((v) => v.passwordError),
                     );
                     final obscurePassword = ref.watch(
-                      signInStateNotifierProvider
+                      signUpStateNotifierProvider
                           .select((v) => v.obscurePassword),
                     );
                     return PasswordTextField(
@@ -83,15 +84,15 @@ class SignUpWithEmailView extends HookConsumerWidget {
                     );
                   },
                 ),
-                const SizedBox(height: 20),
+                AppPadding.vertical(),
                 // Submit
                 Consumer(
-                  builder: (context, ref, _) => ElevatedButton(
+                  builder: (context, ref, _) => RoundedButton(
                     onPressed: ref.watch(signUpStateNotifierProvider
                             .select((e) => e.canSubmit))
                         ? notifier.signUpEmailPassword
                         : null,
-                    child: const Text('Submit'),
+                    text: 'Submit',
                   ),
                 ),
                 const Spacer(flex: 2),
