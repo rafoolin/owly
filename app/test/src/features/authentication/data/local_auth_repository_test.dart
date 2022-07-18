@@ -187,7 +187,7 @@ void main() async {
       verify(localAuthRepository.clearCredential());
       expectLater(
         await localAuthRepository.clearCredential(),
-        const AsyncData<dynamic>(null),
+        const AsyncData<void>(null),
         reason: 'All local credentials are successfully cleared',
       );
       verify(storage.delete(key: AppStorageKey.authEmail.key));
@@ -206,7 +206,7 @@ void main() async {
       verify(localAuthRepository.clearCredential());
       expectLater(
         await localAuthRepository.clearCredential(),
-        AsyncError<dynamic>(StorageException.toDomain(exception)),
+        AsyncError<void>(StorageException.toDomain(exception)),
         reason: 'Failed to clear [email] local storage`s value',
       );
       verify(storage.delete(key: AppStorageKey.authEmail.key));

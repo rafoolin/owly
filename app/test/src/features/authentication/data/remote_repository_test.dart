@@ -21,17 +21,14 @@ final user = User(
 );
 final authResponse = AuthResponse(session: Session(user: user));
 
-@GenerateMocks([NhostClient, AuthClient])
+@GenerateMocks([AuthClient])
 void main() async {
   late RemoteAuthRepository remoteAuthRepository;
-  late NhostClient nhostClient;
   late AuthClient authClient;
 
   setUp(() {
     authClient = MockAuthClient();
-    nhostClient = MockNhostClient();
-    when(nhostClient.auth).thenAnswer((_) => authClient);
-    remoteAuthRepository = RemoteAuthRepository(nhostClient);
+    remoteAuthRepository = RemoteAuthRepository(authClient);
   });
 
   group('signInEmailPassword -', () {

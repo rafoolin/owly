@@ -2,15 +2,11 @@
 // in owly/test/src/features/authentication/data/remote_repository_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i8;
+import 'dart:async' as _i4;
 
-import 'package:http/http.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:nhost_sdk/nhost_sdk.dart' as _i7;
-import 'package:nhost_sdk/src/api/auth_api_types.dart' as _i6;
+import 'package:nhost_sdk/src/api/auth_api_types.dart' as _i2;
 import 'package:nhost_sdk/src/auth_client.dart' as _i3;
-import 'package:nhost_sdk/src/functions_client.dart' as _i4;
-import 'package:nhost_sdk/src/storage_client.dart' as _i5;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -22,54 +18,10 @@ import 'package:nhost_sdk/src/storage_client.dart' as _i5;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 
-class _FakeClient_0 extends _i1.Fake implements _i2.Client {}
+class _FakeAuthResponse_0 extends _i1.Fake implements _i2.AuthResponse {}
 
-class _FakeAuthClient_1 extends _i1.Fake implements _i3.AuthClient {}
-
-class _FakeFunctionsClient_2 extends _i1.Fake implements _i4.FunctionsClient {}
-
-class _FakeStorageClient_3 extends _i1.Fake implements _i5.StorageClient {}
-
-class _FakeAuthResponse_4 extends _i1.Fake implements _i6.AuthResponse {}
-
-class _FakeMultiFactorAuthResponse_5 extends _i1.Fake
-    implements _i6.MultiFactorAuthResponse {}
-
-/// A class which mocks [NhostClient].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockNhostClient extends _i1.Mock implements _i7.NhostClient {
-  MockNhostClient() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  String get backendUrl =>
-      (super.noSuchMethod(Invocation.getter(#backendUrl), returnValue: '')
-          as String);
-  @override
-  _i2.Client get httpClient =>
-      (super.noSuchMethod(Invocation.getter(#httpClient),
-          returnValue: _FakeClient_0()) as _i2.Client);
-  @override
-  String get gqlEndpointUrl =>
-      (super.noSuchMethod(Invocation.getter(#gqlEndpointUrl), returnValue: '')
-          as String);
-  @override
-  _i3.AuthClient get auth => (super.noSuchMethod(Invocation.getter(#auth),
-      returnValue: _FakeAuthClient_1()) as _i3.AuthClient);
-  @override
-  _i4.FunctionsClient get functions =>
-      (super.noSuchMethod(Invocation.getter(#functions),
-          returnValue: _FakeFunctionsClient_2()) as _i4.FunctionsClient);
-  @override
-  _i5.StorageClient get storage =>
-      (super.noSuchMethod(Invocation.getter(#storage),
-          returnValue: _FakeStorageClient_3()) as _i5.StorageClient);
-  @override
-  void close() => super.noSuchMethod(Invocation.method(#close, []),
-      returnValueForMissingStub: null);
-}
+class _FakeMultiFactorAuthResponse_1 extends _i1.Fake
+    implements _i2.MultiFactorAuthResponse {}
 
 /// A class which mocks [AuthClient].
 ///
@@ -109,7 +61,7 @@ class MockAuthClient extends _i1.Mock implements _i3.AuthClient {
           Invocation.method(#addSessionRefreshFailedCallback, [callback]),
           returnValue: () {}) as _i3.UnsubscribeDelegate);
   @override
-  _i8.Future<_i6.AuthResponse> signUp(
+  _i4.Future<_i2.AuthResponse> signUp(
           {String? email,
           String? password,
           String? locale,
@@ -128,121 +80,121 @@ class MockAuthClient extends _i1.Mock implements _i3.AuthClient {
                 #redirectTo: redirectTo
               }),
               returnValue:
-                  Future<_i6.AuthResponse>.value(_FakeAuthResponse_4()))
-          as _i8.Future<_i6.AuthResponse>);
+                  Future<_i2.AuthResponse>.value(_FakeAuthResponse_0()))
+          as _i4.Future<_i2.AuthResponse>);
   @override
-  _i8.Future<_i6.AuthResponse> signInEmailPassword(
+  _i4.Future<_i2.AuthResponse> signInEmailPassword(
           {String? email, String? password}) =>
       (super.noSuchMethod(
           Invocation.method(
               #signInEmailPassword, [], {#email: email, #password: password}),
           returnValue:
-              Future<_i6.AuthResponse>.value(_FakeAuthResponse_4())) as _i8
-          .Future<_i6.AuthResponse>);
+              Future<_i2.AuthResponse>.value(_FakeAuthResponse_0())) as _i4
+          .Future<_i2.AuthResponse>);
   @override
-  _i8.Future<void> signInWithEmailPasswordless(String? email,
+  _i4.Future<void> signInWithEmailPasswordless(String? email,
           {String? redirectTo}) =>
       (super.noSuchMethod(
           Invocation.method(
               #signInWithEmailPasswordless, [email], {#redirectTo: redirectTo}),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
   @override
-  _i8.Future<void> signInWithSmsPasswordless(String? phoneNumber) =>
+  _i4.Future<void> signInWithSmsPasswordless(String? phoneNumber) =>
       (super.noSuchMethod(
           Invocation.method(#signInWithSmsPasswordless, [phoneNumber]),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
   @override
-  _i8.Future<_i6.AuthResponse> completeSmsPasswordlessSignIn(
+  _i4.Future<_i2.AuthResponse> completeSmsPasswordlessSignIn(
           String? phoneNumber, String? otp) =>
       (super.noSuchMethod(
           Invocation.method(#completeSmsPasswordlessSignIn, [phoneNumber, otp]),
           returnValue:
-              Future<_i6.AuthResponse>.value(_FakeAuthResponse_4())) as _i8
-          .Future<_i6.AuthResponse>);
+              Future<_i2.AuthResponse>.value(_FakeAuthResponse_0())) as _i4
+          .Future<_i2.AuthResponse>);
   @override
-  _i8.Future<_i6.AuthResponse> signInWithStoredCredentials() =>
+  _i4.Future<_i2.AuthResponse> signInWithStoredCredentials() =>
       (super.noSuchMethod(Invocation.method(#signInWithStoredCredentials, []),
               returnValue:
-                  Future<_i6.AuthResponse>.value(_FakeAuthResponse_4()))
-          as _i8.Future<_i6.AuthResponse>);
+                  Future<_i2.AuthResponse>.value(_FakeAuthResponse_0()))
+          as _i4.Future<_i2.AuthResponse>);
   @override
-  _i8.Future<_i6.AuthResponse> signInWithRefreshToken(String? refreshToken) =>
+  _i4.Future<_i2.AuthResponse> signInWithRefreshToken(String? refreshToken) =>
       (super.noSuchMethod(
               Invocation.method(#signInWithRefreshToken, [refreshToken]),
               returnValue:
-                  Future<_i6.AuthResponse>.value(_FakeAuthResponse_4()))
-          as _i8.Future<_i6.AuthResponse>);
+                  Future<_i2.AuthResponse>.value(_FakeAuthResponse_0()))
+          as _i4.Future<_i2.AuthResponse>);
   @override
-  _i8.Future<_i6.AuthResponse> signOut({bool? all = false}) =>
+  _i4.Future<_i2.AuthResponse> signOut({bool? all = false}) =>
       (super.noSuchMethod(Invocation.method(#signOut, [], {#all: all}),
               returnValue:
-                  Future<_i6.AuthResponse>.value(_FakeAuthResponse_4()))
-          as _i8.Future<_i6.AuthResponse>);
+                  Future<_i2.AuthResponse>.value(_FakeAuthResponse_0()))
+          as _i4.Future<_i2.AuthResponse>);
   @override
-  _i8.Future<void> sendVerificationEmail({String? email, String? redirectTo}) =>
+  _i4.Future<void> sendVerificationEmail({String? email, String? redirectTo}) =>
       (super.noSuchMethod(
           Invocation.method(#sendVerificationEmail, [],
               {#email: email, #redirectTo: redirectTo}),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
   @override
-  _i8.Future<void> changeEmail(String? newEmail) =>
+  _i4.Future<void> changeEmail(String? newEmail) =>
       (super.noSuchMethod(Invocation.method(#changeEmail, [newEmail]),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
   @override
-  _i8.Future<void> changePassword({String? newPassword}) => (super.noSuchMethod(
+  _i4.Future<void> changePassword({String? newPassword}) => (super.noSuchMethod(
       Invocation.method(#changePassword, [], {#newPassword: newPassword}),
       returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+      returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
   @override
-  _i8.Future<void> resetPassword({String? email, String? redirectTo}) =>
+  _i4.Future<void> resetPassword({String? email, String? redirectTo}) =>
       (super.noSuchMethod(
           Invocation.method(
               #resetPassword, [], {#email: email, #redirectTo: redirectTo}),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
   @override
-  _i8.Future<_i6.MultiFactorAuthResponse> generateMfa() =>
+  _i4.Future<_i2.MultiFactorAuthResponse> generateMfa() =>
       (super.noSuchMethod(Invocation.method(#generateMfa, []),
-              returnValue: Future<_i6.MultiFactorAuthResponse>.value(
-                  _FakeMultiFactorAuthResponse_5()))
-          as _i8.Future<_i6.MultiFactorAuthResponse>);
+              returnValue: Future<_i2.MultiFactorAuthResponse>.value(
+                  _FakeMultiFactorAuthResponse_1()))
+          as _i4.Future<_i2.MultiFactorAuthResponse>);
   @override
-  _i8.Future<void> enableMfa(String? totp) =>
+  _i4.Future<void> enableMfa(String? totp) =>
       (super.noSuchMethod(Invocation.method(#enableMfa, [totp]),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
   @override
-  _i8.Future<void> disableMfa(String? code) =>
+  _i4.Future<void> disableMfa(String? code) =>
       (super.noSuchMethod(Invocation.method(#disableMfa, [code]),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
   @override
-  _i8.Future<_i6.AuthResponse> completeMfaSignIn(
+  _i4.Future<_i2.AuthResponse> completeMfaSignIn(
           {String? otp, String? ticket}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #completeMfaSignIn, [], {#otp: otp, #ticket: ticket}),
               returnValue:
-                  Future<_i6.AuthResponse>.value(_FakeAuthResponse_4()))
-          as _i8.Future<_i6.AuthResponse>);
+                  Future<_i2.AuthResponse>.value(_FakeAuthResponse_0()))
+          as _i4.Future<_i2.AuthResponse>);
   @override
-  _i8.Future<void> completeOAuthProviderSignIn(Uri? redirectUrl) =>
+  _i4.Future<void> completeOAuthProviderSignIn(Uri? redirectUrl) =>
       (super.noSuchMethod(
           Invocation.method(#completeOAuthProviderSignIn, [redirectUrl]),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
   @override
-  _i8.Future<void> setSession(_i6.Session? session) =>
+  _i4.Future<void> setSession(_i2.Session? session) =>
       (super.noSuchMethod(Invocation.method(#setSession, [session]),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
   @override
-  _i8.Future<void> clearSession() =>
+  _i4.Future<void> clearSession() =>
       (super.noSuchMethod(Invocation.method(#clearSession, []),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
 }
