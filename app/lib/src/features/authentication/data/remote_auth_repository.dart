@@ -4,18 +4,33 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 import '../domain/auth_exception.dart';
 
 class RemoteAuthRepository {
-  final NhostClient _nhostClient;
-  RemoteAuthRepository(this._nhostClient);
+  final AuthClient _authClient;
+  RemoteAuthRepository(this._authClient);
 
-  /// Auth client
-  AuthClient get auth => _nhostClient.auth;
+  /// The currently logged-in user's Json Web Token, or null if unauthenticated.
+  String? get accessToken => _authClient.accessToken;
+
+  /// Currently logged-in user, or null if unauthenticated.
+  User? get currentUser => _authClient.currentUser;
+
+  /// Add a callback that will be invoked when the service's
+  /// authentication state changes.
+  ///
+  /// The returned function will remove the callback when called.
+  void Function(void Function(AuthenticationState authenticationState))
+      get addAuthStateChangedCallback =>
+          _authClient.addAuthStateChangedCallback;
+
+  /// Whether a user is logged in, not logged in, or if a sign-in is in process.
+  AuthenticationState get authenticationState =>
+      _authClient.authenticationState;
 
   Future<AsyncValue<AuthResponse?>> signInEmailPassword({
     required String email,
     required String password,
   }) async {
     try {
-      final response = await _nhostClient.auth.signInEmailPassword(
+      final response = await _authClient.signInEmailPassword(
         email: email,
         password: password,
       );
@@ -28,7 +43,7 @@ class RemoteAuthRepository {
   /// Sign out user from the app.
   Future<AsyncValue<AuthResponse>> signOut() async {
     try {
-      final response = await _nhostClient.auth.signOut();
+      final response = await _authClient.signOut();
       return AsyncData(response);
     } catch (err) {
       return AsyncError(AuthException.toDomain(err));
@@ -45,7 +60,7 @@ class RemoteAuthRepository {
     String? redirectTo,
   }) async {
     try {
-      final response = await _nhostClient.auth.signUp(
+      final response = await _authClient.signUp(
         email: email,
         password: password,
         locale: locale,
@@ -63,7 +78,7 @@ class RemoteAuthRepository {
   /// Reset password for [email].
   Future<AsyncValue<void>> resetPassword(String email) async {
     try {
-      final response = await _nhostClient.auth.resetPassword(email: email);
+      final response = await _authClient.resetPassword(email: email);
       return AsyncData(response);
     } catch (err) {
       return AsyncError(AuthException.toDomain(err));

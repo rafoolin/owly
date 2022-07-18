@@ -61,7 +61,7 @@ class LocalAuthRepository {
   ///
   /// We do **NOT** delete saved credentials to let user
   /// logging in back easily again.
-  Future<AsyncValue> clearCredential() async {
+  Future<AsyncValue<void>> clearCredential() async {
     try {
       await _storage.delete(key: AppStorageKey.authEmail.key);
       await _storage.delete(key: AppStorageKey.authPassword.key);

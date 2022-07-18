@@ -3,6 +3,7 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../common/models/app_credential.dart';
+import '../../../exception/domain/storage_exception.dart';
 import '../data/local_auth_repository.dart';
 import '../data/remote_auth_repository.dart';
 
@@ -12,8 +13,8 @@ class AuthService {
 
   AuthService(this._remoteRepository, this._localRepository) {
     // Initialize the streams
-    _currentUser.add(_remoteRepository.auth.currentUser);
-    _accessToken.add(_remoteRepository.auth.accessToken);
+    _currentUser.add(_remoteRepository.currentUser);
+    _accessToken.add(_remoteRepository.accessToken);
     // With auth login feature, it takes some times to load the data from
     // secure local storage, so the nhost auth state is signed out, but loading
     // from local storage is in progress.
@@ -22,11 +23,11 @@ class AuthService {
     // Try to sign in with locally saved credentials if there is any.
     signInEmailPassword();
     // Update streams on authentication state changes.
-    _remoteRepository.auth.addAuthStateChangedCallback(
+    _remoteRepository.addAuthStateChangedCallback(
       (authenticationState) {
-        _currentUser.add(_remoteRepository.auth.currentUser);
-        _accessToken.add(_remoteRepository.auth.accessToken);
-        _authenticationState.add(_remoteRepository.auth.authenticationState);
+        _currentUser.add(_remoteRepository.currentUser);
+        _accessToken.add(_remoteRepository.accessToken);
+        _authenticationState.add(_remoteRepository.authenticationState);
       },
     );
   }
@@ -67,28 +68,29 @@ class AuthService {
         password: password,
       );
       // Update credentials in local storage if login was successful
-      response.whenData((_) async {
+      if (response is AsyncData) {
         await _localRepository.updateCredential(
           AppCredential(email: email, password: password),
         );
-      });
+      }
     } else {
       final local = await _localRepository.getCredential();
-      final credential = local.value;
-      if (credential != null) {
-        response = await _remoteRepository.signInEmailPassword(
-          email: credential.email,
-          password: credential.password,
-        );
+      if (local is AsyncData) {
+        final credential = local.value;
+        if (credential != null) {
+          response = await _remoteRepository.signInEmailPassword(
+            email: credential.email,
+            password: credential.password,
+          );
+        }
       }
     }
     // When signing in with local storage or remote failed, Sign out the user
     // and reset auth state to singed out.
     if (response is AsyncData && response.value == null) {
-      if (response is AsyncError) {
-        await _remoteRepository.signOut();
-      }
       _setAuthStateToSignedOut();
+    } else if (response is AsyncError) {
+      await _remoteRepository.signOut();
     }
 
     return response;
@@ -97,8 +99,13 @@ class AuthService {
   /// Sign out user from the app and clear auto login credentials from local
   /// storage.
   Future<AsyncValue<AuthResponse>> signOut() async {
-    await _localRepository.clearCredential();
-    return _remoteRepository.signOut();
+    final response = await _localRepository.clearCredential();
+
+    return response.when(
+      data: ((data) async => _remoteRepository.signOut()),
+      error: (err, _) => AsyncError(StorageException.toDomain(err)),
+      loading: () => const AsyncLoading(),
+    );
   }
 
   /// Sign up user

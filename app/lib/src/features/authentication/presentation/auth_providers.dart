@@ -53,7 +53,7 @@ final currentUserProvider = Provider<User?>((ref) {
 
 final _remoteAuthRepositoryProvider = Provider<RemoteAuthRepository>((ref) {
   final nhostClient = ref.watch(_nhostClientProvider);
-  return RemoteAuthRepository(nhostClient);
+  return RemoteAuthRepository(nhostClient.auth);
 });
 
 final secureStorageProvider =
