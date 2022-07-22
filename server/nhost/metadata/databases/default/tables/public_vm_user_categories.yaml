@@ -1,0 +1,16 @@
+table:
+  name: vm_user_categories
+  schema: public
+select_permissions:
+- permission:
+    columns:
+    - id
+    - name
+    - user_id
+    - created_at
+    - update_at
+    - color
+    filter:
+      id:
+        _eq: X-Hasura-User-Id
+  role: me

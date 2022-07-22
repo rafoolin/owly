@@ -1,0 +1,53 @@
+table:
+  name: categories
+  schema: public
+configuration:
+  custom_column_names:
+    created_at: createdAt
+    update_at: updateAt
+    user_id: userId
+  custom_root_fields: {}
+insert_permissions:
+- permission:
+    backend_only: false
+    check:
+      id:
+        _eq: X-Hasura-User-Id
+    columns:
+    - color
+    - created_at
+    - name
+    set:
+      user_id: x-hasura-User-Id
+  role: me
+select_permissions:
+- permission:
+    columns:
+    - color
+    - name
+    - created_at
+    - update_at
+    - id
+    - user_id
+    filter:
+      id:
+        _eq: X-Hasura-User-Id
+  role: me
+update_permissions:
+- permission:
+    check: null
+    columns:
+    - color
+    - name
+    filter:
+      id:
+        _eq: X-Hasura-User-Id
+    set:
+      update_at: now()
+  role: me
+delete_permissions:
+- permission:
+    filter:
+      id:
+        _eq: X-Hasura-User-Id
+  role: me
