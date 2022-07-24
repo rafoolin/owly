@@ -1,6 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:owly/src/common/constants/app_storage_key.dart';
@@ -18,11 +17,8 @@ void main() async {
   late FlutterSecureStorage storage;
   late LocalAuthRepository localAuthRepository;
 
-  setUpAll(() {
-    storage = MockFlutterSecureStorage();
-  });
-
   setUp(() {
+    storage = MockFlutterSecureStorage();
     localAuthRepository = LocalAuthRepository(storage);
   });
 
@@ -38,7 +34,7 @@ void main() async {
       verify(localAuthRepository.getCredential());
       expectLater(
         await localAuthRepository.getCredential(),
-        const AsyncData<AppCredential?>(null),
+        null,
         reason: 'when locally saved [email] is null, it returns null',
       );
       verify(storage.read(key: AppStorageKey.authEmail.key));
@@ -55,7 +51,7 @@ void main() async {
       verify(localAuthRepository.getCredential());
       expectLater(
         await localAuthRepository.getCredential(),
-        const AsyncData<AppCredential?>(null),
+        null,
         reason: 'when locally saved [password] is null, it returns null',
       );
       verify(storage.read(key: AppStorageKey.authEmail.key));
@@ -72,7 +68,7 @@ void main() async {
       verify(localAuthRepository.getCredential());
       expectLater(
         await localAuthRepository.getCredential(),
-        AsyncData<AppCredential?>(credential),
+        credential,
         reason: 'when locally saved [password] is null, it returns null',
       );
       verify(storage.read(key: AppStorageKey.authEmail.key));
@@ -86,15 +82,17 @@ void main() async {
       when(storage.read(key: AppStorageKey.authPassword.key))
           .thenAnswer((_) async => testPassword);
 
-      expect(localAuthRepository.getCredential(), completes);
-      verify(localAuthRepository.getCredential());
-      expectLater(
-        await localAuthRepository.getCredential(),
-        AsyncError<AppCredential?>(StorageException.toDomain(exception)),
+      Future<void> testFunction() async {
+        await localAuthRepository.getCredential();
+      }
+
+      await expectLater(
+        testFunction(),
+        throwsA(isA<StorageException>()),
         reason: 'Throws a [StorageException] exception',
       );
       verify(storage.read(key: AppStorageKey.authEmail.key));
-      verify(storage.read(key: AppStorageKey.authPassword.key));
+      verifyNever(storage.read(key: AppStorageKey.authPassword.key));
     });
 
     test('Reading locally saved [password] fails', () async {
@@ -106,11 +104,13 @@ void main() async {
       when(storage.read(key: AppStorageKey.authPassword.key))
           .thenThrow(exception);
 
-      expect(localAuthRepository.getCredential(), completes);
-      verify(localAuthRepository.getCredential());
-      expectLater(
-        await localAuthRepository.getCredential(),
-        AsyncError<AppCredential?>(StorageException.toDomain(exception)),
+      Future<void> testFunction() async {
+        await localAuthRepository.getCredential();
+      }
+
+      await expectLater(
+        testFunction(),
+        throwsA(isA<StorageException>()),
         reason: 'Throws a [StorageException] exception',
       );
       verify(storage.read(key: AppStorageKey.authEmail.key));
@@ -140,7 +140,7 @@ void main() async {
       verify(localAuthRepository.updateCredential(credential));
       expectLater(
         await localAuthRepository.updateCredential(credential),
-        AsyncData<AppCredential>(credential),
+        credential,
         reason: 'All local credentials are successfully updated',
       );
       verify(storage.write(key: AppStorageKey.authEmail.key, value: testEmail));
@@ -166,14 +166,22 @@ void main() async {
         value: testPassword,
       )).thenAnswer((_) => Future.value());
 
-      expect(localAuthRepository.updateCredential(credential), completes);
-      verify(localAuthRepository.updateCredential(credential));
+      Future<void> testFunction() async {
+        await localAuthRepository.updateCredential(credential);
+      }
+
       expectLater(
-        await localAuthRepository.updateCredential(credential),
-        AsyncError<AppCredential>(StorageException.toDomain(exception)),
+        testFunction(),
+        throwsA(isA<StorageException>()),
         reason: 'Failed to update [email] local storage',
       );
       verify(storage.write(key: AppStorageKey.authEmail.key, value: testEmail));
+      verifyNever(
+        storage.write(
+          key: AppStorageKey.authPassword.key,
+          value: testEmail,
+        ),
+      );
     });
   });
   group('clearCredential -', () {
@@ -183,11 +191,11 @@ void main() async {
       when(storage.delete(key: AppStorageKey.authPassword.key))
           .thenAnswer((_) => Future.value());
 
-      expect(localAuthRepository.clearCredential(), completes);
+      expectLater(localAuthRepository.clearCredential(), completes);
       verify(localAuthRepository.clearCredential());
-      expectLater(
-        await localAuthRepository.clearCredential(),
-        const AsyncData<void>(null),
+      await expectLater(
+        localAuthRepository.clearCredential(),
+        completes,
         reason: 'All local credentials are successfully cleared',
       );
       verify(storage.delete(key: AppStorageKey.authEmail.key));
@@ -202,15 +210,13 @@ void main() async {
       when(storage.delete(key: AppStorageKey.authPassword.key))
           .thenAnswer((_) => Future.value());
 
-      expect(localAuthRepository.clearCredential(), completes);
-      verify(localAuthRepository.clearCredential());
-      expectLater(
-        await localAuthRepository.clearCredential(),
-        AsyncError<void>(StorageException.toDomain(exception)),
+      await expectLater(
+        localAuthRepository.clearCredential(),
+        throwsA(isA<StorageException>()),
         reason: 'Failed to clear [email] local storage`s value',
       );
       verify(storage.delete(key: AppStorageKey.authEmail.key));
-      verify(storage.delete(key: AppStorageKey.authPassword.key));
+      verifyNever(storage.delete(key: AppStorageKey.authPassword.key));
     });
   });
 }

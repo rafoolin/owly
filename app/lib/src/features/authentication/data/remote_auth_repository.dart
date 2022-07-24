@@ -1,7 +1,8 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 
 import '../domain/auth_exception.dart';
+
+class D implements Exception {}
 
 class RemoteAuthRepository {
   final AuthClient _authClient;
@@ -25,7 +26,7 @@ class RemoteAuthRepository {
   AuthenticationState get authenticationState =>
       _authClient.authenticationState;
 
-  Future<AsyncValue<AuthResponse?>> signInEmailPassword({
+  Future<AuthResponse?> signInEmailPassword({
     required String email,
     required String password,
   }) async {
@@ -34,23 +35,23 @@ class RemoteAuthRepository {
         email: email,
         password: password,
       );
-      return AsyncData(response);
+      return response;
     } catch (err) {
-      return AsyncError(AuthException.toDomain(err));
+      throw AuthException.toDomain(err);
     }
   }
 
   /// Sign out user from the app.
-  Future<AsyncValue<AuthResponse>> signOut() async {
+  Future<AuthResponse> signOut() async {
     try {
       final response = await _authClient.signOut();
-      return AsyncData(response);
+      return response;
     } catch (err) {
-      return AsyncError(AuthException.toDomain(err));
+      throw AuthException.toDomain(err);
     }
   }
 
-  Future<AsyncValue<AuthResponse>> signUp({
+  Future<AuthResponse> signUp({
     required String email,
     required String password,
     String? locale,
@@ -69,19 +70,19 @@ class RemoteAuthRepository {
         displayName: displayName,
         redirectTo: redirectTo,
       );
-      return AsyncData(response);
+      return response;
     } catch (err) {
-      return AsyncError(AuthException.toDomain(err));
+      throw AuthException.toDomain(err);
     }
   }
 
   /// Reset password for [email].
-  Future<AsyncValue<void>> resetPassword(String email) async {
+  Future<void> resetPassword(String email) async {
     try {
       final response = await _authClient.resetPassword(email: email);
-      return AsyncData(response);
+      return response;
     } catch (err) {
-      return AsyncError(AuthException.toDomain(err));
+      throw AuthException.toDomain(err);
     }
   }
 }

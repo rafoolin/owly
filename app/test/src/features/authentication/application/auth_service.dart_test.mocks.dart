@@ -4,14 +4,13 @@
 
 import 'dart:async' as _i5;
 
-import 'package:hooks_riverpod/hooks_riverpod.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:nhost_sdk/nhost_sdk.dart' as _i4;
-import 'package:owly/src/common/models/app_credential.dart' as _i7;
+import 'package:nhost_sdk/nhost_sdk.dart' as _i2;
+import 'package:owly/src/common/models/app_credential.dart' as _i3;
 import 'package:owly/src/features/authentication/data/local_auth_repository.dart'
     as _i6;
 import 'package:owly/src/features/authentication/data/remote_auth_repository.dart'
-    as _i3;
+    as _i4;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -23,45 +22,45 @@ import 'package:owly/src/features/authentication/data/remote_auth_repository.dar
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 
-class _FakeAsyncValue_0<T> extends _i1.Fake implements _i2.AsyncValue<T> {}
+class _FakeAuthResponse_0 extends _i1.Fake implements _i2.AuthResponse {}
+
+class _FakeAppCredential_1 extends _i1.Fake implements _i3.AppCredential {}
 
 /// A class which mocks [RemoteAuthRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockRemoteAuthRepository extends _i1.Mock
-    implements _i3.RemoteAuthRepository {
+    implements _i4.RemoteAuthRepository {
   MockRemoteAuthRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  void Function(void Function(_i4.AuthenticationState))
+  void Function(void Function(_i2.AuthenticationState))
       get addAuthStateChangedCallback =>
           (super.noSuchMethod(Invocation.getter(#addAuthStateChangedCallback),
-                  returnValue: (void Function(_i4.AuthenticationState) __p0) {})
-              as void Function(void Function(_i4.AuthenticationState)));
+                  returnValue: (void Function(_i2.AuthenticationState) __p0) {})
+              as void Function(void Function(_i2.AuthenticationState)));
   @override
-  _i4.AuthenticationState get authenticationState =>
+  _i2.AuthenticationState get authenticationState =>
       (super.noSuchMethod(Invocation.getter(#authenticationState),
-              returnValue: _i4.AuthenticationState.inProgress)
-          as _i4.AuthenticationState);
+              returnValue: _i2.AuthenticationState.inProgress)
+          as _i2.AuthenticationState);
   @override
-  _i5.Future<_i2.AsyncValue<_i4.AuthResponse?>> signInEmailPassword(
+  _i5.Future<_i2.AuthResponse?> signInEmailPassword(
           {String? email, String? password}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #signInEmailPassword, [], {#email: email, #password: password}),
-          returnValue: Future<_i2.AsyncValue<_i4.AuthResponse?>>.value(
-              _FakeAsyncValue_0<_i4.AuthResponse?>())) as _i5
-          .Future<_i2.AsyncValue<_i4.AuthResponse?>>);
+              Invocation.method(#signInEmailPassword, [],
+                  {#email: email, #password: password}),
+              returnValue: Future<_i2.AuthResponse?>.value())
+          as _i5.Future<_i2.AuthResponse?>);
   @override
-  _i5.Future<_i2.AsyncValue<_i4.AuthResponse>> signOut() =>
-      (super.noSuchMethod(Invocation.method(#signOut, []),
-              returnValue: Future<_i2.AsyncValue<_i4.AuthResponse>>.value(
-                  _FakeAsyncValue_0<_i4.AuthResponse>()))
-          as _i5.Future<_i2.AsyncValue<_i4.AuthResponse>>);
+  _i5.Future<_i2.AuthResponse> signOut() => (super.noSuchMethod(
+          Invocation.method(#signOut, []),
+          returnValue: Future<_i2.AuthResponse>.value(_FakeAuthResponse_0()))
+      as _i5.Future<_i2.AuthResponse>);
   @override
-  _i5.Future<_i2.AsyncValue<_i4.AuthResponse>> signUp(
+  _i5.Future<_i2.AuthResponse> signUp(
           {String? email,
           String? password,
           String? locale,
@@ -79,15 +78,14 @@ class MockRemoteAuthRepository extends _i1.Mock
                 #displayName: displayName,
                 #redirectTo: redirectTo
               }),
-              returnValue: Future<_i2.AsyncValue<_i4.AuthResponse>>.value(
-                  _FakeAsyncValue_0<_i4.AuthResponse>()))
-          as _i5.Future<_i2.AsyncValue<_i4.AuthResponse>>);
-  @override
-  _i5.Future<_i2.AsyncValue<void>> resetPassword(String? email) =>
-      (super.noSuchMethod(Invocation.method(#resetPassword, [email]),
               returnValue:
-                  Future<_i2.AsyncValue<void>>.value(_FakeAsyncValue_0<void>()))
-          as _i5.Future<_i2.AsyncValue<void>>);
+                  Future<_i2.AuthResponse>.value(_FakeAuthResponse_0()))
+          as _i5.Future<_i2.AuthResponse>);
+  @override
+  _i5.Future<void> resetPassword(String? email) =>
+      (super.noSuchMethod(Invocation.method(#resetPassword, [email]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i5.Future<void>);
 }
 
 /// A class which mocks [LocalAuthRepository].
@@ -100,22 +98,20 @@ class MockLocalAuthRepository extends _i1.Mock
   }
 
   @override
-  _i5.Future<_i2.AsyncValue<_i7.AppCredential?>> getCredential() =>
+  _i5.Future<_i3.AppCredential?> getCredential() =>
       (super.noSuchMethod(Invocation.method(#getCredential, []),
-              returnValue: Future<_i2.AsyncValue<_i7.AppCredential?>>.value(
-                  _FakeAsyncValue_0<_i7.AppCredential?>()))
-          as _i5.Future<_i2.AsyncValue<_i7.AppCredential?>>);
+              returnValue: Future<_i3.AppCredential?>.value())
+          as _i5.Future<_i3.AppCredential?>);
   @override
-  _i5.Future<_i2.AsyncValue<_i7.AppCredential>> updateCredential(
-          _i7.AppCredential? credential) =>
+  _i5.Future<_i3.AppCredential> updateCredential(
+          _i3.AppCredential? credential) =>
       (super.noSuchMethod(Invocation.method(#updateCredential, [credential]),
-              returnValue: Future<_i2.AsyncValue<_i7.AppCredential>>.value(
-                  _FakeAsyncValue_0<_i7.AppCredential>()))
-          as _i5.Future<_i2.AsyncValue<_i7.AppCredential>>);
-  @override
-  _i5.Future<_i2.AsyncValue<void>> clearCredential() =>
-      (super.noSuchMethod(Invocation.method(#clearCredential, []),
               returnValue:
-                  Future<_i2.AsyncValue<void>>.value(_FakeAsyncValue_0<void>()))
-          as _i5.Future<_i2.AsyncValue<void>>);
+                  Future<_i3.AppCredential>.value(_FakeAppCredential_1()))
+          as _i5.Future<_i3.AppCredential>);
+  @override
+  _i5.Future<void> clearCredential() =>
+      (super.noSuchMethod(Invocation.method(#clearCredential, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i5.Future<void>);
 }
