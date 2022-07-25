@@ -30,7 +30,7 @@ select_permissions:
     - id
     - user_id
     filter:
-      id:
+      user_id:
         _eq: X-Hasura-User-Id
   role: me
 update_permissions:

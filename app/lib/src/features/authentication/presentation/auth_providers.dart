@@ -2,7 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 
-import '../../../../private_credential/nhost.dart';
+import '../../../client/presentation/client_providers.dart';
 import '../application/auth_service.dart';
 import '../data/local_auth_repository.dart';
 import '../data/remote_auth_repository.dart';
@@ -10,16 +10,6 @@ import '../domain/sign_in_entry.dart';
 import '../domain/sign_up_entry.dart';
 import 'sign_in_state_notifier.dart';
 import 'sign_up_state_notifier.dart';
-
-final _nhostClientProvider = Provider<NhostClient>(
-  (ref) {
-    final client = NhostClient(backendUrl: NhostCredential.nhostBackendUrl);
-    // Release the client when it is no longer needed.
-    ref.onDispose(client.close);
-
-    return client;
-  },
-);
 
 final _authStateProvider = StreamProvider<AuthenticationState?>((ref) async* {
   yield* ref.watch(authServiceProvider).authenticationState;
@@ -52,8 +42,8 @@ final currentUserProvider = Provider<User?>((ref) {
 });
 
 final _remoteAuthRepositoryProvider = Provider<RemoteAuthRepository>((ref) {
-  final nhostClient = ref.watch(_nhostClientProvider);
-  return RemoteAuthRepository(nhostClient.auth);
+  final authClient = ref.watch(authClientProvider);
+  return RemoteAuthRepository(authClient);
 });
 
 final secureStorageProvider =
