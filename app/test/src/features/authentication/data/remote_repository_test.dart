@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
@@ -56,37 +55,26 @@ void main() async {
           email: testEmail,
           password: testPassword,
         ),
-        AsyncData<AuthResponse?>(authResponse),
+        authResponse,
       );
     });
     test('Failure', () async {
-      final exception = NhostException();
-
       when(
         authClient.signInEmailPassword(
           email: testEmail,
           password: testPassword,
         ),
-      ).thenThrow(exception);
+      ).thenThrow(NhostException);
 
-      expectLater(
+      Future<void> testFunction() async {
         await remoteAuthRepository.signInEmailPassword(
           email: testEmail,
           password: testPassword,
-        ),
-        isA<AsyncError>(),
-      );
-      verify(remoteAuthRepository.signInEmailPassword(
-        email: testEmail,
-        password: testPassword,
-      )).called(1);
-      expectLater(
-        await remoteAuthRepository.signInEmailPassword(
-          email: testEmail,
-          password: testPassword,
-        ),
-        AsyncError<AuthResponse?>(AuthException.toDomain(exception)),
-      );
+        );
+      }
+
+      await expectLater(testFunction(), throwsA(isA<AuthException>()));
+      verify(testFunction()).called(1);
     });
   });
 
@@ -119,12 +107,10 @@ void main() async {
           email: testEmail,
           password: testPassword,
         ),
-        AsyncData<AuthResponse>(authResponse),
+        authResponse,
       );
     });
     test('Failure', () async {
-      final exception = NhostException();
-
       when(
         authClient.signUp(
           email: testEmail,
@@ -135,28 +121,17 @@ void main() async {
           redirectTo: anyNamed('redirectTo'),
           roles: anyNamed('roles'),
         ),
-      ).thenThrow(exception);
+      ).thenThrow(NhostException());
 
-      expectLater(
+      Future<void> testFunction() async {
         await remoteAuthRepository.signUp(
           email: testEmail,
           password: testPassword,
-        ),
-        isA<AsyncError>(),
-      );
-      verify(
-        remoteAuthRepository.signUp(
-          email: testEmail,
-          password: testPassword,
-        ),
-      ).called(1);
-      expectLater(
-        await remoteAuthRepository.signUp(
-          email: testEmail,
-          password: testPassword,
-        ),
-        AsyncError<AuthResponse>(AuthException.toDomain(exception)),
-      );
+        );
+      }
+
+      expectLater(testFunction(), throwsA(isA<AuthException>()));
+      verify(testFunction()).called(1);
     });
   });
 
@@ -171,23 +146,17 @@ void main() async {
       verify(authClient.signOut()).called(1);
       expectLater(
         await remoteAuthRepository.signOut(),
-        AsyncData<AuthResponse>(authResponse),
+        authResponse,
       );
     });
     test('Failure', () async {
-      final exception = NhostException();
+      when(authClient.signOut()).thenThrow(NhostException);
 
-      when(authClient.signOut()).thenThrow(exception);
-
-      expectLater(
-        await remoteAuthRepository.signOut(),
-        isA<AsyncError>(),
+      await expectLater(
+        remoteAuthRepository.signOut(),
+        throwsA(isA<AuthException>()),
       );
       verify(remoteAuthRepository.signOut()).called(1);
-      expectLater(
-        await remoteAuthRepository.signOut(),
-        AsyncError<AuthResponse>(AuthException.toDomain(exception)),
-      );
     });
   });
 
@@ -203,19 +172,15 @@ void main() async {
       verify(authClient.resetPassword(email: testEmail));
     });
     test('Failure', () async {
-      final exception = NhostException();
+      when(authClient.resetPassword(email: testEmail))
+          .thenThrow(NhostException);
 
-      when(authClient.resetPassword(email: testEmail)).thenThrow(exception);
+      Future<void> testFunction() async {
+        await remoteAuthRepository.resetPassword(testEmail);
+      }
 
-      expectLater(
-        await remoteAuthRepository.resetPassword(testEmail),
-        isA<AsyncError>(),
-      );
-      verify(remoteAuthRepository.resetPassword(testEmail)).called(1);
-      expectLater(
-        await remoteAuthRepository.resetPassword(testEmail),
-        AsyncError<void>(AuthException.toDomain(exception)),
-      );
+      await expectLater(testFunction(), throwsA(isA<AuthException>()));
+      verify(testFunction()).called(1);
     });
   });
 }

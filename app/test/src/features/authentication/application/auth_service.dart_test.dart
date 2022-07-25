@@ -4,9 +4,11 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:owly/src/common/models/app_credential.dart';
+import 'package:owly/src/exception/domain/storage_exception.dart';
 import 'package:owly/src/features/authentication/application/auth_service.dart';
 import 'package:owly/src/features/authentication/data/local_auth_repository.dart';
 import 'package:owly/src/features/authentication/data/remote_auth_repository.dart';
+import 'package:owly/src/features/authentication/domain/auth_exception.dart';
 import '../data/remote_repository_test.dart';
 import 'auth_service.dart_test.mocks.dart';
 
@@ -36,8 +38,7 @@ void main() async {
     when(remoteAuthRepository.accessToken).thenReturn(null);
     when(remoteAuthRepository.currentUser).thenReturn(null);
     when(remoteAuthRepository.addAuthStateChangedCallback).thenReturn((a) {});
-    when(localAuthRepository.getCredential())
-        .thenAnswer((_) async => const AsyncData(null));
+    when(localAuthRepository.getCredential()).thenAnswer((_) async => null);
   });
 
   tearDown(() {
@@ -63,10 +64,10 @@ void main() async {
       when(remoteAuthRepository.signInEmailPassword(
         email: testEmail,
         password: testPassword,
-      )).thenAnswer((_) async => AsyncData(authResponse));
+      )).thenAnswer((_) async => authResponse);
 
       when(localAuthRepository.updateCredential(credential))
-          .thenAnswer((_) async => AsyncData(credential));
+          .thenAnswer((_) async => credential);
 
       expectLater(
         await authService.signInEmailPassword(
@@ -88,9 +89,9 @@ void main() async {
       when(remoteAuthRepository.signInEmailPassword(
         email: testEmail,
         password: testPassword,
-      )).thenAnswer((_) async => AsyncData(authResponse));
+      )).thenAnswer((_) async => authResponse);
       when(localAuthRepository.getCredential())
-          .thenAnswer((_) async => AsyncData(credential));
+          .thenAnswer((_) async => credential);
 
       expectLater(
         await authService.signInEmailPassword(),
@@ -110,10 +111,10 @@ void main() async {
       when(remoteAuthRepository.signInEmailPassword(
         email: testEmail,
         password: testPassword,
-      )).thenAnswer((_) async => AsyncError(Exception()));
+      )).thenThrow(AuthException.toDomain(Exception()));
 
       when(remoteAuthRepository.signOut())
-          .thenAnswer((_) async => AsyncData(authResponse));
+          .thenAnswer((_) async => authResponse);
 
       expectLater(
         await authService.signInEmailPassword(
@@ -134,17 +135,17 @@ void main() async {
       when(remoteAuthRepository.signInEmailPassword(
         email: testEmail,
         password: testPassword,
-      )).thenAnswer((_) async => AsyncData(authResponse));
+      )).thenAnswer((_) async => authResponse);
 
       when(localAuthRepository.updateCredential(credential))
-          .thenAnswer((_) async => AsyncError(Exception()));
+          .thenThrow(Exception());
 
       expectLater(
         await authService.signInEmailPassword(
           email: testEmail,
           password: testPassword,
         ),
-        AsyncData<AuthResponse?>(authResponse),
+        isA<AsyncError>(),
       );
       verify(remoteAuthRepository.signInEmailPassword(
         email: testEmail,
@@ -156,11 +157,11 @@ void main() async {
     test('Get credential fail', () async {
       authService = AuthService(remoteAuthRepository, localAuthRepository);
       when(localAuthRepository.getCredential())
-          .thenAnswer((_) async => AsyncError(Exception()));
+          .thenThrow(StorageException.toDomain(Exception()));
 
       expectLater(
         await authService.signInEmailPassword(),
-        const AsyncData<AuthResponse?>(null),
+        isA<AsyncError>(),
       );
       expectLater(
         authService.authenticationState,
@@ -185,8 +186,7 @@ void main() async {
       when(localAuthRepository.clearCredential())
           .thenAnswer((_) async => const AsyncData(null));
 
-      when(remoteAuthRepository.signOut())
-          .thenAnswer((_) async => AsyncData(response));
+      when(remoteAuthRepository.signOut()).thenAnswer((_) async => response);
 
       expectLater(
         await authService.signOut(),
@@ -197,16 +197,13 @@ void main() async {
       verify(localAuthRepository.clearCredential());
     });
 
-    test('Failure', () async {
+    test('Failure: clearCredential', () async {
       // Signed out response
       final response = AuthResponse();
       authService = AuthService(remoteAuthRepository, localAuthRepository);
 
-      when(localAuthRepository.clearCredential())
-          .thenAnswer((_) async => AsyncError(Exception()));
-
-      when(remoteAuthRepository.signOut())
-          .thenAnswer((_) async => AsyncData(response));
+      when(localAuthRepository.clearCredential()).thenThrow(Exception());
+      when(remoteAuthRepository.signOut()).thenAnswer((_) async => response);
 
       expectLater(
         await authService.signOut(),
@@ -214,7 +211,22 @@ void main() async {
       );
 
       verify(localAuthRepository.clearCredential());
-      verifyNever(remoteAuthRepository.signOut());
+      verify(remoteAuthRepository.signOut());
+    });
+    test('Failure: signOut', () async {
+      authService = AuthService(remoteAuthRepository, localAuthRepository);
+
+      when(localAuthRepository.clearCredential())
+          .thenAnswer((_) async => Future.value());
+      when(remoteAuthRepository.signOut()).thenThrow(Exception());
+
+      expectLater(
+        await authService.signOut(),
+        isA<AsyncError>(),
+      );
+
+      verify(remoteAuthRepository.signOut());
+      verifyNever(localAuthRepository.clearCredential());
     });
   });
 
@@ -227,7 +239,15 @@ void main() async {
       when(remoteAuthRepository.signUp(
         email: testEmail,
         password: testPassword,
-      )).thenAnswer((_) async => AsyncData(response));
+      )).thenAnswer((_) async => response);
+
+      when(localAuthRepository.updateCredential(credential))
+          .thenAnswer((_) async => credential);
+
+      when(remoteAuthRepository.signUp(
+        email: testEmail,
+        password: testPassword,
+      )).thenAnswer((_) async => response);
 
       expectLater(
         await authService.signUpEmailPassword(
@@ -241,15 +261,19 @@ void main() async {
         email: testEmail,
         password: testPassword,
       ));
+      verify(localAuthRepository.updateCredential(credential)).called(1);
     });
 
-    test('Failure', () async {
+    test('Failure: signUp', () async {
       authService = AuthService(remoteAuthRepository, localAuthRepository);
 
       when(remoteAuthRepository.signUp(
         email: testEmail,
         password: testPassword,
-      )).thenAnswer((_) async => AsyncError(Exception()));
+      )).thenThrow(AuthException.toDomain(Exception()));
+
+      when(localAuthRepository.updateCredential(credential))
+          .thenAnswer((_) async => credential);
 
       expectLater(
         await authService.signUpEmailPassword(
@@ -263,6 +287,32 @@ void main() async {
         email: testEmail,
         password: testPassword,
       ));
+      verifyNever(localAuthRepository.updateCredential(credential));
+    });
+    test('Failure: updateCredential', () async {
+      authService = AuthService(remoteAuthRepository, localAuthRepository);
+
+      when(remoteAuthRepository.signUp(
+        email: testEmail,
+        password: testPassword,
+      )).thenAnswer((_) async => authResponse);
+
+      when(localAuthRepository.updateCredential(credential))
+          .thenThrow(StorageException.toDomain(Exception()));
+
+      expectLater(
+        await authService.signUpEmailPassword(
+          email: testEmail,
+          password: testPassword,
+        ),
+        isA<AsyncError>(),
+      );
+
+      verify(remoteAuthRepository.signUp(
+        email: testEmail,
+        password: testPassword,
+      ));
+      verify(localAuthRepository.updateCredential(credential));
     });
   });
 
@@ -271,7 +321,7 @@ void main() async {
       authService = AuthService(remoteAuthRepository, localAuthRepository);
 
       when(remoteAuthRepository.resetPassword(testEmail))
-          .thenAnswer((_) async => const AsyncData<void>(null));
+          .thenAnswer((_) async => Future.value());
 
       expectLater(
         await authService.resetPassword(testEmail),
@@ -285,7 +335,8 @@ void main() async {
       authService = AuthService(remoteAuthRepository, localAuthRepository);
 
       when(remoteAuthRepository.resetPassword(testEmail))
-          .thenAnswer((_) async => AsyncError(Exception()));
+          .thenThrow(AuthException.toDomain(Exception()));
+
       expectLater(
         await authService.resetPassword(testEmail),
         isA<AsyncError>(),

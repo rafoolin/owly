@@ -13,6 +13,7 @@ import '../../features/authentication/presentation/sign_up_with_email_view.dart'
 import '../../features/home/home_view.dart';
 import '../../features/profile/presentation/edit_profile_view.dart';
 import '../../features/profile/presentation/profile_view.dart';
+import '../../features/task_management/presentation/category_view.dart';
 import 'router_notifier.dart';
 
 /// A provider for router notifier
@@ -71,6 +72,13 @@ final routerProvider = Provider<GoRouter>(
                   const EditProfileView(),
             ),
           ],
+        ),
+
+        /// Category view
+        GoRoute(
+          path: CategoryView.path,
+          builder: (BuildContext context, GoRouterState state) =>
+              const CategoryView(),
         ),
 
         /// In progress view

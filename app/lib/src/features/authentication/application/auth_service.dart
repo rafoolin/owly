@@ -3,7 +3,6 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../common/models/app_credential.dart';
-import '../../../exception/domain/storage_exception.dart';
 import '../data/local_auth_repository.dart';
 import '../data/remote_auth_repository.dart';
 
@@ -61,22 +60,20 @@ class AuthService {
       (email == null) ^ (password != null),
       'Either both [password] and [email] are null or none null',
     );
-    AsyncValue<AuthResponse?> response = const AsyncData(null);
-    if (email != null && password != null) {
-      response = await _remoteRepository.signInEmailPassword(
-        email: email,
-        password: password,
-      );
-      // Update credentials in local storage if login was successful
-      if (response is AsyncData) {
+    try {
+      AuthResponse? response;
+      // Both [email] and [password] are provided so we try to sign in with them
+      if (email != null && password != null) {
+        response = await _remoteRepository.signInEmailPassword(
+          email: email,
+          password: password,
+        );
+        // Update credentials in local storage if login was successful
         await _localRepository.updateCredential(
           AppCredential(email: email, password: password),
         );
-      }
-    } else {
-      final local = await _localRepository.getCredential();
-      if (local is AsyncData) {
-        final credential = local.value;
+      } else {
+        final credential = await _localRepository.getCredential();
         if (credential != null) {
           response = await _remoteRepository.signInEmailPassword(
             email: credential.email,
@@ -84,32 +81,34 @@ class AuthService {
           );
         }
       }
-    }
-    // When signing in with local storage or remote failed, Sign out the user
-    // and reset auth state to singed out.
-    if (response is AsyncData && response.value == null) {
-      _setAuthStateToSignedOut();
-    } else if (response is AsyncError) {
-      await _remoteRepository.signOut();
-    }
 
-    return response;
+      // When signing in with local storage or remote failed, Sign out the user
+      // and reset auth state to singed out.
+      if (response == null) {
+        await signOut();
+      }
+      return AsyncData(response);
+    } catch (error) {
+      await signOut();
+      return AsyncError(error);
+    }
   }
 
   /// Sign out user from the app and clear auto login credentials from local
   /// storage.
   Future<AsyncValue<AuthResponse>> signOut() async {
-    final response = await _localRepository.clearCredential();
-
-    return response.when(
-      data: ((data) async => _remoteRepository.signOut()),
-      error: (err, _) => AsyncError(StorageException.toDomain(err)),
-      loading: () => const AsyncLoading(),
-    );
+    try {
+      _authenticationState.add(AuthenticationState.signedOut);
+      final response = await _remoteRepository.signOut();
+      await _localRepository.clearCredential();
+      return AsyncData(response);
+    } catch (e) {
+      return AsyncError(e);
+    }
   }
 
   /// Sign up user
-  Future<AsyncValue<Object>> signUpEmailPassword({
+  Future<AsyncValue<AuthResponse>> signUpEmailPassword({
     required String email,
     required String password,
     String? locale,
@@ -118,25 +117,37 @@ class AuthService {
     String? displayName,
     String? redirectTo,
   }) async {
-    return _remoteRepository.signUp(
-      email: email,
-      password: password,
-      locale: locale,
-      defaultRole: defaultRole,
-      roles: roles,
-      displayName: displayName,
-      redirectTo: redirectTo,
-    );
-  }
-
-  /// Reset NHost auth state to signed out.
-  void _setAuthStateToSignedOut() {
-    _authenticationState.add(AuthenticationState.signedOut);
+    try {
+      final response = await _remoteRepository.signUp(
+        email: email,
+        password: password,
+        locale: locale,
+        defaultRole: defaultRole,
+        roles: roles,
+        displayName: displayName,
+        redirectTo: redirectTo,
+      );
+      // when sign up was successful update local credentials
+      await _localRepository.updateCredential(
+        AppCredential(
+          email: email,
+          password: password,
+        ),
+      );
+      return AsyncData(response);
+    } catch (error) {
+      return AsyncError(error);
+    }
   }
 
   /// Reset password for [email].
   Future<AsyncValue<void>> resetPassword(String email) async {
-    return _remoteRepository.resetPassword(email);
+    try {
+      final response = await _remoteRepository.resetPassword(email);
+      return AsyncData(response);
+    } catch (e) {
+      return AsyncError(e);
+    }
   }
 
   void dispose() {

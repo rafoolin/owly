@@ -5,5 +5,7 @@
 - "!include auth_user_providers.yaml"
 - "!include auth_user_roles.yaml"
 - "!include auth_users.yaml"
+- "!include public_categories.yaml"
+- "!include public_vm_user_categories.yaml"
 - "!include storage_buckets.yaml"
 - "!include storage_files.yaml"
