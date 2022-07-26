@@ -1,12 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'task_category.dart';
+// ignore_for_file: non_constant_identifier_names
+
+part of 'todo_category.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Map<String, dynamic> _$TaskCategoryToJson(TaskCategory instance) =>
+Map<String, dynamic> _$TodoCategoryToJson(TodoCategory instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
@@ -23,8 +25,8 @@ Json? _$JsonConverterToJson<Json, Value>(
 ) =>
     value == null ? null : toJson(value);
 
-_$_TaskCategory _$$_TaskCategoryFromJson(Map<String, dynamic> json) =>
-    _$_TaskCategory(
+_$_TodoCategory _$$_TodoCategoryFromJson(Map<String, dynamic> json) =>
+    _$_TodoCategory(
       id: json['id'] as String,
       name: json['name'] as String,
       userId: json['userId'] as String,
@@ -36,7 +38,7 @@ _$_TaskCategory _$$_TaskCategoryFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['updatedAt'] as String),
     );
 
-Map<String, dynamic> _$$_TaskCategoryToJson(_$_TaskCategory instance) =>
+Map<String, dynamic> _$$_TodoCategoryToJson(_$_TodoCategory instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

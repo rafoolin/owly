@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'task_management_providers.dart';
-import 'widgets/task_category_card.dart';
+import 'widgets/todo_category_card.dart';
 
 class CategoryView extends HookConsumerWidget {
   static const path = '/CategoryView';
@@ -22,7 +22,7 @@ class CategoryView extends HookConsumerWidget {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
           ),
-          itemBuilder: (BuildContext context, int index) => TaskCategoryCard(
+          itemBuilder: (BuildContext context, int index) => TodoCategoryCard(
             category: categories[index],
           ),
         ),

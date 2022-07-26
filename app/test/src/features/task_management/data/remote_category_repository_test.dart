@@ -4,7 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:owly/src/features/task_management/data/remote_category_repository.dart';
-import 'package:owly/src/features/task_management/domain/task_category.dart';
+import 'package:owly/src/features/task_management/domain/todo_category.dart';
+import 'package:owly/src/features/task_management/domain/todo_task.dart';
 
 import '../helpers/helper.dart';
 
@@ -45,7 +46,7 @@ void main() async {
     };
 
     final finalData = [
-      TaskCategory(
+      TodoCategory(
         id: 'id',
         name: 'name',
         userId: 'userId',
@@ -58,7 +59,7 @@ void main() async {
       when(() => result.isLoading).thenReturn(true);
       expect(
         remoteCategoryRepository.watchCategories(),
-        emits(const AsyncLoading<List<TaskCategory>>()),
+        emits(const AsyncLoading<List<TodoCategory>>()),
       );
       verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
     });
@@ -90,6 +91,85 @@ void main() async {
       );
       verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
       remoteCategoryRepository.watchCategories().listen((event) {
+        expect(event.value, contains(finalData.first));
+      });
+      verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
+    });
+  });
+
+  group('watchTasksByCategoryId -', () {
+    final time = DateTime.now();
+    const categoryId = 'categoryId';
+
+    final jsonData = {
+      'vm_user_tasks': [
+        {
+          '__typename': 'tasks',
+          'id': 'taskId',
+          'title': 'title',
+          'completed': false,
+          'note': null,
+          'parentId': null,
+          'userId': 'userId',
+          'categoryId': categoryId,
+          'createdAt': time.toIso8601String(),
+          'completedAt': null,
+          'dateTime': time.add(const Duration(days: 1)).toIso8601String(),
+          'sub_tasks': []
+        }
+      ]
+    };
+
+    final finalData = [
+      TodoTask(
+        id: 'taskId',
+        title: 'title',
+        userId: 'userId',
+        categoryId: categoryId,
+        createdAt: time,
+        dateTime: time.add(const Duration(days: 1)),
+      ),
+    ];
+    test('Loading state', () async {
+      final result = generateMockWatchQuery(mockGraphQLClient);
+
+      when(() => result.isLoading).thenReturn(true);
+      expect(
+        remoteCategoryRepository.watchTasksByCategoryId(categoryId),
+        emits(const AsyncLoading<List<TodoTask>>()),
+      );
+      verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
+    });
+
+    test('Error state', () async {
+      final result = generateMockWatchQuery(mockGraphQLClient);
+
+      when(() => result.isLoading).thenReturn(false);
+      when(() => result.hasException).thenReturn(true);
+      when(() => result.exception).thenReturn(OperationException());
+
+      expect(
+        remoteCategoryRepository.watchTasksByCategoryId(categoryId),
+        emits(isA<AsyncError>()),
+      );
+      verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
+    });
+
+    test('Data state', () async {
+      final result = generateMockWatchQuery(mockGraphQLClient);
+
+      when(() => result.isLoading).thenReturn(false);
+      when(() => result.hasException).thenReturn(false);
+      when(() => result.data).thenReturn(jsonData);
+
+      expect(
+        remoteCategoryRepository.watchTasksByCategoryId(categoryId),
+        emits(isA<AsyncData>()),
+      );
+      verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
+      remoteCategoryRepository
+          .watchTasksByCategoryId(categoryId)
+          .listen((event) {
         expect(event.value, contains(finalData.first));
       });
       verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);

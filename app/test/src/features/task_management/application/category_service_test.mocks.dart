@@ -8,8 +8,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:owly/src/features/task_management/data/remote_category_repository.dart'
     as _i2;
-import 'package:owly/src/features/task_management/domain/task_category.dart'
+import 'package:owly/src/features/task_management/domain/todo_category.dart'
     as _i5;
+import 'package:owly/src/features/task_management/domain/todo_task.dart' as _i6;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -31,9 +32,16 @@ class MockRemoteCategoryRepository extends _i1.Mock
   }
 
   @override
-  _i3.Stream<_i4.AsyncValue<List<_i5.TaskCategory>>> watchCategories() =>
+  _i3.Stream<_i4.AsyncValue<List<_i5.TodoCategory>>> watchCategories() =>
       (super.noSuchMethod(Invocation.method(#watchCategories, []),
               returnValue:
-                  Stream<_i4.AsyncValue<List<_i5.TaskCategory>>>.empty())
-          as _i3.Stream<_i4.AsyncValue<List<_i5.TaskCategory>>>);
+                  Stream<_i4.AsyncValue<List<_i5.TodoCategory>>>.empty())
+          as _i3.Stream<_i4.AsyncValue<List<_i5.TodoCategory>>>);
+  @override
+  _i3.Stream<_i4.AsyncValue<List<_i6.TodoTask>>> watchTasksByCategoryId(
+          String? categoryId) =>
+      (super.noSuchMethod(
+              Invocation.method(#watchTasksByCategoryId, [categoryId]),
+              returnValue: Stream<_i4.AsyncValue<List<_i6.TodoTask>>>.empty())
+          as _i3.Stream<_i4.AsyncValue<List<_i6.TodoTask>>>);
 }
