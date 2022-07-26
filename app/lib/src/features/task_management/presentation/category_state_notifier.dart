@@ -3,16 +3,16 @@ import 'dart:async';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../application/category_service.dart';
-import '../domain/task_category.dart';
+import '../domain/todo_category.dart';
 
 class CategoryStateNotifier
-    extends StateNotifier<AsyncValue<List<TaskCategory>>> {
+    extends StateNotifier<AsyncValue<List<TodoCategory>>> {
   final CategoryService _categoryService;
   CategoryStateNotifier(this._categoryService) : super(const AsyncLoading()) {
     watchCategories();
   }
 
-  StreamSubscription<AsyncValue<List<TaskCategory>>>? sub;
+  StreamSubscription<AsyncValue<List<TodoCategory>>>? sub;
 
   void watchCategories() {
     sub = _categoryService

@@ -1,6 +1,12 @@
 table:
   name: vm_user_categories
   schema: public
+configuration:
+  custom_column_names:
+    created_at: createdAt
+    update_at: updatedAt
+    user_id: userId
+  custom_root_fields: {}
 select_permissions:
 - permission:
     columns:

@@ -5,7 +5,8 @@ import 'package:mockito/mockito.dart';
 
 import 'package:nhost_sdk/nhost_sdk.dart';
 import 'package:owly/src/features/task_management/data/remote_category_repository.dart';
-import 'package:owly/src/features/task_management/domain/task_category.dart';
+import 'package:owly/src/features/task_management/domain/todo_category.dart';
+import 'package:owly/src/features/task_management/domain/todo_task.dart';
 import 'category_service_test.mocks.dart';
 
 const testEmail = 'user-1@nhost.io';
@@ -30,21 +31,9 @@ void main() async {
 
   group('watchCategories -', () {
     final time = DateTime.now();
-    final jsonData = {
-      'categories': [
-        {
-          'id': 'id',
-          'name': 'name',
-          'userId': 'userId',
-          'color': null,
-          'updatedAt': null,
-          'createdAt': time.toIso8601String(),
-        }
-      ]
-    };
 
     final finalData = [
-      TaskCategory(
+      TodoCategory(
         id: 'id',
         name: 'name',
         userId: 'userId',
@@ -56,7 +45,7 @@ void main() async {
           .thenAnswer((_) => Stream.value(AsyncData(finalData)));
       expect(
         remoteCategoryRepository.watchCategories(),
-        emits(isA<AsyncData<List<TaskCategory>>>()),
+        emits(isA<AsyncData<List<TodoCategory>>>()),
       );
       verify(remoteCategoryRepository.watchCategories()).called(1);
       remoteCategoryRepository.watchCategories().listen((event) {
@@ -70,6 +59,51 @@ void main() async {
         expect(event, isA<AsyncError>());
       });
       verify(remoteCategoryRepository.watchCategories()).called(1);
+    });
+  });
+
+  group('watchTasksByCategoryId -', () {
+    final time = DateTime.now();
+    const categoryId = 'id';
+
+    final finalData = [
+      TodoTask(
+        id: 'taskId',
+        title: 'title',
+        userId: 'userId',
+        categoryId: categoryId,
+        createdAt: time,
+        dateTime: time.add(const Duration(days: 1)),
+      ),
+    ];
+    test('Success', () async {
+      when(remoteCategoryRepository.watchTasksByCategoryId(categoryId))
+          .thenAnswer((_) => Stream.value(AsyncData(finalData)));
+      expect(
+        remoteCategoryRepository.watchTasksByCategoryId(categoryId),
+        emits(isA<AsyncData<List<TodoTask>>>()),
+      );
+      verify(remoteCategoryRepository.watchTasksByCategoryId(categoryId))
+          .called(1);
+
+      remoteCategoryRepository.watchTasksByCategoryId(categoryId).listen(
+        (event) {
+          expect(event.value, contains(finalData.first));
+        },
+      );
+    });
+    test('Failure', () async {
+      when(remoteCategoryRepository.watchTasksByCategoryId(categoryId))
+          .thenAnswer((_) => Stream.value(AsyncError(Exception())));
+
+      remoteCategoryRepository.watchTasksByCategoryId(categoryId).listen(
+        (event) {
+          expect(event, isA<AsyncError>());
+        },
+      );
+
+      verify(remoteCategoryRepository.watchTasksByCategoryId(categoryId))
+          .called(1);
     });
   });
 }

@@ -1,0 +1,80 @@
+table:
+  name: tasks
+  schema: public
+configuration:
+  custom_column_names:
+    category_id: categoryId
+    completed_at: completedAt
+    created_at: createdAt
+    date_time: dateTime
+    parent_id: parentId
+    updated_at: updatedAt
+    user_id: userId
+  custom_root_fields: {}
+array_relationships:
+- name: sub_tasks
+  using:
+    foreign_key_constraint_on:
+      column: parent_id
+      table:
+        name: tasks
+        schema: public
+insert_permissions:
+- permission:
+    backend_only: false
+    check:
+      user_id:
+        _eq: X-Hasura-User-Id
+    columns:
+    - category_id
+    - date_time
+    - note
+    - parent_id
+    - title
+    set:
+      user_id: x-hasura-User-Id
+  role: me
+select_permissions:
+- permission:
+    columns:
+    - category_id
+    - completed
+    - completed_at
+    - created_at
+    - date_time
+    - id
+    - note
+    - parent_id
+    - title
+    - updated_at
+    - user_id
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+    limit: 100
+  role: me
+update_permissions:
+- permission:
+    check: null
+    columns:
+    - category_id
+    - completed
+    - date_time
+    - note
+    - parent_id
+    - title
+    filter:
+      _and:
+      - user_id:
+          _eq: X-Hasura-User-Id
+      - completed:
+          _eq: false
+    set:
+      updated_at: now()
+  role: me
+delete_permissions:
+- permission:
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+  role: me

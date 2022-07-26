@@ -1,30 +1,30 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../common/models/converters.dart';
 
-part 'task_category.freezed.dart';
-part 'task_category.g.dart';
+part 'todo_category.freezed.dart';
+part 'todo_category.g.dart';
 
 @freezed
 @JsonSerializable(converters: [ColorConverter()], createFactory: false)
-class TaskCategory with _$TaskCategory {
-  factory TaskCategory({
+class TodoCategory with _$TodoCategory {
+  factory TodoCategory({
     required String id,
     required String name,
     required String userId,
     @ColorConverter() Color? color,
     required DateTime createdAt,
     DateTime? updatedAt,
-  }) = _TaskCategory;
+  }) = _TodoCategory;
 
-  TaskCategory._();
-
-  @override
-  factory TaskCategory.fromJson(Map<String, dynamic> json) =>
-      _$TaskCategoryFromJson(json);
+  TodoCategory._();
 
   @override
-  Map<String, dynamic> toJson() => _$TaskCategoryToJson(this);
+  factory TodoCategory.fromJson(Map<String, dynamic> json) =>
+      _$TodoCategoryFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$TodoCategoryToJson(this);
 }

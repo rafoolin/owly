@@ -14,6 +14,7 @@ import '../../features/home/home_view.dart';
 import '../../features/profile/presentation/edit_profile_view.dart';
 import '../../features/profile/presentation/profile_view.dart';
 import '../../features/task_management/presentation/category_view.dart';
+import '../../features/task_management/presentation/task_view.dart';
 import 'router_notifier.dart';
 
 /// A provider for router notifier
@@ -79,6 +80,15 @@ final routerProvider = Provider<GoRouter>(
           path: CategoryView.path,
           builder: (BuildContext context, GoRouterState state) =>
               const CategoryView(),
+          routes: [
+            /// Tasks view
+            GoRoute(
+              path: TasksView.path,
+              builder: (BuildContext context, GoRouterState state) => TasksView(
+                categoryId: state.params['id']!,
+              ),
+            ),
+          ],
         ),
 
         /// In progress view

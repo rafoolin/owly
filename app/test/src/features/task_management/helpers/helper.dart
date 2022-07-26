@@ -50,5 +50,3 @@ class MockQueryResult extends Mock implements QueryResult {}
 class _FakeWatchQueryOptions extends Fake implements WatchQueryOptions {}
 
 class MockObservableQuery extends Mock implements ObservableQuery {}
-
-class _FakeMutationOptions extends Fake implements MutationOptions {}
