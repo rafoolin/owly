@@ -3,4 +3,4 @@ nhost purge
 nhost down
 rm -r .nhost
 # run the server
-nhost dev --debug
+nhost up --debug

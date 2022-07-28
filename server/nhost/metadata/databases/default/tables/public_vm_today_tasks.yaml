@@ -1,0 +1,23 @@
+table:
+  name: vm_today_tasks
+  schema: public
+select_permissions:
+- permission:
+    columns:
+    - category_color
+    - completed
+    - index_value
+    - note
+    - title
+    - completed_at
+    - created_at
+    - due_datetime
+    - updated_at
+    - category_id
+    - id
+    - user_id
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+    limit: 100
+  role: me

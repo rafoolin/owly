@@ -1,0 +1,6 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- CREATE OR REPLACE VIEW "public"."vm_today_tasks" AS
+--  SELECT *
+--    FROM tasks
+--   WHERE (date(tasks.due_datetime) = CURRENT_DATE);
