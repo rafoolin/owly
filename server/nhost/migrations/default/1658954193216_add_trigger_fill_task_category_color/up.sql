@@ -1,6 +1,6 @@
-CREATE OR REPLACE FUNCTION fill_task_category_color ()
+CREATE OR REPLACE FUNCTION fill_tasks_category_color ()
     RETURNS TRIGGER
-    AS $trigger_fill_task_category_color$
+    AS $fill_tasks_category_color$
 DECLARE
     categoryColor bigint;
 BEGIN
@@ -17,11 +17,11 @@ BEGIN
         RETURN NEW;
     END IF;
 END;
-$trigger_fill_task_category_color$
+$fill_tasks_category_color$
 LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS before_insert_fill_task_category_color ON "public"."tasks";
-CREATE TRIGGER before_insert_fill_task_category_color
+DROP TRIGGER IF EXISTS before_insert_fill_tasks_category_color ON "public"."tasks";
+CREATE TRIGGER before_insert_fill_tasks_category_color
     BEFORE INSERT ON "public"."tasks"
     FOR EACH ROW
-    EXECUTE FUNCTION fill_task_category_color ();
+    EXECUTE FUNCTION fill_tasks_category_color ();

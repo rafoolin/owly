@@ -1,3 +1,69 @@
 table:
   name: sub_tasks
   schema: public
+configuration:
+  custom_column_names:
+    created_at: createdAt
+    due_at: dueAt
+    index_value: indexvalue
+    task_id: taskId
+    updated_at: updatedAt
+    user_id: userId
+  custom_root_fields: {}
+insert_permissions:
+- permission:
+    backend_only: false
+    check:
+      user_id:
+        _eq: X-Hasura-User-Id
+    columns:
+    - due_at
+    - index_value
+    - note
+    - task_id
+    - title
+    set:
+      user_id: x-hasura-User-Id
+  role: me
+select_permissions:
+- permission:
+    columns:
+    - completed
+    - index_value
+    - note
+    - title
+    - created_at
+    - updated_at
+    - due_at
+    - id
+    - task_id
+    - user_id
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+    limit: 100
+  role: me
+update_permissions:
+- permission:
+    check: null
+    columns:
+    - completed
+    - due_at
+    - index_value
+    - note
+    - title
+    filter:
+      _and:
+      - user_id:
+          _eq: X-Hasura-User-Id
+      - completed:
+          _eq: false
+    set:
+      updated_at: now()
+  role: me
+delete_permissions:
+- permission:
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+  role: me

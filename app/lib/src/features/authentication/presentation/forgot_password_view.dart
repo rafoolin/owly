@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/widgets/app_logo.dart';
 import '../../../common/widgets/app_padding.dart';
 import '../../../common/widgets/buttons.dart';
-import '../../home/home_view.dart';
+import '../../home/presentation/home_view.dart';
 import 'auth_providers.dart';
 import 'sign_in_view.dart';
 import 'widgets/email_text_field.dart';

@@ -38,6 +38,14 @@ class AppPadding extends StatelessWidget {
   /// Default value is multiplied by [flex].
   factory AppPadding.bottom({int flex = 1}) => AppPadding(height: 30.0 * flex);
 
+  static const topPadding = EdgeInsets.only(top: 10.0);
+  static const bottomPadding = EdgeInsets.only(bottom: 10.0);
+  static const leftPadding = EdgeInsets.only(left: 10.0);
+  static const rightPadding = EdgeInsets.only(left: 10.0);
+  static const verticalPadding = EdgeInsets.symmetric(vertical: 10.0);
+  static const horizontalPadding = EdgeInsets.symmetric(horizontal: 10.0);
+  static const padding = EdgeInsets.all(10.0);
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(height: height, width: width);

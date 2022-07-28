@@ -9,3 +9,20 @@ class ColorConverter extends JsonConverter<Color, int> {
   @override
   toJson(Color object) => object.value;
 }
+
+class TimeZConverter extends JsonConverter<TimeOfDay, String> {
+  const TimeZConverter();
+
+  @override
+  TimeOfDay fromJson(String json) {
+    final parts = json.split(':');
+    final hour = int.parse(parts.first);
+    final minute = int.parse(parts[1]);
+    return TimeOfDay(hour: hour, minute: minute);
+  }
+
+  @override
+  String toJson(TimeOfDay object) {
+    return object.toString();
+  }
+}
