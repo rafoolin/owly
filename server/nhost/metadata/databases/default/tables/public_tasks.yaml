@@ -3,7 +3,7 @@ table:
   schema: public
 configuration:
   custom_column_names:
-    category_color: categoryValue
+    category_color: categoryColor
     category_id: categoryId
     completed_at: completedAt
     created_at: createdAt

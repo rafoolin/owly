@@ -53,11 +53,8 @@ update_permissions:
     - note
     - title
     filter:
-      _and:
-      - user_id:
-          _eq: X-Hasura-User-Id
-      - completed:
-          _eq: false
+      user_id:
+        _eq: X-Hasura-User-Id
     set:
       updated_at: now()
   role: me
