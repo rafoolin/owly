@@ -1,13 +1,6 @@
 /*  
  This trigger will update the [completed] on [tasks] table based on the
  [sub_tasks]'s [completed].
- User can also manually change it.
- 
- User can use a button to mark all the sub-tasks as done, in this case we ignore
- the value of the [completed] from [sub_tasks].
- But if user didn't assign a value manually, it wil be based on [completed] from
- [sub_tasks].
- 
  This value will be [true] if and only if all [sub_tasks]'s [completed] are true.
  */
 CREATE OR REPLACE FUNCTION public.tr_fn_sub_tasks_au ()

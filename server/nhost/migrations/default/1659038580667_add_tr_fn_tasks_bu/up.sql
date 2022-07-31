@@ -11,8 +11,8 @@ BEGIN
         ELSE
             NULL
         END;
-        RETURN NEW;
     END IF;
+    RETURN NEW;
 END;
 $tr_fn_tasks_bu$
 LANGUAGE plpgsql;
