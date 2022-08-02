@@ -40,4 +40,6 @@ class TodoTask with _$TodoTask {
   int get todo => subTasks.length - done;
 
   String get todoOverAllStr => '$done/${subTasks.length}';
+
+  bool get oneSteppedTask => subTasks.isEmpty;
 }

@@ -8,8 +8,8 @@ class RemoteTodayRepository {
   RemoteTodayRepository(this._qlClient);
 
   Stream<AsyncValue<List<TodoTask>>> watchTodayTasks() {
-    const query = '''query {
-      vm_today_tasks {
+    const query = '''subscription {
+      vm_today_tasks(order_by: {dueDatetime: asc}) {
         __typename
         id
         userId
@@ -38,12 +38,12 @@ class RemoteTodayRepository {
     }''';
 
     return _qlClient
-        .watchQuery(WatchQueryOptions(
-          fetchResults: true,
-          document: gql(query),
-          fetchPolicy: FetchPolicy.cacheAndNetwork,
-        ))
-        .stream
+        .subscribe(
+      SubscriptionOptions(
+        document: gql(query),
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
+      ),
+    )
         .map((result) {
       if (result.isLoading) {
         return const AsyncLoading();
@@ -57,7 +57,16 @@ class RemoteTodayRepository {
         final tasks = result.data!['vm_today_tasks'] as List;
         return AsyncData(
           tasks.map((json) => TodoTask.fromJson(json)).toList()
-            ..sort(((a, b) => a.dueDatetime.compareTo(b.dueDatetime))),
+            ..sort(
+              ((a, b) {
+                if (a.completed == b.completed) {
+                  return 0;
+                } else if (a.completed) {
+                  return 1;
+                }
+                return -1;
+              }),
+            ),
         );
       }
       return const AsyncData([]);

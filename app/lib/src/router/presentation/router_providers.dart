@@ -14,6 +14,8 @@ import '../../features/home/presentation/home_view.dart';
 import '../../features/profile/presentation/edit_profile_view.dart';
 import '../../features/profile/presentation/profile_view.dart';
 import '../../features/task_management/presentation/category_view.dart';
+import '../../features/task_management/presentation/category_tasks_view.dart';
+import '../../features/task_management/presentation/edit_task_view.dart';
 import '../../features/task_management/presentation/task_view.dart';
 import 'router_notifier.dart';
 
@@ -60,6 +62,21 @@ final routerProvider = Provider<GoRouter>(
               const HomeView(),
         ),
 
+        /// Task view
+        GoRoute(
+          path: TaskView.path,
+          builder: (BuildContext context, GoRouterState state) =>
+              TaskView(taskId: state.params['id']!),
+          routes: [
+            /// Edit Task view
+            GoRoute(
+              path: EditTaskView.path,
+              builder: (BuildContext context, GoRouterState state) =>
+                  EditTaskView(taskId: state.params['id']!),
+            ),
+          ],
+        ),
+
         ///  Profile View
         GoRoute(
           path: ProfileView.path,
@@ -81,10 +98,11 @@ final routerProvider = Provider<GoRouter>(
           builder: (BuildContext context, GoRouterState state) =>
               const CategoryView(),
           routes: [
-            /// Tasks view
+            /// Category Tasks view
             GoRoute(
-              path: TasksView.path,
-              builder: (BuildContext context, GoRouterState state) => TasksView(
+              path: CategoryTasksView.path,
+              builder: (BuildContext context, GoRouterState state) =>
+                  CategoryTasksView(
                 categoryId: state.params['id']!,
               ),
             ),

@@ -26,6 +26,7 @@ Map<String, dynamic> _$TodoTaskToJson(TodoTask instance) => <String, dynamic>{
       'done': instance.done,
       'todo': instance.todo,
       'todoOverAllStr': instance.todoOverAllStr,
+      'oneSteppedTask': instance.oneSteppedTask,
     };
 
 Json? _$JsonConverterToJson<Json, Value>(
