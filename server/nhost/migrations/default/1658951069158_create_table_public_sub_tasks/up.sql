@@ -5,6 +5,7 @@ CREATE TABLE "public"."sub_tasks" (
   "task_id" uuid NOT NULL,
   "due_at" time NOT NULL DEFAULT now(),
   "completed" boolean NOT NULL DEFAULT false,
+  "completed_at" timestamptz,
   "created_at" timestamptz NOT NULL DEFAULT now(),
   "updated_at" timestamptz,
   "note" text,
