@@ -41,6 +41,18 @@ MockQueryResult generateMockWatchQuery(MockGraphQLClient graphQLClient) {
   return result;
 }
 
+MockQueryResult generateMockMutation(MockGraphQLClient graphQLClient) {
+  registerFallbackValue(_FakeMutationOptions());
+
+  final result = MockQueryResult();
+  when(() => graphQLClient.mutate(any())).thenAnswer((_) async => result);
+
+  final queryManager = graphQLClient.queryManager;
+  when(() => queryManager.mutate(any())).thenAnswer((_) async => result);
+
+  return result;
+}
+
 class MockGraphQLClient extends Mock implements GraphQLClient {}
 
 class MockQueryManager extends Mock implements QueryManager {}
@@ -50,3 +62,5 @@ class MockQueryResult extends Mock implements QueryResult {}
 class _FakeWatchQueryOptions extends Fake implements WatchQueryOptions {}
 
 class MockObservableQuery extends Mock implements ObservableQuery {}
+
+class _FakeMutationOptions extends Fake implements MutationOptions {}
