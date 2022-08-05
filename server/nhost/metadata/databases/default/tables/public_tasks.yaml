@@ -3,21 +3,24 @@ table:
   schema: public
 configuration:
   custom_column_names:
+    category_color: categoryColor
     category_id: categoryId
     completed_at: completedAt
     created_at: createdAt
-    date_time: dateTime
-    parent_id: parentId
+    due_datetime: dueDatetime
+    index_value: indexValue
     updated_at: updatedAt
     user_id: userId
   custom_root_fields: {}
 array_relationships:
 - name: sub_tasks
   using:
-    foreign_key_constraint_on:
-      column: parent_id
-      table:
-        name: tasks
+    manual_configuration:
+      column_mapping:
+        id: task_id
+      insertion_order: null
+      remote_table:
+        name: sub_tasks
         schema: public
 insert_permissions:
 - permission:
@@ -27,9 +30,9 @@ insert_permissions:
         _eq: X-Hasura-User-Id
     columns:
     - category_id
-    - date_time
+    - due_datetime
+    - index_value
     - note
-    - parent_id
     - title
     set:
       user_id: x-hasura-User-Id
@@ -37,17 +40,18 @@ insert_permissions:
 select_permissions:
 - permission:
     columns:
-    - category_id
     - completed
+    - index_value
+    - note
+    - title
     - completed_at
     - created_at
-    - date_time
-    - id
-    - note
-    - parent_id
-    - title
+    - due_datetime
     - updated_at
+    - category_id
+    - id
     - user_id
+    - category_color
     filter:
       user_id:
         _eq: X-Hasura-User-Id
@@ -59,16 +63,14 @@ update_permissions:
     columns:
     - category_id
     - completed
-    - date_time
+    - completed_at
+    - due_datetime
+    - index_value
     - note
-    - parent_id
     - title
     filter:
-      _and:
-      - user_id:
-          _eq: X-Hasura-User-Id
-      - completed:
-          _eq: false
+      user_id:
+        _eq: X-Hasura-User-Id
     set:
       updated_at: now()
   role: me

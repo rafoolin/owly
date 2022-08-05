@@ -25,13 +25,16 @@ mixin _$TodoTask {
   String get userId => throw _privateConstructorUsedError;
   String get categoryId => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  DateTime get dateTime => throw _privateConstructorUsedError;
+  DateTime get dueDatetime => throw _privateConstructorUsedError;
   bool get completed => throw _privateConstructorUsedError;
   String? get note => throw _privateConstructorUsedError;
-  String? get parentId => throw _privateConstructorUsedError;
+  int? get indexValue => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
+  @ColorConverter()
+  Color? get categoryColor => throw _privateConstructorUsedError;
   DateTime? get completedAt => throw _privateConstructorUsedError;
-  List<TodoTask> get subTasks => throw _privateConstructorUsedError;
+  @JsonKey(name: 'sub_tasks')
+  List<TodoSubTask> get subTasks => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,13 +52,14 @@ abstract class $TodoTaskCopyWith<$Res> {
       String userId,
       String categoryId,
       DateTime createdAt,
-      DateTime dateTime,
+      DateTime dueDatetime,
       bool completed,
       String? note,
-      String? parentId,
+      int? indexValue,
       DateTime? updatedAt,
+      @ColorConverter() Color? categoryColor,
       DateTime? completedAt,
-      List<TodoTask> subTasks});
+      @JsonKey(name: 'sub_tasks') List<TodoSubTask> subTasks});
 }
 
 /// @nodoc
@@ -73,11 +77,12 @@ class _$TodoTaskCopyWithImpl<$Res> implements $TodoTaskCopyWith<$Res> {
     Object? userId = freezed,
     Object? categoryId = freezed,
     Object? createdAt = freezed,
-    Object? dateTime = freezed,
+    Object? dueDatetime = freezed,
     Object? completed = freezed,
     Object? note = freezed,
-    Object? parentId = freezed,
+    Object? indexValue = freezed,
     Object? updatedAt = freezed,
+    Object? categoryColor = freezed,
     Object? completedAt = freezed,
     Object? subTasks = freezed,
   }) {
@@ -102,9 +107,9 @@ class _$TodoTaskCopyWithImpl<$Res> implements $TodoTaskCopyWith<$Res> {
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      dateTime: dateTime == freezed
-          ? _value.dateTime
-          : dateTime // ignore: cast_nullable_to_non_nullable
+      dueDatetime: dueDatetime == freezed
+          ? _value.dueDatetime
+          : dueDatetime // ignore: cast_nullable_to_non_nullable
               as DateTime,
       completed: completed == freezed
           ? _value.completed
@@ -114,14 +119,18 @@ class _$TodoTaskCopyWithImpl<$Res> implements $TodoTaskCopyWith<$Res> {
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
               as String?,
-      parentId: parentId == freezed
-          ? _value.parentId
-          : parentId // ignore: cast_nullable_to_non_nullable
-              as String?,
+      indexValue: indexValue == freezed
+          ? _value.indexValue
+          : indexValue // ignore: cast_nullable_to_non_nullable
+              as int?,
       updatedAt: updatedAt == freezed
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      categoryColor: categoryColor == freezed
+          ? _value.categoryColor
+          : categoryColor // ignore: cast_nullable_to_non_nullable
+              as Color?,
       completedAt: completedAt == freezed
           ? _value.completedAt
           : completedAt // ignore: cast_nullable_to_non_nullable
@@ -129,7 +138,7 @@ class _$TodoTaskCopyWithImpl<$Res> implements $TodoTaskCopyWith<$Res> {
       subTasks: subTasks == freezed
           ? _value.subTasks
           : subTasks // ignore: cast_nullable_to_non_nullable
-              as List<TodoTask>,
+              as List<TodoSubTask>,
     ));
   }
 }
@@ -146,13 +155,14 @@ abstract class _$$_TodoTaskCopyWith<$Res> implements $TodoTaskCopyWith<$Res> {
       String userId,
       String categoryId,
       DateTime createdAt,
-      DateTime dateTime,
+      DateTime dueDatetime,
       bool completed,
       String? note,
-      String? parentId,
+      int? indexValue,
       DateTime? updatedAt,
+      @ColorConverter() Color? categoryColor,
       DateTime? completedAt,
-      List<TodoTask> subTasks});
+      @JsonKey(name: 'sub_tasks') List<TodoSubTask> subTasks});
 }
 
 /// @nodoc
@@ -172,11 +182,12 @@ class __$$_TodoTaskCopyWithImpl<$Res> extends _$TodoTaskCopyWithImpl<$Res>
     Object? userId = freezed,
     Object? categoryId = freezed,
     Object? createdAt = freezed,
-    Object? dateTime = freezed,
+    Object? dueDatetime = freezed,
     Object? completed = freezed,
     Object? note = freezed,
-    Object? parentId = freezed,
+    Object? indexValue = freezed,
     Object? updatedAt = freezed,
+    Object? categoryColor = freezed,
     Object? completedAt = freezed,
     Object? subTasks = freezed,
   }) {
@@ -201,9 +212,9 @@ class __$$_TodoTaskCopyWithImpl<$Res> extends _$TodoTaskCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      dateTime: dateTime == freezed
-          ? _value.dateTime
-          : dateTime // ignore: cast_nullable_to_non_nullable
+      dueDatetime: dueDatetime == freezed
+          ? _value.dueDatetime
+          : dueDatetime // ignore: cast_nullable_to_non_nullable
               as DateTime,
       completed: completed == freezed
           ? _value.completed
@@ -213,14 +224,18 @@ class __$$_TodoTaskCopyWithImpl<$Res> extends _$TodoTaskCopyWithImpl<$Res>
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
               as String?,
-      parentId: parentId == freezed
-          ? _value.parentId
-          : parentId // ignore: cast_nullable_to_non_nullable
-              as String?,
+      indexValue: indexValue == freezed
+          ? _value.indexValue
+          : indexValue // ignore: cast_nullable_to_non_nullable
+              as int?,
       updatedAt: updatedAt == freezed
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      categoryColor: categoryColor == freezed
+          ? _value.categoryColor
+          : categoryColor // ignore: cast_nullable_to_non_nullable
+              as Color?,
       completedAt: completedAt == freezed
           ? _value.completedAt
           : completedAt // ignore: cast_nullable_to_non_nullable
@@ -228,7 +243,7 @@ class __$$_TodoTaskCopyWithImpl<$Res> extends _$TodoTaskCopyWithImpl<$Res>
       subTasks: subTasks == freezed
           ? _value._subTasks
           : subTasks // ignore: cast_nullable_to_non_nullable
-              as List<TodoTask>,
+              as List<TodoSubTask>,
     ));
   }
 }
@@ -242,13 +257,14 @@ class _$_TodoTask extends _TodoTask with DiagnosticableTreeMixin {
       required this.userId,
       required this.categoryId,
       required this.createdAt,
-      required this.dateTime,
+      required this.dueDatetime,
       this.completed = false,
       this.note,
-      this.parentId,
+      this.indexValue,
       this.updatedAt,
+      @ColorConverter() this.categoryColor,
       this.completedAt,
-      final List<TodoTask> subTasks = const []})
+      @JsonKey(name: 'sub_tasks') final List<TodoSubTask> subTasks = const []})
       : _subTasks = subTasks,
         super._();
 
@@ -266,29 +282,32 @@ class _$_TodoTask extends _TodoTask with DiagnosticableTreeMixin {
   @override
   final DateTime createdAt;
   @override
-  final DateTime dateTime;
+  final DateTime dueDatetime;
   @override
   @JsonKey()
   final bool completed;
   @override
   final String? note;
   @override
-  final String? parentId;
+  final int? indexValue;
   @override
   final DateTime? updatedAt;
   @override
-  final DateTime? completedAt;
-  final List<TodoTask> _subTasks;
+  @ColorConverter()
+  final Color? categoryColor;
   @override
-  @JsonKey()
-  List<TodoTask> get subTasks {
+  final DateTime? completedAt;
+  final List<TodoSubTask> _subTasks;
+  @override
+  @JsonKey(name: 'sub_tasks')
+  List<TodoSubTask> get subTasks {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_subTasks);
   }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TodoTask(id: $id, title: $title, userId: $userId, categoryId: $categoryId, createdAt: $createdAt, dateTime: $dateTime, completed: $completed, note: $note, parentId: $parentId, updatedAt: $updatedAt, completedAt: $completedAt, subTasks: $subTasks)';
+    return 'TodoTask(id: $id, title: $title, userId: $userId, categoryId: $categoryId, createdAt: $createdAt, dueDatetime: $dueDatetime, completed: $completed, note: $note, indexValue: $indexValue, updatedAt: $updatedAt, categoryColor: $categoryColor, completedAt: $completedAt, subTasks: $subTasks)';
   }
 
   @override
@@ -301,11 +320,12 @@ class _$_TodoTask extends _TodoTask with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('categoryId', categoryId))
       ..add(DiagnosticsProperty('createdAt', createdAt))
-      ..add(DiagnosticsProperty('dateTime', dateTime))
+      ..add(DiagnosticsProperty('dueDatetime', dueDatetime))
       ..add(DiagnosticsProperty('completed', completed))
       ..add(DiagnosticsProperty('note', note))
-      ..add(DiagnosticsProperty('parentId', parentId))
+      ..add(DiagnosticsProperty('indexValue', indexValue))
       ..add(DiagnosticsProperty('updatedAt', updatedAt))
+      ..add(DiagnosticsProperty('categoryColor', categoryColor))
       ..add(DiagnosticsProperty('completedAt', completedAt))
       ..add(DiagnosticsProperty('subTasks', subTasks));
   }
@@ -321,11 +341,15 @@ class _$_TodoTask extends _TodoTask with DiagnosticableTreeMixin {
             const DeepCollectionEquality()
                 .equals(other.categoryId, categoryId) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.dateTime, dateTime) &&
+            const DeepCollectionEquality()
+                .equals(other.dueDatetime, dueDatetime) &&
             const DeepCollectionEquality().equals(other.completed, completed) &&
             const DeepCollectionEquality().equals(other.note, note) &&
-            const DeepCollectionEquality().equals(other.parentId, parentId) &&
+            const DeepCollectionEquality()
+                .equals(other.indexValue, indexValue) &&
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.categoryColor, categoryColor) &&
             const DeepCollectionEquality()
                 .equals(other.completedAt, completedAt) &&
             const DeepCollectionEquality().equals(other._subTasks, _subTasks));
@@ -340,11 +364,12 @@ class _$_TodoTask extends _TodoTask with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(categoryId),
       const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(dateTime),
+      const DeepCollectionEquality().hash(dueDatetime),
       const DeepCollectionEquality().hash(completed),
       const DeepCollectionEquality().hash(note),
-      const DeepCollectionEquality().hash(parentId),
+      const DeepCollectionEquality().hash(indexValue),
       const DeepCollectionEquality().hash(updatedAt),
+      const DeepCollectionEquality().hash(categoryColor),
       const DeepCollectionEquality().hash(completedAt),
       const DeepCollectionEquality().hash(_subTasks));
 
@@ -363,18 +388,20 @@ class _$_TodoTask extends _TodoTask with DiagnosticableTreeMixin {
 
 abstract class _TodoTask extends TodoTask {
   factory _TodoTask(
-      {required final String id,
-      required final String title,
-      required final String userId,
-      required final String categoryId,
-      required final DateTime createdAt,
-      required final DateTime dateTime,
-      final bool completed,
-      final String? note,
-      final String? parentId,
-      final DateTime? updatedAt,
-      final DateTime? completedAt,
-      final List<TodoTask> subTasks}) = _$_TodoTask;
+          {required final String id,
+          required final String title,
+          required final String userId,
+          required final String categoryId,
+          required final DateTime createdAt,
+          required final DateTime dueDatetime,
+          final bool completed,
+          final String? note,
+          final int? indexValue,
+          final DateTime? updatedAt,
+          @ColorConverter() final Color? categoryColor,
+          final DateTime? completedAt,
+          @JsonKey(name: 'sub_tasks') final List<TodoSubTask> subTasks}) =
+      _$_TodoTask;
   _TodoTask._() : super._();
 
   factory _TodoTask.fromJson(Map<String, dynamic> json) = _$_TodoTask.fromJson;
@@ -390,19 +417,23 @@ abstract class _TodoTask extends TodoTask {
   @override
   DateTime get createdAt;
   @override
-  DateTime get dateTime;
+  DateTime get dueDatetime;
   @override
   bool get completed;
   @override
   String? get note;
   @override
-  String? get parentId;
+  int? get indexValue;
   @override
   DateTime? get updatedAt;
   @override
+  @ColorConverter()
+  Color? get categoryColor;
+  @override
   DateTime? get completedAt;
   @override
-  List<TodoTask> get subTasks;
+  @JsonKey(name: 'sub_tasks')
+  List<TodoSubTask> get subTasks;
   @override
   @JsonKey(ignore: true)
   _$$_TodoTaskCopyWith<_$_TodoTask> get copyWith =>
