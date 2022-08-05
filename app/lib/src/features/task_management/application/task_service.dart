@@ -9,6 +9,10 @@ class TaskService {
   TaskService(this._remoteTaskRepository);
 
   Stream<AsyncValue<TodoTask>> watchTask() {
+    return _remoteTaskRepository.watchTask();
+  }
+
+  Stream<AsyncValue<TodoTask>> subscribeTask() {
     return _remoteTaskRepository.subscribeTask();
   }
 
@@ -29,14 +33,16 @@ class TaskService {
     String? categoryId,
     DateTime? dueDatetime,
     String? note,
-    List<TodoSubTask>? subTasks,
+    List<TodoSubTask> addedSubTasks = const [],
+    List<TodoSubTask> removedSubTasks = const [],
   }) async {
     return _remoteTaskRepository.editTask(
       categoryId: categoryId,
       dueDatetime: dueDatetime,
       title: title,
       note: note,
-      subTasks: subTasks,
+      addedSubTasks: addedSubTasks,
+      removedSubTasks: removedSubTasks,
     );
   }
 }

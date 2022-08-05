@@ -53,13 +53,18 @@ class EditTaskStateNotifier extends StateNotifier<EditTask> {
     state = state.copyWith(note: note);
   }
 
-  void addSubtask(TodoSubTask subTask) {
-    state = state.copyWith(subTasks: [...(state.subTasks ?? []), subTask]);
+  void addSubtask(String title) {
+    state = state.copyWith(addedSubTasks: [
+      ...state.addedSubTasks,
+      TodoSubTask.fromTitle(title: title.trim(), taskId: state.initialTask!.id)
+    ]);
   }
 
   void removeSubtask(TodoSubTask subTask) {
-    state =
-        state.copyWith(subTasks: [...(state.subTasks ?? [])]..remove(subTask));
+    state = state.copyWith(
+      removedSubTasks: [...state.removedSubTasks, subTask],
+      addedSubTasks: [...state.addedSubTasks]..remove(subTask),
+    );
   }
 
   Future<void> editTask() async {
@@ -68,7 +73,8 @@ class EditTaskStateNotifier extends StateNotifier<EditTask> {
       categoryId: state.categoryId,
       dueDatetime: state.dueDatetime,
       note: state.note,
-      // subTasks: state.subTasks,
+      addedSubTasks: state.addedSubTasks,
+      removedSubTasks: state.removedSubTasks,
     );
   }
 

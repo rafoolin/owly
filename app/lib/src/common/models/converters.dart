@@ -23,6 +23,6 @@ class TimeZConverter extends JsonConverter<TimeOfDay, String> {
 
   @override
   String toJson(TimeOfDay object) {
-    return object.toString();
+    return '${object.hour}:${object.minute}';
   }
 }

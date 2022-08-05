@@ -14,7 +14,8 @@ class EditTask with _$EditTask {
     String? categoryId,
     DateTime? dueDatetime,
     String? note,
-    List<TodoSubTask>? subTasks,
+    @Default([]) List<TodoSubTask> addedSubTasks,
+    @Default([]) List<TodoSubTask> removedSubTasks,
     @Default([]) List<TodoCategory>? categories,
   }) = _EditTask;
 
@@ -26,8 +27,13 @@ class EditTask with _$EditTask {
           categoryId: categoryId ?? initialTask!.categoryId,
           dueDatetime: dueDatetime ?? initialTask!.dueDatetime,
           note: note ?? initialTask!.note,
-          subTasks: [...(subTasks ?? []), ...initialTask?.subTasks ?? []]
-            ..toSet().toList(),
+          subTasks: [
+            for (TodoSubTask subTask in [
+              ...addedSubTasks,
+              ...initialTask?.subTasks ?? const []
+            ])
+              if (!removedSubTasks.contains(subTask)) subTask
+          ],
           title: title ?? initialTask!.title,
         );
 
@@ -35,6 +41,6 @@ class EditTask with _$EditTask {
       (title != null && title != initialTask?.title) ||
       (dueDatetime != null && dueDatetime != initialTask?.dueDatetime) ||
       (note != null && note != initialTask?.note) ||
-      (subTasks != null && subTasks != initialTask?.subTasks) ||
+      (addedSubTasks.isNotEmpty || removedSubTasks.isNotEmpty) ||
       (categoryId != null && categoryId != initialTask?.categoryId);
 }

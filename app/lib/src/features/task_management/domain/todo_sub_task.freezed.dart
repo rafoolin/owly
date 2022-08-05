@@ -22,15 +22,15 @@ TodoSubTask _$TodoSubTaskFromJson(Map<String, dynamic> json) {
 mixin _$TodoSubTask {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
   String get taskId => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
   @TimeZConverter()
-  TimeOfDay get dueAt => throw _privateConstructorUsedError;
-  bool get completed => throw _privateConstructorUsedError;
+  TimeOfDay? get dueAt => throw _privateConstructorUsedError;
   String? get note => throw _privateConstructorUsedError;
   int? get indexValue => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get completedAt => throw _privateConstructorUsedError;
+  bool get completed => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,14 +46,14 @@ abstract class $TodoSubTaskCopyWith<$Res> {
   $Res call(
       {String id,
       String title,
-      String userId,
       String taskId,
-      DateTime createdAt,
-      @TimeZConverter() TimeOfDay dueAt,
-      bool completed,
+      DateTime? createdAt,
+      @TimeZConverter() TimeOfDay? dueAt,
       String? note,
       int? indexValue,
-      DateTime? updatedAt});
+      DateTime? updatedAt,
+      DateTime? completedAt,
+      bool completed});
 }
 
 /// @nodoc
@@ -68,14 +68,14 @@ class _$TodoSubTaskCopyWithImpl<$Res> implements $TodoSubTaskCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? title = freezed,
-    Object? userId = freezed,
     Object? taskId = freezed,
     Object? createdAt = freezed,
     Object? dueAt = freezed,
-    Object? completed = freezed,
     Object? note = freezed,
     Object? indexValue = freezed,
     Object? updatedAt = freezed,
+    Object? completedAt = freezed,
+    Object? completed = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -86,10 +86,6 @@ class _$TodoSubTaskCopyWithImpl<$Res> implements $TodoSubTaskCopyWith<$Res> {
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
       taskId: taskId == freezed
           ? _value.taskId
           : taskId // ignore: cast_nullable_to_non_nullable
@@ -97,15 +93,11 @@ class _$TodoSubTaskCopyWithImpl<$Res> implements $TodoSubTaskCopyWith<$Res> {
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       dueAt: dueAt == freezed
           ? _value.dueAt
           : dueAt // ignore: cast_nullable_to_non_nullable
-              as TimeOfDay,
-      completed: completed == freezed
-          ? _value.completed
-          : completed // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as TimeOfDay?,
       note: note == freezed
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
@@ -118,6 +110,14 @@ class _$TodoSubTaskCopyWithImpl<$Res> implements $TodoSubTaskCopyWith<$Res> {
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      completedAt: completedAt == freezed
+          ? _value.completedAt
+          : completedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      completed: completed == freezed
+          ? _value.completed
+          : completed // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -132,14 +132,14 @@ abstract class _$$_TodoSubTaskCopyWith<$Res>
   $Res call(
       {String id,
       String title,
-      String userId,
       String taskId,
-      DateTime createdAt,
-      @TimeZConverter() TimeOfDay dueAt,
-      bool completed,
+      DateTime? createdAt,
+      @TimeZConverter() TimeOfDay? dueAt,
       String? note,
       int? indexValue,
-      DateTime? updatedAt});
+      DateTime? updatedAt,
+      DateTime? completedAt,
+      bool completed});
 }
 
 /// @nodoc
@@ -156,14 +156,14 @@ class __$$_TodoSubTaskCopyWithImpl<$Res> extends _$TodoSubTaskCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? title = freezed,
-    Object? userId = freezed,
     Object? taskId = freezed,
     Object? createdAt = freezed,
     Object? dueAt = freezed,
-    Object? completed = freezed,
     Object? note = freezed,
     Object? indexValue = freezed,
     Object? updatedAt = freezed,
+    Object? completedAt = freezed,
+    Object? completed = freezed,
   }) {
     return _then(_$_TodoSubTask(
       id: id == freezed
@@ -174,10 +174,6 @@ class __$$_TodoSubTaskCopyWithImpl<$Res> extends _$TodoSubTaskCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
       taskId: taskId == freezed
           ? _value.taskId
           : taskId // ignore: cast_nullable_to_non_nullable
@@ -185,15 +181,11 @@ class __$$_TodoSubTaskCopyWithImpl<$Res> extends _$TodoSubTaskCopyWithImpl<$Res>
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       dueAt: dueAt == freezed
           ? _value.dueAt
           : dueAt // ignore: cast_nullable_to_non_nullable
-              as TimeOfDay,
-      completed: completed == freezed
-          ? _value.completed
-          : completed // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as TimeOfDay?,
       note: note == freezed
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
@@ -206,6 +198,14 @@ class __$$_TodoSubTaskCopyWithImpl<$Res> extends _$TodoSubTaskCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      completedAt: completedAt == freezed
+          ? _value.completedAt
+          : completedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      completed: completed == freezed
+          ? _value.completed
+          : completed // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -216,14 +216,14 @@ class _$_TodoSubTask extends _TodoSubTask with DiagnosticableTreeMixin {
   _$_TodoSubTask(
       {required this.id,
       required this.title,
-      required this.userId,
       required this.taskId,
-      required this.createdAt,
-      @TimeZConverter() required this.dueAt,
-      this.completed = false,
+      this.createdAt,
+      @TimeZConverter() this.dueAt,
       this.note,
       this.indexValue,
-      this.updatedAt})
+      this.updatedAt,
+      this.completedAt,
+      this.completed = false})
       : super._();
 
   factory _$_TodoSubTask.fromJson(Map<String, dynamic> json) =>
@@ -234,27 +234,27 @@ class _$_TodoSubTask extends _TodoSubTask with DiagnosticableTreeMixin {
   @override
   final String title;
   @override
-  final String userId;
-  @override
   final String taskId;
   @override
-  final DateTime createdAt;
+  final DateTime? createdAt;
   @override
   @TimeZConverter()
-  final TimeOfDay dueAt;
-  @override
-  @JsonKey()
-  final bool completed;
+  final TimeOfDay? dueAt;
   @override
   final String? note;
   @override
   final int? indexValue;
   @override
   final DateTime? updatedAt;
+  @override
+  final DateTime? completedAt;
+  @override
+  @JsonKey()
+  final bool completed;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TodoSubTask(id: $id, title: $title, userId: $userId, taskId: $taskId, createdAt: $createdAt, dueAt: $dueAt, completed: $completed, note: $note, indexValue: $indexValue, updatedAt: $updatedAt)';
+    return 'TodoSubTask(id: $id, title: $title, taskId: $taskId, createdAt: $createdAt, dueAt: $dueAt, note: $note, indexValue: $indexValue, updatedAt: $updatedAt, completedAt: $completedAt, completed: $completed)';
   }
 
   @override
@@ -264,14 +264,14 @@ class _$_TodoSubTask extends _TodoSubTask with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('type', 'TodoSubTask'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
-      ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('taskId', taskId))
       ..add(DiagnosticsProperty('createdAt', createdAt))
       ..add(DiagnosticsProperty('dueAt', dueAt))
-      ..add(DiagnosticsProperty('completed', completed))
       ..add(DiagnosticsProperty('note', note))
       ..add(DiagnosticsProperty('indexValue', indexValue))
-      ..add(DiagnosticsProperty('updatedAt', updatedAt));
+      ..add(DiagnosticsProperty('updatedAt', updatedAt))
+      ..add(DiagnosticsProperty('completedAt', completedAt))
+      ..add(DiagnosticsProperty('completed', completed));
   }
 
   @override
@@ -281,15 +281,16 @@ class _$_TodoSubTask extends _TodoSubTask with DiagnosticableTreeMixin {
             other is _$_TodoSubTask &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.title, title) &&
-            const DeepCollectionEquality().equals(other.userId, userId) &&
             const DeepCollectionEquality().equals(other.taskId, taskId) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality().equals(other.dueAt, dueAt) &&
-            const DeepCollectionEquality().equals(other.completed, completed) &&
             const DeepCollectionEquality().equals(other.note, note) &&
             const DeepCollectionEquality()
                 .equals(other.indexValue, indexValue) &&
-            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.completedAt, completedAt) &&
+            const DeepCollectionEquality().equals(other.completed, completed));
   }
 
   @JsonKey(ignore: true)
@@ -298,14 +299,14 @@ class _$_TodoSubTask extends _TodoSubTask with DiagnosticableTreeMixin {
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(title),
-      const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(taskId),
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(dueAt),
-      const DeepCollectionEquality().hash(completed),
       const DeepCollectionEquality().hash(note),
       const DeepCollectionEquality().hash(indexValue),
-      const DeepCollectionEquality().hash(updatedAt));
+      const DeepCollectionEquality().hash(updatedAt),
+      const DeepCollectionEquality().hash(completedAt),
+      const DeepCollectionEquality().hash(completed));
 
   @JsonKey(ignore: true)
   @override
@@ -324,14 +325,14 @@ abstract class _TodoSubTask extends TodoSubTask {
   factory _TodoSubTask(
       {required final String id,
       required final String title,
-      required final String userId,
       required final String taskId,
-      required final DateTime createdAt,
-      @TimeZConverter() required final TimeOfDay dueAt,
-      final bool completed,
+      final DateTime? createdAt,
+      @TimeZConverter() final TimeOfDay? dueAt,
       final String? note,
       final int? indexValue,
-      final DateTime? updatedAt}) = _$_TodoSubTask;
+      final DateTime? updatedAt,
+      final DateTime? completedAt,
+      final bool completed}) = _$_TodoSubTask;
   _TodoSubTask._() : super._();
 
   factory _TodoSubTask.fromJson(Map<String, dynamic> json) =
@@ -342,22 +343,22 @@ abstract class _TodoSubTask extends TodoSubTask {
   @override
   String get title;
   @override
-  String get userId;
-  @override
   String get taskId;
   @override
-  DateTime get createdAt;
+  DateTime? get createdAt;
   @override
   @TimeZConverter()
-  TimeOfDay get dueAt;
-  @override
-  bool get completed;
+  TimeOfDay? get dueAt;
   @override
   String? get note;
   @override
   int? get indexValue;
   @override
   DateTime? get updatedAt;
+  @override
+  DateTime? get completedAt;
+  @override
+  bool get completed;
   @override
   @JsonKey(ignore: true)
   _$$_TodoSubTaskCopyWith<_$_TodoSubTask> get copyWith =>

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../common/models/converters.dart';
 
@@ -13,14 +14,14 @@ class TodoSubTask with _$TodoSubTask {
   factory TodoSubTask({
     required String id,
     required String title,
-    required String userId,
     required String taskId,
-    required DateTime createdAt,
-    @TimeZConverter() required TimeOfDay dueAt,
-    @Default(false) bool completed,
+    DateTime? createdAt,
+    @TimeZConverter() TimeOfDay? dueAt,
     String? note,
     int? indexValue,
     DateTime? updatedAt,
+    DateTime? completedAt,
+    @Default(false) bool completed,
   }) = _TodoSubTask;
 
   TodoSubTask._();
@@ -28,6 +29,17 @@ class TodoSubTask with _$TodoSubTask {
   @override
   factory TodoSubTask.fromJson(Map<String, dynamic> json) =>
       _$TodoSubTaskFromJson(json);
+
+  factory TodoSubTask.fromTitle({
+    required String title,
+    required String taskId,
+  }) =>
+      TodoSubTask(
+        id: const Uuid().v4(),
+        title: title,
+        taskId: taskId,
+        dueAt: TimeOfDay.now(),
+      );
 
   @override
   Map<String, dynamic> toJson() => _$TodoSubTaskToJson(this);

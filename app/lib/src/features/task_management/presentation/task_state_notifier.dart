@@ -9,29 +9,26 @@ import '../domain/todo_task.dart';
 class TaskStateNotifier extends StateNotifier<AsyncValue<TodoTask>> {
   final TaskService _taskService;
   TaskStateNotifier(this._taskService) : super(const AsyncLoading()) {
-    watchTask();
+    subscribeTask();
   }
 
   StreamSubscription<AsyncValue<TodoTask>>? _sub;
 
-  void watchTask() {
+  void subscribeTask() {
     _sub?.cancel();
-    _sub = _taskService.watchTask().listen((task) => state = task);
+    _sub = _taskService.subscribeTask().listen((task) => state = task);
   }
 
   Future<void> markTaskAsDone() async {
     await _taskService.markTaskAsDone(completed: !state.value!.completed);
-    watchTask();
   }
 
   Future<void> updateSubTaskStatus(String id, {bool completed = false}) async {
     await _taskService.updateSubTaskStatus(id, completed: completed);
-    watchTask();
   }
 
   Future<void> deleteTask() async {
     await _taskService.deleteTask();
-    watchTask();
   }
 
   Future<void> deleteTaskDialog(BuildContext context) async {

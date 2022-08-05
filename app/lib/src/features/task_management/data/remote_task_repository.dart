@@ -24,7 +24,7 @@ class RemoteTaskRepository {
         createdAt
         createdAt
         completedAt
-        sub_tasks (order_by: {dueAt: asc}){
+        sub_tasks (order_by: {title: asc}){
           __typename
           id
           title
@@ -76,7 +76,7 @@ class RemoteTaskRepository {
         createdAt
         createdAt
         completedAt
-        sub_tasks (order_by: {dueAt: asc}){
+        sub_tasks (order_by: {title: asc}){
           __typename
           id
           title
@@ -93,6 +93,7 @@ class RemoteTaskRepository {
 
     return _qlClient
         .watchQuery(WatchQueryOptions(
+          fetchResults: true,
           document: gql(query),
           variables: {'id': taskId},
           fetchPolicy: FetchPolicy.cacheAndNetwork,
@@ -167,23 +168,29 @@ class RemoteTaskRepository {
     required String? categoryId,
     required DateTime? dueDatetime,
     String? note,
-    List<TodoSubTask>? subTasks,
+    List<TodoSubTask> addedSubTasks = const [],
+    List<TodoSubTask> removedSubTasks = const [],
   }) async {
     const query = '''mutation (\$id: uuid!, \$set: tasks_set_input!, 
-      \$sub_tasks: [sub_tasks_insert_input!] = []) {
-    update_tasks_by_pk(pk_columns: {id: \$id}, _set: \$set) {
-      __typename
-      completed
-    }
-    insert_sub_tasks(objects: \$sub_tasks, 
-    on_conflict: {constraint: sub_tasks_pkey, update_columns: [title, 
-    completed, dueAt, note]}) {
-      affected_rows
-    }
-  }''';
+    \$added_sub_tasks: [sub_tasks_insert_input!] = [], \$removed_ids: [uuid!] = []) {
+  update_tasks_by_pk(pk_columns: {id: \$id}, _set: \$set) {
+    __typename
+    completed
+  }
+  delete_sub_tasks(where: {id: {_in: \$removed_ids}}) {
+    affected_rows
+  }
+  insert_sub_tasks(objects: \$added_sub_tasks, 
+  on_conflict: {constraint: sub_tasks_pkey, 
+  update_columns: [title, completed, dueAt, note]}) {
+    affected_rows
+  }
+}
+''';
 
     await _qlClient.mutate(MutationOptions(
       document: gql(query),
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
       variables: {
         'id': taskId,
         'set': {
@@ -192,10 +199,18 @@ class RemoteTaskRepository {
           if (note != null) 'note': note,
           if (title != null) 'title': title,
         },
-        if (subTasks != null)
-          'subTasks': subTasks.map((s) => s.toJson()).toList(),
+        if (addedSubTasks.isNotEmpty)
+          'added_sub_tasks': addedSubTasks
+              .map(
+                (s) => {
+                  'title': s.title,
+                  'taskId': s.taskId,
+                },
+              )
+              .toList(),
+        if (removedSubTasks.isNotEmpty)
+          'removed_ids': removedSubTasks.map((s) => s.id).toList(),
       },
-      fetchPolicy: FetchPolicy.cacheAndNetwork,
     ));
   }
 }

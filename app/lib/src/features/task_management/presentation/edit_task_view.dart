@@ -25,6 +25,8 @@ class EditTaskView extends HookConsumerWidget {
     final isLoading = task == null;
     final titleCtrl = useTextEditingController(text: task?.title);
     final noteCtrl = useTextEditingController(text: task?.note);
+    final subTaskCtrl = useTextEditingController();
+    useListenable(subTaskCtrl);
 
     useEffect(() {
       if (initialTask != null) {
@@ -99,14 +101,31 @@ class EditTaskView extends HookConsumerWidget {
                   AppPadding.vertical(),
                   ...task.subTasks.map(
                     (t) => ListTile(
-                      leading: const Icon(FontAwesomeIcons.gear),
+                      leading: const Icon(FontAwesomeIcons.trash),
                       title: Text(t.title),
+                      onTap: () => notifier.removeSubtask(t),
                     ),
                   ),
                   ListTile(
                     leading: const Icon(FontAwesomeIcons.plus),
-                    title: const Text('Add a subtask'),
-                    onTap: () {},
+                    title: TextField(
+                      controller: subTaskCtrl,
+                      decoration: const InputDecoration(
+                        hintText: 'Add a subtask',
+                        border: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                      ),
+                    ),
+                    onTap: subTaskCtrl.text.trim().isEmpty
+                        ? null
+                        : () {
+                            notifier.addSubtask(subTaskCtrl.text);
+                            subTaskCtrl.clear();
+                          },
                   ),
                   AppPadding.vertical(flex: 2),
                   ButtonBar(

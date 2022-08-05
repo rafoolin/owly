@@ -153,7 +153,7 @@ class _MultiSteppedTask extends StatelessWidget {
             value: subTask.completed,
             onChanged: (value) =>
                 toggleSubTask?.call(subTask.id, value ?? false),
-            secondary: Text(subTask.dueAt.format(context)),
+            // secondary: Text(subTask.dueAt.format(context)),
           ),
       ],
     );
