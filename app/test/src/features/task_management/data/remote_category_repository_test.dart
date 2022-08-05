@@ -114,7 +114,7 @@ void main() async {
           'categoryId': categoryId,
           'createdAt': time.toIso8601String(),
           'completedAt': null,
-          'dateTime': time.add(const Duration(days: 1)).toIso8601String(),
+          'dueDatetime': time.add(const Duration(days: 1)).toIso8601String(),
           'sub_tasks': []
         }
       ]

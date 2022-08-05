@@ -9,14 +9,14 @@ class HomeStateNotifier extends StateNotifier<AsyncValue<List<TodoTask>>> {
   final TodayService _todayService;
 
   HomeStateNotifier(this._todayService) : super(const AsyncLoading()) {
-    watchTodayTasks();
+    _subscribeTodayTasks();
   }
 
   StreamSubscription<AsyncValue<List<TodoTask>>>? _sub;
 
-  void watchTodayTasks() {
+  void _subscribeTodayTasks() {
     _sub?.cancel();
-    _sub = _todayService.watchTodayTasks().listen((tasks) => state = tasks);
+    _sub = _todayService.subscribeTodayTasks().listen((tasks) => state = tasks);
   }
 
   @override

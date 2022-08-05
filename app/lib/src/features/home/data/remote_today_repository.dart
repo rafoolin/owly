@@ -7,7 +7,7 @@ class RemoteTodayRepository {
   final GraphQLClient _qlClient;
   RemoteTodayRepository(this._qlClient);
 
-  Stream<AsyncValue<List<TodoTask>>> watchTodayTasks() {
+  Stream<AsyncValue<List<TodoTask>>> subscribeTodayTasks() {
     const query = '''subscription {
       vm_today_tasks(order_by: {dueDatetime: asc}) {
         __typename

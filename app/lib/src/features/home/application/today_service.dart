@@ -7,7 +7,7 @@ class TodayService {
   final RemoteTodayRepository _remoteTodayRepository;
   TodayService(this._remoteTodayRepository);
 
-  Stream<AsyncValue<List<TodoTask>>> watchTodayTasks() {
-    return _remoteTodayRepository.watchTodayTasks();
+  Stream<AsyncValue<List<TodoTask>>> subscribeTodayTasks() {
+    return _remoteTodayRepository.subscribeTodayTasks();
   }
 }
