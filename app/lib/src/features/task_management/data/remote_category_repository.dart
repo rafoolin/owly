@@ -2,6 +2,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../domain/todo_category.dart';
+import '../domain/todo_sub_task.dart';
 import '../domain/todo_task.dart';
 
 class RemoteCategoryRepository {
@@ -104,5 +105,40 @@ class RemoteCategoryRepository {
       }
       return const AsyncData([]);
     });
+  }
+
+  Future<void> addTask({
+    required String title,
+    required String categoryId,
+    required DateTime dueDatetime,
+    String? note,
+    List<TodoSubTask> subTasks = const [],
+  }) async {
+    const mutation = '''mutation (\$categoryId: uuid!, 
+      \$dueDatetime: timestamptz!, \$note: String, \$title: String!, 
+      \$sub_tasks: [sub_tasks_insert_input!] = []) {
+    insert_tasks_one(object: {categoryId: \$categoryId, 
+    dueDatetime: \$dueDatetime, note: \$note, title: \$title, 
+    sub_tasks: {data: \$sub_tasks}}) {
+      id
+    }
+  }
+''';
+
+    await _qlClient.mutate(MutationOptions(
+      document: gql(mutation),
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+      variables: {
+        'title': title,
+        'categoryId': categoryId,
+        'dueDatetime': dueDatetime.toIso8601String(),
+        if (note != null) 'note': note,
+        'sub_tasks': subTasks
+            .map(
+              (s) => {'title': s.title},
+            )
+            .toList(),
+      },
+    ));
   }
 }

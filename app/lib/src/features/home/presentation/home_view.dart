@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/widgets/app_padding.dart';
+import '../../add_task/presentation/add_task_view.dart';
 import 'home_providers.dart';
 import 'widgets/task_card.dart';
 
@@ -15,6 +18,10 @@ class HomeView extends HookConsumerWidget {
     final state = ref.watch(homeStateNotifierProvider);
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(FontAwesomeIcons.plus),
+        onPressed: () => context.push(AddTaskView.path),
+      ),
       appBar: AppBar(title: const Text('Hello')),
       body: state.when(
         data: (tasks) {

@@ -1,6 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../client/presentation/client_providers.dart';
+import '../../add_task/domain/add_task.dart';
+import '../../add_task/presentation/add_task_state_notifier.dart';
 import '../application/all_categories_service.dart';
 import '../application/category_service.dart';
 import '../application/task_service.dart';
@@ -79,4 +81,11 @@ final editTaskStateNotifierProvider = StateNotifierProvider.autoDispose
   final allCategoriesService = ref.watch(allCategoriesServiceProvider);
 
   return EditTaskStateNotifier(taskService, allCategoriesService);
+});
+
+final addTaskStateNotifierProvider =
+    StateNotifierProvider.autoDispose<AddTaskStateNotifier, AddTask>((ref) {
+  final taskService = ref.watch(categoryServiceProvider);
+  final allCategoriesService = ref.watch(allCategoriesServiceProvider);
+  return AddTaskStateNotifier(taskService, allCategoriesService);
 });

@@ -10,6 +10,8 @@ import 'package:owly/src/features/task_management/data/remote_category_repositor
     as _i2;
 import 'package:owly/src/features/task_management/domain/todo_category.dart'
     as _i5;
+import 'package:owly/src/features/task_management/domain/todo_sub_task.dart'
+    as _i7;
 import 'package:owly/src/features/task_management/domain/todo_task.dart' as _i6;
 
 // ignore_for_file: type=lint
@@ -44,4 +46,21 @@ class MockRemoteCategoryRepository extends _i1.Mock
               Invocation.method(#watchTasksByCategoryId, [categoryId]),
               returnValue: Stream<_i4.AsyncValue<List<_i6.TodoTask>>>.empty())
           as _i3.Stream<_i4.AsyncValue<List<_i6.TodoTask>>>);
+  @override
+  _i3.Future<void> addTask(
+          {String? title,
+          String? categoryId,
+          DateTime? dueDatetime,
+          String? note,
+          List<_i7.TodoSubTask>? subTasks = const []}) =>
+      (super.noSuchMethod(
+          Invocation.method(#addTask, [], {
+            #title: title,
+            #categoryId: categoryId,
+            #dueDatetime: dueDatetime,
+            #note: note,
+            #subTasks: subTasks
+          }),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
 }
