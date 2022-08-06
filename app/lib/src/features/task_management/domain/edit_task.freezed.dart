@@ -23,7 +23,6 @@ mixin _$EditTask {
   String? get note => throw _privateConstructorUsedError;
   List<TodoSubTask> get addedSubTasks => throw _privateConstructorUsedError;
   List<TodoSubTask> get removedSubTasks => throw _privateConstructorUsedError;
-  List<TodoCategory>? get categories => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $EditTaskCopyWith<EditTask> get copyWith =>
@@ -41,8 +40,7 @@ abstract class $EditTaskCopyWith<$Res> {
       DateTime? dueDatetime,
       String? note,
       List<TodoSubTask> addedSubTasks,
-      List<TodoSubTask> removedSubTasks,
-      List<TodoCategory>? categories});
+      List<TodoSubTask> removedSubTasks});
 
   $TodoTaskCopyWith<$Res>? get initialTask;
 }
@@ -64,7 +62,6 @@ class _$EditTaskCopyWithImpl<$Res> implements $EditTaskCopyWith<$Res> {
     Object? note = freezed,
     Object? addedSubTasks = freezed,
     Object? removedSubTasks = freezed,
-    Object? categories = freezed,
   }) {
     return _then(_value.copyWith(
       initialTask: initialTask == freezed
@@ -95,10 +92,6 @@ class _$EditTaskCopyWithImpl<$Res> implements $EditTaskCopyWith<$Res> {
           ? _value.removedSubTasks
           : removedSubTasks // ignore: cast_nullable_to_non_nullable
               as List<TodoSubTask>,
-      categories: categories == freezed
-          ? _value.categories
-          : categories // ignore: cast_nullable_to_non_nullable
-              as List<TodoCategory>?,
     ));
   }
 
@@ -127,8 +120,7 @@ abstract class _$$_EditTaskCopyWith<$Res> implements $EditTaskCopyWith<$Res> {
       DateTime? dueDatetime,
       String? note,
       List<TodoSubTask> addedSubTasks,
-      List<TodoSubTask> removedSubTasks,
-      List<TodoCategory>? categories});
+      List<TodoSubTask> removedSubTasks});
 
   @override
   $TodoTaskCopyWith<$Res>? get initialTask;
@@ -153,7 +145,6 @@ class __$$_EditTaskCopyWithImpl<$Res> extends _$EditTaskCopyWithImpl<$Res>
     Object? note = freezed,
     Object? addedSubTasks = freezed,
     Object? removedSubTasks = freezed,
-    Object? categories = freezed,
   }) {
     return _then(_$_EditTask(
       initialTask: initialTask == freezed
@@ -184,10 +175,6 @@ class __$$_EditTaskCopyWithImpl<$Res> extends _$EditTaskCopyWithImpl<$Res>
           ? _value._removedSubTasks
           : removedSubTasks // ignore: cast_nullable_to_non_nullable
               as List<TodoSubTask>,
-      categories: categories == freezed
-          ? _value._categories
-          : categories // ignore: cast_nullable_to_non_nullable
-              as List<TodoCategory>?,
     ));
   }
 }
@@ -202,11 +189,9 @@ class _$_EditTask extends _EditTask {
       this.dueDatetime,
       this.note,
       final List<TodoSubTask> addedSubTasks = const [],
-      final List<TodoSubTask> removedSubTasks = const [],
-      final List<TodoCategory>? categories = const []})
+      final List<TodoSubTask> removedSubTasks = const []})
       : _addedSubTasks = addedSubTasks,
         _removedSubTasks = removedSubTasks,
-        _categories = categories,
         super._();
 
   @override
@@ -235,19 +220,9 @@ class _$_EditTask extends _EditTask {
     return EqualUnmodifiableListView(_removedSubTasks);
   }
 
-  final List<TodoCategory>? _categories;
-  @override
-  @JsonKey()
-  List<TodoCategory>? get categories {
-    final value = _categories;
-    if (value == null) return null;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
   @override
   String toString() {
-    return 'EditTask(initialTask: $initialTask, title: $title, categoryId: $categoryId, dueDatetime: $dueDatetime, note: $note, addedSubTasks: $addedSubTasks, removedSubTasks: $removedSubTasks, categories: $categories)';
+    return 'EditTask(initialTask: $initialTask, title: $title, categoryId: $categoryId, dueDatetime: $dueDatetime, note: $note, addedSubTasks: $addedSubTasks, removedSubTasks: $removedSubTasks)';
   }
 
   @override
@@ -266,9 +241,7 @@ class _$_EditTask extends _EditTask {
             const DeepCollectionEquality()
                 .equals(other._addedSubTasks, _addedSubTasks) &&
             const DeepCollectionEquality()
-                .equals(other._removedSubTasks, _removedSubTasks) &&
-            const DeepCollectionEquality()
-                .equals(other._categories, _categories));
+                .equals(other._removedSubTasks, _removedSubTasks));
   }
 
   @override
@@ -280,8 +253,7 @@ class _$_EditTask extends _EditTask {
       const DeepCollectionEquality().hash(dueDatetime),
       const DeepCollectionEquality().hash(note),
       const DeepCollectionEquality().hash(_addedSubTasks),
-      const DeepCollectionEquality().hash(_removedSubTasks),
-      const DeepCollectionEquality().hash(_categories));
+      const DeepCollectionEquality().hash(_removedSubTasks));
 
   @JsonKey(ignore: true)
   @override
@@ -297,8 +269,7 @@ abstract class _EditTask extends EditTask {
       final DateTime? dueDatetime,
       final String? note,
       final List<TodoSubTask> addedSubTasks,
-      final List<TodoSubTask> removedSubTasks,
-      final List<TodoCategory>? categories}) = _$_EditTask;
+      final List<TodoSubTask> removedSubTasks}) = _$_EditTask;
   _EditTask._() : super._();
 
   @override
@@ -315,8 +286,6 @@ abstract class _EditTask extends EditTask {
   List<TodoSubTask> get addedSubTasks;
   @override
   List<TodoSubTask> get removedSubTasks;
-  @override
-  List<TodoCategory>? get categories;
   @override
   @JsonKey(ignore: true)
   _$$_EditTaskCopyWith<_$_EditTask> get copyWith =>

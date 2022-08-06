@@ -7,7 +7,7 @@ class AllCategoriesService {
   final RemoteAllCategoriesRepository _remoteAllCategoriesRepository;
   AllCategoriesService(this._remoteAllCategoriesRepository);
 
-  Stream<AsyncValue<List<TodoCategory>>> watchCategories() {
-    return _remoteAllCategoriesRepository.watchCategories();
+  Stream<AsyncValue<List<TodoCategory>>> subscribeCategories() {
+    return _remoteAllCategoriesRepository.subscribeCategories();
   }
 }

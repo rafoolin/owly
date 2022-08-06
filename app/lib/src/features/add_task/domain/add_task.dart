@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../task_management/domain/todo_category.dart';
 import '../../task_management/domain/todo_sub_task.dart';
 
 part 'add_task.freezed.dart';
@@ -13,7 +12,6 @@ class AddTask with _$AddTask {
     DateTime? dueDatetime,
     String? note,
     @Default([]) List<TodoSubTask> subTasks,
-    @Default([]) List<TodoCategory> categories,
   }) = _AddTask;
 
   AddTask._();

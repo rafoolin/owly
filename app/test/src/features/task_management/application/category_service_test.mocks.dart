@@ -3,6 +3,7 @@
 // Do not manually edit this file.
 
 import 'dart:async' as _i3;
+import 'dart:ui' as _i8;
 
 import 'package:hooks_riverpod/hooks_riverpod.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
@@ -61,6 +62,12 @@ class MockRemoteCategoryRepository extends _i1.Mock
             #note: note,
             #subTasks: subTasks
           }),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
+  @override
+  _i3.Future<void> addCategory({String? name, _i8.Color? color}) =>
+      (super.noSuchMethod(
+          Invocation.method(#addCategory, [], {#name: name, #color: color}),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../data/remote_category_repository.dart';
@@ -32,5 +33,9 @@ class CategoryService {
       note: note,
       subTasks: subTasks,
     );
+  }
+
+  Future<void> addCategory({required String name, required Color color}) async {
+    return _remoteCategoryRepository.addCategory(name: name, color: color);
   }
 }

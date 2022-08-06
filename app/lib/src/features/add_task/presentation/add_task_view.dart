@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../common/widgets/app_padding.dart';
-import '../../task_management/domain/todo_category.dart';
 import '../../task_management/presentation/task_management_providers.dart';
+import '../../task_management/presentation/widgets/category_section.dart';
 
 class AddTaskView extends HookConsumerWidget {
   static const path = '/addTask';
@@ -49,10 +48,9 @@ class AddTaskView extends HookConsumerWidget {
               ),
             ),
             AppPadding.vertical(),
-            _CategorySection(
-              categories: state.categories,
-              categoryId: state.categoryId,
-              dueDatetime: state.dueDatetime,
+            CategorySection(
+              selectedCategory: state.categoryId,
+              chosenDueDatetime: state.dueDatetime,
               onCategoryChanged: notifier.changeCategory,
               onCalenderPressed: () => notifier.showCalendar(context),
             ),
@@ -130,116 +128,6 @@ class AddTaskView extends HookConsumerWidget {
             AppPadding.vertical(flex: 2),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _CategorySection extends StatelessWidget {
-  final String? categoryId;
-  final DateTime? dueDatetime;
-  final List<TodoCategory> categories;
-  final void Function(String) onCategoryChanged;
-  final VoidCallback onCalenderPressed;
-  const _CategorySection({
-    Key? key,
-    required this.categoryId,
-    required this.dueDatetime,
-    required this.categories,
-    required this.onCategoryChanged,
-    required this.onCalenderPressed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: AppPadding.padding,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        color: Colors.grey.shade200,
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'Category',
-                  style: TextStyle(color: Colors.grey.shade800),
-                ),
-              ),
-              AppPadding.horizontal(),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                    vertical: 0.0,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: DropdownButton<String>(
-                    elevation: 0,
-                    value: categoryId,
-                    isExpanded: true,
-                    underline: const SizedBox(),
-                    borderRadius: BorderRadius.circular(10.0),
-                    items: categories
-                        .map(
-                          (c) => DropdownMenuItem(
-                            child: Row(
-                              children: [
-                                Icon(Icons.circle, color: c.color, size: 18.0),
-                                const SizedBox(width: 4.0),
-                                Text(c.name),
-                              ],
-                            ),
-                            value: c.id,
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        onCategoryChanged(value);
-                      }
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-          AppPadding.vertical(),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'Due Date',
-                  style: TextStyle(color: Colors.grey.shade800),
-                ),
-              ),
-              AppPadding.horizontal(),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white,
-                  ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                    ),
-                    title: dueDatetime == null
-                        ? null
-                        : Text(DateFormat.yMMMMd().format(dueDatetime!)),
-                    trailing: const Icon(FontAwesomeIcons.calendar),
-                    onTap: onCalenderPressed,
-                  ),
-                ),
-              )
-            ],
-          ),
-        ],
       ),
     );
   }

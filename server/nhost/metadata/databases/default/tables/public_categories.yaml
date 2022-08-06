@@ -11,13 +11,13 @@ insert_permissions:
 - permission:
     backend_only: false
     check:
-      id:
+      user_id:
         _eq: X-Hasura-User-Id
     columns:
     - color
-    - created_at
     - name
     set:
+      created_at: now()
       user_id: x-hasura-User-Id
   role: me
 select_permissions:
@@ -40,7 +40,7 @@ update_permissions:
     - color
     - name
     filter:
-      id:
+      user_id:
         _eq: X-Hasura-User-Id
     set:
       update_at: now()
@@ -48,6 +48,6 @@ update_permissions:
 delete_permissions:
 - permission:
     filter:
-      id:
+      user_id:
         _eq: X-Hasura-User-Id
   role: me

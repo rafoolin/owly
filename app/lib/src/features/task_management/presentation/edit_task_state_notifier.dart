@@ -3,32 +3,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../application/all_categories_service.dart';
 import '../application/task_service.dart';
 import '../domain/edit_task.dart';
-import '../domain/todo_category.dart';
 import '../domain/todo_sub_task.dart';
 import '../domain/todo_task.dart';
 
 class EditTaskStateNotifier extends StateNotifier<EditTask> {
   final TaskService _taskService;
-  final AllCategoriesService _allCategoriesService;
-  EditTaskStateNotifier(
-    this._taskService,
-    this._allCategoriesService,
-  ) : super(EditTask()) {
+  EditTaskStateNotifier(this._taskService) : super(EditTask()) {
     watchTask();
-    _watchCategories();
   }
-
-  StreamSubscription<AsyncValue<List<TodoCategory>>>? _subCategories;
   StreamSubscription<AsyncValue<TodoTask>>? _subTask;
-
-  void _watchCategories() {
-    _subCategories?.cancel();
-    _subCategories = _allCategoriesService.watchCategories().listen(
-        (categories) => state = state.copyWith(categories: categories.value));
-  }
 
   void watchTask() {
     _subTask?.cancel();
@@ -141,7 +126,6 @@ class EditTaskStateNotifier extends StateNotifier<EditTask> {
 
   @override
   void dispose() {
-    _subCategories?.cancel();
     _subTask?.cancel();
     super.dispose();
   }

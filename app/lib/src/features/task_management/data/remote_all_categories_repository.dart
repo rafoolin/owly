@@ -7,8 +7,8 @@ class RemoteAllCategoriesRepository {
   final GraphQLClient _qlClient;
   RemoteAllCategoriesRepository(this._qlClient);
 
-  Stream<AsyncValue<List<TodoCategory>>> watchCategories() {
-    const query = '''query {
+  Stream<AsyncValue<List<TodoCategory>>> subscribeCategories() {
+    const query = '''subscription {
       categories {
         __typename
         id
@@ -21,12 +21,10 @@ class RemoteAllCategoriesRepository {
     }''';
 
     return _qlClient
-        .watchQuery(WatchQueryOptions(
-          fetchResults: true,
-          document: gql(query),
-          fetchPolicy: FetchPolicy.cacheAndNetwork,
-        ))
-        .stream
+        .subscribe(SubscriptionOptions(
+      document: gql(query),
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+    ))
         .map((result) {
       if (result.isLoading) {
         return const AsyncLoading();

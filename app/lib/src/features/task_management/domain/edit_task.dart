@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'todo_category.dart';
 import 'todo_sub_task.dart';
 import 'todo_task.dart';
 
@@ -16,7 +15,6 @@ class EditTask with _$EditTask {
     String? note,
     @Default([]) List<TodoSubTask> addedSubTasks,
     @Default([]) List<TodoSubTask> removedSubTasks,
-    @Default([]) List<TodoCategory>? categories,
   }) = _EditTask;
 
   EditTask._();

@@ -1,6 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../client/presentation/client_providers.dart';
+import '../../add_category/domain/add_category.dart';
+import '../../add_category/presentation/add_category_state_notifier.dart';
 import '../../add_task/domain/add_task.dart';
 import '../../add_task/presentation/add_task_state_notifier.dart';
 import '../application/all_categories_service.dart';
@@ -34,10 +36,16 @@ final categoryServiceProvider = Provider.autoDispose<CategoryService>((ref) {
   return CategoryService(remoteCategoryRepo);
 });
 
-final allCategoriesServiceProvider =
+final _allCategoriesServiceProvider =
     Provider.autoDispose<AllCategoriesService>((ref) {
   final repo = ref.watch(_remoteAllCategoriesRepositoryProvider);
   return AllCategoriesService(repo);
+});
+
+final allCategoriesProvider =
+    StreamProvider.autoDispose<List<TodoCategory>>((ref) {
+  final repo = ref.watch(_allCategoriesServiceProvider);
+  return repo.subscribeCategories().map((event) => event.value ?? []);
 });
 
 final categoriesStateNotifierProvider = StateNotifierProvider.autoDispose<
@@ -78,14 +86,20 @@ final taskStateNotifierProvider = StateNotifierProvider.autoDispose
 final editTaskStateNotifierProvider = StateNotifierProvider.autoDispose
     .family<EditTaskStateNotifier, EditTask, String>((ref, id) {
   final taskService = ref.watch(taskServiceProvider(id));
-  final allCategoriesService = ref.watch(allCategoriesServiceProvider);
 
-  return EditTaskStateNotifier(taskService, allCategoriesService);
+  return EditTaskStateNotifier(taskService);
 });
 
 final addTaskStateNotifierProvider =
     StateNotifierProvider.autoDispose<AddTaskStateNotifier, AddTask>((ref) {
   final taskService = ref.watch(categoryServiceProvider);
-  final allCategoriesService = ref.watch(allCategoriesServiceProvider);
-  return AddTaskStateNotifier(taskService, allCategoriesService);
+  return AddTaskStateNotifier(taskService);
 });
+
+final addCategoryStateNotifierProvider =
+    StateNotifierProvider.autoDispose<AddCategoryStateNotifier, AddCategory>(
+  (ref) {
+    final categoryService = ref.watch(categoryServiceProvider);
+    return AddCategoryStateNotifier(categoryService);
+  },
+);

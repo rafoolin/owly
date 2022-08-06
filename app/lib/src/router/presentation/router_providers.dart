@@ -6,6 +6,7 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 
 import '../../common/screens/error_view.dart';
 import '../../common/screens/in_progress_view.dart';
+import '../../features/add_category/presentation/add_category_view.dart';
 import '../../features/add_task/presentation/add_task_view.dart';
 import '../../features/authentication/presentation/auth_providers.dart';
 import '../../features/authentication/presentation/forgot_password_view.dart';
@@ -115,6 +116,13 @@ final routerProvider = Provider<GoRouter>(
           path: AddTaskView.path,
           builder: (BuildContext context, GoRouterState state) =>
               const AddTaskView(),
+        ),
+
+        /// Add Category view
+        GoRoute(
+          path: AddCategoryView.path,
+          builder: (BuildContext context, GoRouterState state) =>
+              const AddCategoryView(),
         ),
 
         /// In progress view
