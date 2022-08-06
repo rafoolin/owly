@@ -41,6 +41,11 @@ void main() async {
           'color': null,
           'updatedAt': null,
           'createdAt': time.toIso8601String(),
+          'taskCount': {
+            'aggregate': {
+              'count': 0,
+            }
+          }
         }
       ]
     };
@@ -103,14 +108,13 @@ void main() async {
     const categoryId = 'categoryId';
 
     final jsonData = {
-      'vm_user_tasks': [
+      'tasks': [
         {
           '__typename': 'tasks',
           'id': 'taskId',
           'title': 'title',
           'completed': false,
           'note': null,
-          'parentId': null,
           'userId': 'userId',
           'categoryId': categoryId,
           'createdAt': time.toIso8601String(),
@@ -132,18 +136,18 @@ void main() async {
       ),
     ];
     test('Loading state', () async {
-      final result = generateMockWatchQuery(mockGraphQLClient);
+      final result = generateMockSubscribe(mockGraphQLClient);
 
       when(() => result.isLoading).thenReturn(true);
       expect(
         remoteCategoryRepository.subscribeTasks(categoryId),
         emits(const AsyncLoading<List<TodoTask>>()),
       );
-      verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
+      verify(() => mockGraphQLClient.subscribe(captureAny())).called(1);
     });
 
     test('Error state', () async {
-      final result = generateMockWatchQuery(mockGraphQLClient);
+      final result = generateMockSubscribe(mockGraphQLClient);
 
       when(() => result.isLoading).thenReturn(false);
       when(() => result.hasException).thenReturn(true);
@@ -153,11 +157,11 @@ void main() async {
         remoteCategoryRepository.subscribeTasks(categoryId),
         emits(isA<AsyncError>()),
       );
-      verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
+      verify(() => mockGraphQLClient.subscribe(captureAny())).called(1);
     });
 
     test('Data state', () async {
-      final result = generateMockWatchQuery(mockGraphQLClient);
+      final result = generateMockSubscribe(mockGraphQLClient);
 
       when(() => result.isLoading).thenReturn(false);
       when(() => result.hasException).thenReturn(false);
@@ -167,11 +171,11 @@ void main() async {
         remoteCategoryRepository.subscribeTasks(categoryId),
         emits(isA<AsyncData>()),
       );
-      verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
+      verify(() => mockGraphQLClient.subscribe(captureAny())).called(1);
       remoteCategoryRepository.subscribeTasks(categoryId).listen((event) {
         expect(event.value, contains(finalData.first));
       });
-      verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
+      verify(() => mockGraphQLClient.subscribe(captureAny())).called(1);
     });
   });
 }
