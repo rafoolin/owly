@@ -42,39 +42,42 @@ class RemoteCategoryRepository {
       if (result.data != null) {
         final categories = result.data!['categories'] as List;
         return AsyncData(
-          categories.map((json) => TodoCategory.fromJson(json)).toList(),
+          categories.map((json) {
+            // TODO:: Cover it in converter
+            final taskCount = json['taskCount']['aggregate']['count'];
+            json['totalTasks'] = taskCount;
+            return TodoCategory.fromJson(json);
+          }).toList(),
         );
       }
       return const AsyncData([]);
     });
   }
 
-  Stream<AsyncValue<List<TodoTask>>> watchTasksByCategoryId(String categoryId) {
-    const query = '''query (\$categoryId: uuid!) {
-      vm_user_tasks(where: {categoryId: {_eq: \$categoryId}}) {
+  Stream<AsyncValue<List<TodoTask>>> subscribeTasks(String categoryId) {
+    const query = '''subscription (\$categoryId: uuid!) {
+      tasks(where: {categoryId: {_eq: \$categoryId}}) {
         __typename
         id
+        userId
         title
         completed
         note
-        parentId
-        userId
         categoryId
+        categoryColor
+        dueDatetime
         createdAt
         createdAt
         completedAt
-        dateTime
         sub_tasks {
           __typename
           id
           title
           completed
-          completedAt
-          dateTime
+          dueAt
           note
-          parentId
           userId
-          categoryId
+          taskId
           createdAt
           updatedAt
         }
@@ -82,13 +85,11 @@ class RemoteCategoryRepository {
     }''';
 
     return _qlClient
-        .watchQuery(WatchQueryOptions(
-          fetchResults: true,
-          document: gql(query),
-          variables: {'categoryId': categoryId},
-          fetchPolicy: FetchPolicy.cacheAndNetwork,
-        ))
-        .stream
+        .subscribe(SubscriptionOptions(
+      document: gql(query),
+      variables: {'categoryId': categoryId},
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+    ))
         .map((result) {
       if (result.isLoading) {
         return const AsyncLoading();
@@ -99,7 +100,7 @@ class RemoteCategoryRepository {
       }
 
       if (result.data != null) {
-        final tasks = result.data!['vm_user_tasks'] as List;
+        final tasks = result.data!['tasks'] as List;
         return AsyncData(
           tasks.map((json) => TodoTask.fromJson(json)).toList(),
         );
@@ -157,6 +158,42 @@ class RemoteCategoryRepository {
         'name': name,
         'color': color.value,
       },
+    ));
+  }
+
+  Future<void> editCategory({
+    required String name,
+    required Color color,
+  }) async {
+    const mutation = '''mutation (\$id: uuid!, \$name: String!, 
+        \$color: bigint = 0) {
+      update_categories_by_pk(pk_columns: {id: \$id}, _set: {color: 
+      \$color, name: \$name}) {
+        id
+      }
+    }''';
+
+    await _qlClient.mutate(MutationOptions(
+      document: gql(mutation),
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+      variables: {
+        'name': name,
+        'color': color.value,
+      },
+    ));
+  }
+
+  Future<void> deleteCategory(String id) async {
+    const mutation = '''mutation MyMutation(\$id: uuid!) {
+      delete_categories_by_pk(id: \$id) {
+        id
+      }
+    }''';
+
+    await _qlClient.mutate(MutationOptions(
+      document: gql(mutation),
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+      variables: {'id': id},
     ));
   }
 }

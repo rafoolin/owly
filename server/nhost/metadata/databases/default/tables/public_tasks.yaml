@@ -39,6 +39,7 @@ insert_permissions:
   role: me
 select_permissions:
 - permission:
+    allow_aggregations: true
     columns:
     - completed
     - index_value

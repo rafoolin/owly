@@ -5,6 +5,8 @@ import '../../add_category/domain/add_category.dart';
 import '../../add_category/presentation/add_category_state_notifier.dart';
 import '../../add_task/domain/add_task.dart';
 import '../../add_task/presentation/add_task_state_notifier.dart';
+import '../../edit_category/domain/edit_category.dart';
+import '../../edit_category/presentation/edit_category_state_notifier.dart';
 import '../application/all_categories_service.dart';
 import '../application/category_service.dart';
 import '../application/task_service.dart';
@@ -14,7 +16,6 @@ import '../data/remote_task_repository.dart';
 import '../domain/edit_task.dart';
 import '../domain/todo_category.dart';
 import '../domain/todo_task.dart';
-import 'category_state_notifier.dart';
 import 'category_tasks_state_notifier.dart';
 import 'edit_task_state_notifier.dart';
 import 'task_state_notifier.dart';
@@ -47,14 +48,6 @@ final allCategoriesProvider =
   final repo = ref.watch(_allCategoriesServiceProvider);
   return repo.subscribeCategories().map((event) => event.value ?? []);
 });
-
-final categoriesStateNotifierProvider = StateNotifierProvider.autoDispose<
-    CategoryStateNotifier, AsyncValue<List<TodoCategory>>>(
-  (ref) {
-    final categoryService = ref.watch(categoryServiceProvider);
-    return CategoryStateNotifier(categoryService);
-  },
-);
 
 final categoryTasksStateNotifierProvider = StateNotifierProvider.autoDispose
     .family<CategoryTasksStateNotifier, AsyncValue<List<TodoTask>>, String>(
@@ -90,10 +83,10 @@ final editTaskStateNotifierProvider = StateNotifierProvider.autoDispose
   return EditTaskStateNotifier(taskService);
 });
 
-final addTaskStateNotifierProvider =
-    StateNotifierProvider.autoDispose<AddTaskStateNotifier, AddTask>((ref) {
+final addTaskStateNotifierProvider = StateNotifierProvider.autoDispose
+    .family<AddTaskStateNotifier, AddTask, String?>((ref, id) {
   final taskService = ref.watch(categoryServiceProvider);
-  return AddTaskStateNotifier(taskService);
+  return AddTaskStateNotifier(taskService, id);
 });
 
 final addCategoryStateNotifierProvider =
@@ -103,3 +96,17 @@ final addCategoryStateNotifierProvider =
     return AddCategoryStateNotifier(categoryService);
   },
 );
+
+final editCategoryStateNotifierProvider =
+    StateNotifierProvider.autoDispose<EditCategoryStateNotifier, EditCategory>(
+  (ref) {
+    final categoryService = ref.watch(categoryServiceProvider);
+    return EditCategoryStateNotifier(categoryService);
+  },
+);
+
+final categoryTasksProvider =
+    StreamProvider.autoDispose.family<List<TodoTask>, String>((ref, id) {
+  final categoryService = ref.watch(categoryServiceProvider);
+  return categoryService.subscribeTasks(id).map((s) => s.value ?? []);
+});

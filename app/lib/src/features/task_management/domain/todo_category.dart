@@ -16,6 +16,7 @@ class TodoCategory with _$TodoCategory {
     required String userId,
     @ColorConverter() Color? color,
     required DateTime createdAt,
+    required int totalTasks,
     DateTime? updatedAt,
   }) = _TodoCategory;
 

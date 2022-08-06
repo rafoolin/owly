@@ -9,13 +9,13 @@ import '../../../add_category/presentation/add_category_view.dart';
 import '../task_management_providers.dart';
 
 class CategorySection extends HookConsumerWidget {
-  final String? selectedCategory;
+  final String? selectedCategoryId;
   final DateTime? chosenDueDatetime;
-  final void Function(String) onCategoryChanged;
+  final void Function(String)? onCategoryChanged;
   final VoidCallback onCalenderPressed;
   const CategorySection({
     Key? key,
-    required this.selectedCategory,
+    required this.selectedCategoryId,
     required this.chosenDueDatetime,
     required this.onCategoryChanged,
     required this.onCalenderPressed,
@@ -24,7 +24,7 @@ class CategorySection extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categories = ref.watch(allCategoriesProvider).value ?? [];
-    final showSelected = categories.isNotEmpty && selectedCategory != null;
+    final showSelected = categories.isNotEmpty && selectedCategoryId != null;
 
     return Container(
       padding: AppPadding.padding,
@@ -55,7 +55,7 @@ class CategorySection extends HookConsumerWidget {
                   ),
                   child: DropdownButton<String>(
                     elevation: 0,
-                    value: showSelected ? selectedCategory : null,
+                    value: showSelected ? selectedCategoryId : null,
                     isExpanded: true,
                     underline: const SizedBox(),
                     borderRadius: BorderRadius.circular(10.0),
@@ -89,11 +89,13 @@ class CategorySection extends HookConsumerWidget {
                         value: 'new',
                       )
                     ],
-                    onChanged: (value) {
-                      if (value != null) {
-                        onCategoryChanged(value);
-                      }
-                    },
+                    onChanged: onCategoryChanged == null
+                        ? null
+                        : (value) {
+                            if (value != null) {
+                              onCategoryChanged?.call(value);
+                            }
+                          },
                   ),
                 ),
               ),

@@ -4,16 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../task_management/application/category_service.dart';
-import '../../task_management/domain/todo_category.dart';
 import '../../task_management/domain/todo_sub_task.dart';
 import '../domain/add_task.dart';
 
 class AddTaskStateNotifier extends StateNotifier<AddTask> {
   final CategoryService _categoryService;
 
-  AddTaskStateNotifier(this._categoryService) : super(AddTask());
-
-  StreamSubscription<AsyncValue<List<TodoCategory>>>? _subCategories;
+  AddTaskStateNotifier(this._categoryService, String? _categoryId)
+      : super(AddTask(initialCategoryId: _categoryId));
 
   void changeTitle(String title) {
     state = state.copyWith(title: title.trim());
@@ -49,7 +47,7 @@ class AddTaskStateNotifier extends StateNotifier<AddTask> {
     if (!state.canCreateTask) return;
     await _categoryService.addTask(
       title: state.title!,
-      categoryId: state.categoryId!,
+      categoryId: state.categoryId ?? state.initialCategoryId!,
       dueDatetime: state.dueDatetime!,
       note: state.note,
       subTasks: state.subTasks,
@@ -114,11 +112,5 @@ class AddTaskStateNotifier extends StateNotifier<AddTask> {
         state = state.copyWith(dueDatetime: finalDateTime);
       }
     }
-  }
-
-  @override
-  void dispose() {
-    _subCategories?.cancel();
-    super.dispose();
   }
 }

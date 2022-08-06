@@ -7,6 +7,14 @@ configuration:
     update_at: updateAt
     user_id: userId
   custom_root_fields: {}
+array_relationships:
+- name: tasks
+  using:
+    foreign_key_constraint_on:
+      column: category_id
+      table:
+        name: tasks
+        schema: public
 insert_permissions:
 - permission:
     backend_only: false

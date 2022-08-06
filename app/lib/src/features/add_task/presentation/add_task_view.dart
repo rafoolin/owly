@@ -9,12 +9,14 @@ import '../../task_management/presentation/widgets/category_section.dart';
 
 class AddTaskView extends HookConsumerWidget {
   static const path = '/addTask';
-  const AddTaskView({Key? key}) : super(key: key);
+  static const categoryPath = '/category/:id/addTask';
+  final String? id;
+  const AddTaskView({Key? key, this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(addTaskStateNotifierProvider);
-    final notifier = ref.watch(addTaskStateNotifierProvider.notifier);
+    final state = ref.watch(addTaskStateNotifierProvider(id));
+    final notifier = ref.watch(addTaskStateNotifierProvider(id).notifier);
     final titleCtrl = useTextEditingController();
     final noteCtrl = useTextEditingController();
     final subTaskCtrl = useTextEditingController();
@@ -49,9 +51,9 @@ class AddTaskView extends HookConsumerWidget {
             ),
             AppPadding.vertical(),
             CategorySection(
-              selectedCategory: state.categoryId,
+              selectedCategoryId: state.categoryId ?? state.initialCategoryId,
               chosenDueDatetime: state.dueDatetime,
-              onCategoryChanged: notifier.changeCategory,
+              onCategoryChanged: id != null ? null : notifier.changeCategory,
               onCalenderPressed: () => notifier.showCalendar(context),
             ),
             AppPadding.vertical(),

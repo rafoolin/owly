@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$AddTask {
   String? get title => throw _privateConstructorUsedError;
+  String? get initialCategoryId => throw _privateConstructorUsedError;
   String? get categoryId => throw _privateConstructorUsedError;
   DateTime? get dueDatetime => throw _privateConstructorUsedError;
   String? get note => throw _privateConstructorUsedError;
@@ -32,6 +33,7 @@ abstract class $AddTaskCopyWith<$Res> {
       _$AddTaskCopyWithImpl<$Res>;
   $Res call(
       {String? title,
+      String? initialCategoryId,
       String? categoryId,
       DateTime? dueDatetime,
       String? note,
@@ -49,6 +51,7 @@ class _$AddTaskCopyWithImpl<$Res> implements $AddTaskCopyWith<$Res> {
   @override
   $Res call({
     Object? title = freezed,
+    Object? initialCategoryId = freezed,
     Object? categoryId = freezed,
     Object? dueDatetime = freezed,
     Object? note = freezed,
@@ -58,6 +61,10 @@ class _$AddTaskCopyWithImpl<$Res> implements $AddTaskCopyWith<$Res> {
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      initialCategoryId: initialCategoryId == freezed
+          ? _value.initialCategoryId
+          : initialCategoryId // ignore: cast_nullable_to_non_nullable
               as String?,
       categoryId: categoryId == freezed
           ? _value.categoryId
@@ -87,6 +94,7 @@ abstract class _$$_AddTaskCopyWith<$Res> implements $AddTaskCopyWith<$Res> {
   @override
   $Res call(
       {String? title,
+      String? initialCategoryId,
       String? categoryId,
       DateTime? dueDatetime,
       String? note,
@@ -105,6 +113,7 @@ class __$$_AddTaskCopyWithImpl<$Res> extends _$AddTaskCopyWithImpl<$Res>
   @override
   $Res call({
     Object? title = freezed,
+    Object? initialCategoryId = freezed,
     Object? categoryId = freezed,
     Object? dueDatetime = freezed,
     Object? note = freezed,
@@ -114,6 +123,10 @@ class __$$_AddTaskCopyWithImpl<$Res> extends _$AddTaskCopyWithImpl<$Res>
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      initialCategoryId: initialCategoryId == freezed
+          ? _value.initialCategoryId
+          : initialCategoryId // ignore: cast_nullable_to_non_nullable
               as String?,
       categoryId: categoryId == freezed
           ? _value.categoryId
@@ -140,6 +153,7 @@ class __$$_AddTaskCopyWithImpl<$Res> extends _$AddTaskCopyWithImpl<$Res>
 class _$_AddTask extends _AddTask {
   _$_AddTask(
       {this.title,
+      this.initialCategoryId,
       this.categoryId,
       this.dueDatetime,
       this.note,
@@ -149,6 +163,8 @@ class _$_AddTask extends _AddTask {
 
   @override
   final String? title;
+  @override
+  final String? initialCategoryId;
   @override
   final String? categoryId;
   @override
@@ -165,7 +181,7 @@ class _$_AddTask extends _AddTask {
 
   @override
   String toString() {
-    return 'AddTask(title: $title, categoryId: $categoryId, dueDatetime: $dueDatetime, note: $note, subTasks: $subTasks)';
+    return 'AddTask(title: $title, initialCategoryId: $initialCategoryId, categoryId: $categoryId, dueDatetime: $dueDatetime, note: $note, subTasks: $subTasks)';
   }
 
   @override
@@ -174,6 +190,8 @@ class _$_AddTask extends _AddTask {
         (other.runtimeType == runtimeType &&
             other is _$_AddTask &&
             const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality()
+                .equals(other.initialCategoryId, initialCategoryId) &&
             const DeepCollectionEquality()
                 .equals(other.categoryId, categoryId) &&
             const DeepCollectionEquality()
@@ -186,6 +204,7 @@ class _$_AddTask extends _AddTask {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(initialCategoryId),
       const DeepCollectionEquality().hash(categoryId),
       const DeepCollectionEquality().hash(dueDatetime),
       const DeepCollectionEquality().hash(note),
@@ -200,6 +219,7 @@ class _$_AddTask extends _AddTask {
 abstract class _AddTask extends AddTask {
   factory _AddTask(
       {final String? title,
+      final String? initialCategoryId,
       final String? categoryId,
       final DateTime? dueDatetime,
       final String? note,
@@ -208,6 +228,8 @@ abstract class _AddTask extends AddTask {
 
   @override
   String? get title;
+  @override
+  String? get initialCategoryId;
   @override
   String? get categoryId;
   @override

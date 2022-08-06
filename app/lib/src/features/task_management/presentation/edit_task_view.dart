@@ -68,7 +68,7 @@ class EditTaskView extends HookConsumerWidget {
                   ),
                   AppPadding.vertical(),
                   CategorySection(
-                    selectedCategory: task.categoryId,
+                    selectedCategoryId: task.categoryId,
                     chosenDueDatetime: task.dueDatetime,
                     onCategoryChanged: notifier.changeCategory,
                     onCalenderPressed: () => notifier.showCalendar(context),

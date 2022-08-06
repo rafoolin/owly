@@ -41,10 +41,9 @@ class MockRemoteCategoryRepository extends _i1.Mock
                   Stream<_i4.AsyncValue<List<_i5.TodoCategory>>>.empty())
           as _i3.Stream<_i4.AsyncValue<List<_i5.TodoCategory>>>);
   @override
-  _i3.Stream<_i4.AsyncValue<List<_i6.TodoTask>>> watchTasksByCategoryId(
+  _i3.Stream<_i4.AsyncValue<List<_i6.TodoTask>>> subscribeTasks(
           String? categoryId) =>
-      (super.noSuchMethod(
-              Invocation.method(#watchTasksByCategoryId, [categoryId]),
+      (super.noSuchMethod(Invocation.method(#subscribeTasks, [categoryId]),
               returnValue: Stream<_i4.AsyncValue<List<_i6.TodoTask>>>.empty())
           as _i3.Stream<_i4.AsyncValue<List<_i6.TodoTask>>>);
   @override
@@ -68,6 +67,17 @@ class MockRemoteCategoryRepository extends _i1.Mock
   _i3.Future<void> addCategory({String? name, _i8.Color? color}) =>
       (super.noSuchMethod(
           Invocation.method(#addCategory, [], {#name: name, #color: color}),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
+  @override
+  _i3.Future<void> editCategory({String? name, _i8.Color? color}) =>
+      (super.noSuchMethod(
+          Invocation.method(#editCategory, [], {#name: name, #color: color}),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
+  @override
+  _i3.Future<void> deleteCategory(String? id) =>
+      (super.noSuchMethod(Invocation.method(#deleteCategory, [id]),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
 }

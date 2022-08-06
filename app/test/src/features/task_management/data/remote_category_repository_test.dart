@@ -51,6 +51,7 @@ void main() async {
         name: 'name',
         userId: 'userId',
         createdAt: time,
+        totalTasks: 0,
       )
     ];
     test('Loading state', () async {
@@ -135,7 +136,7 @@ void main() async {
 
       when(() => result.isLoading).thenReturn(true);
       expect(
-        remoteCategoryRepository.watchTasksByCategoryId(categoryId),
+        remoteCategoryRepository.subscribeTasks(categoryId),
         emits(const AsyncLoading<List<TodoTask>>()),
       );
       verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
@@ -149,7 +150,7 @@ void main() async {
       when(() => result.exception).thenReturn(OperationException());
 
       expect(
-        remoteCategoryRepository.watchTasksByCategoryId(categoryId),
+        remoteCategoryRepository.subscribeTasks(categoryId),
         emits(isA<AsyncError>()),
       );
       verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
@@ -163,13 +164,11 @@ void main() async {
       when(() => result.data).thenReturn(jsonData);
 
       expect(
-        remoteCategoryRepository.watchTasksByCategoryId(categoryId),
+        remoteCategoryRepository.subscribeTasks(categoryId),
         emits(isA<AsyncData>()),
       );
       verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
-      remoteCategoryRepository
-          .watchTasksByCategoryId(categoryId)
-          .listen((event) {
+      remoteCategoryRepository.subscribeTasks(categoryId).listen((event) {
         expect(event.value, contains(finalData.first));
       });
       verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);

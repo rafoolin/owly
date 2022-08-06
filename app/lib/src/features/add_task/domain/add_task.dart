@@ -8,6 +8,7 @@ part 'add_task.freezed.dart';
 class AddTask with _$AddTask {
   factory AddTask({
     String? title,
+    String? initialCategoryId,
     String? categoryId,
     DateTime? dueDatetime,
     String? note,
@@ -24,6 +25,6 @@ class AddTask with _$AddTask {
 
   bool get canCreateTask =>
       (title != null && title!.isNotEmpty) &&
-      (categoryId != null) &&
+      (categoryId != null || initialCategoryId != null) &&
       (dueDatetime != null);
 }

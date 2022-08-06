@@ -26,6 +26,7 @@ mixin _$TodoCategory {
   @ColorConverter()
   Color? get color => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
+  int get totalTasks => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,6 +46,7 @@ abstract class $TodoCategoryCopyWith<$Res> {
       String userId,
       @ColorConverter() Color? color,
       DateTime createdAt,
+      int totalTasks,
       DateTime? updatedAt});
 }
 
@@ -63,6 +65,7 @@ class _$TodoCategoryCopyWithImpl<$Res> implements $TodoCategoryCopyWith<$Res> {
     Object? userId = freezed,
     Object? color = freezed,
     Object? createdAt = freezed,
+    Object? totalTasks = freezed,
     Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
@@ -86,6 +89,10 @@ class _$TodoCategoryCopyWithImpl<$Res> implements $TodoCategoryCopyWith<$Res> {
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      totalTasks: totalTasks == freezed
+          ? _value.totalTasks
+          : totalTasks // ignore: cast_nullable_to_non_nullable
+              as int,
       updatedAt: updatedAt == freezed
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -107,6 +114,7 @@ abstract class _$$_TodoCategoryCopyWith<$Res>
       String userId,
       @ColorConverter() Color? color,
       DateTime createdAt,
+      int totalTasks,
       DateTime? updatedAt});
 }
 
@@ -128,6 +136,7 @@ class __$$_TodoCategoryCopyWithImpl<$Res>
     Object? userId = freezed,
     Object? color = freezed,
     Object? createdAt = freezed,
+    Object? totalTasks = freezed,
     Object? updatedAt = freezed,
   }) {
     return _then(_$_TodoCategory(
@@ -151,6 +160,10 @@ class __$$_TodoCategoryCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      totalTasks: totalTasks == freezed
+          ? _value.totalTasks
+          : totalTasks // ignore: cast_nullable_to_non_nullable
+              as int,
       updatedAt: updatedAt == freezed
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -168,6 +181,7 @@ class _$_TodoCategory extends _TodoCategory with DiagnosticableTreeMixin {
       required this.userId,
       @ColorConverter() this.color,
       required this.createdAt,
+      required this.totalTasks,
       this.updatedAt})
       : super._();
 
@@ -186,11 +200,13 @@ class _$_TodoCategory extends _TodoCategory with DiagnosticableTreeMixin {
   @override
   final DateTime createdAt;
   @override
+  final int totalTasks;
+  @override
   final DateTime? updatedAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TodoCategory(id: $id, name: $name, userId: $userId, color: $color, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'TodoCategory(id: $id, name: $name, userId: $userId, color: $color, createdAt: $createdAt, totalTasks: $totalTasks, updatedAt: $updatedAt)';
   }
 
   @override
@@ -203,6 +219,7 @@ class _$_TodoCategory extends _TodoCategory with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('color', color))
       ..add(DiagnosticsProperty('createdAt', createdAt))
+      ..add(DiagnosticsProperty('totalTasks', totalTasks))
       ..add(DiagnosticsProperty('updatedAt', updatedAt));
   }
 
@@ -216,6 +233,8 @@ class _$_TodoCategory extends _TodoCategory with DiagnosticableTreeMixin {
             const DeepCollectionEquality().equals(other.userId, userId) &&
             const DeepCollectionEquality().equals(other.color, color) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality()
+                .equals(other.totalTasks, totalTasks) &&
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
   }
 
@@ -228,6 +247,7 @@ class _$_TodoCategory extends _TodoCategory with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(color),
       const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(totalTasks),
       const DeepCollectionEquality().hash(updatedAt));
 
   @JsonKey(ignore: true)
@@ -250,6 +270,7 @@ abstract class _TodoCategory extends TodoCategory {
       required final String userId,
       @ColorConverter() final Color? color,
       required final DateTime createdAt,
+      required final int totalTasks,
       final DateTime? updatedAt}) = _$_TodoCategory;
   _TodoCategory._() : super._();
 
@@ -267,6 +288,8 @@ abstract class _TodoCategory extends TodoCategory {
   Color? get color;
   @override
   DateTime get createdAt;
+  @override
+  int get totalTasks;
   @override
   DateTime? get updatedAt;
   @override

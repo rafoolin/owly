@@ -1,31 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../common/widgets/app_padding.dart';
+import '../../add_task/presentation/add_task_view.dart';
+import '../../home/presentation/widgets/task_card.dart';
 import 'task_management_providers.dart';
-import 'widgets/todo_category_card.dart';
 
 class CategoryView extends HookConsumerWidget {
-  static const path = '/CategoryView';
-  const CategoryView({Key? key}) : super(key: key);
+  static const path = '/categoryView/:id';
+  final String id;
+  const CategoryView({Key? key, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categories = ref.watch(categoriesStateNotifierProvider);
+    final tasks = ref.watch(categoryTasksProvider(id)).value ?? [];
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(FontAwesomeIcons.plus),
+        onPressed: () =>
+            context.push(AddTaskView.categoryPath.replaceFirst(':id', id)),
+      ),
       appBar: AppBar(title: const Text('categories')),
-      body: categories.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => const Center(child: Text('Oh No!')),
-        data: (categories) => GridView.builder(
-          itemCount: categories.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-          ),
-          itemBuilder: (BuildContext context, int index) => TodoCategoryCard(
-            category: categories[index],
-          ),
-        ),
+      body: ListView.builder(
+        padding: AppPadding.topPadding,
+        itemCount: tasks.length,
+        itemBuilder: (BuildContext context, int index) =>
+            TaskCard(task: tasks[index]),
       ),
     );
   }

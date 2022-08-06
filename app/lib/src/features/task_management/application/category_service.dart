@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../data/remote_category_repository.dart';
-import '../domain/todo_category.dart';
 import '../domain/todo_sub_task.dart';
 import '../domain/todo_task.dart';
 
@@ -11,12 +10,8 @@ class CategoryService {
   final RemoteCategoryRepository _remoteCategoryRepository;
   CategoryService(this._remoteCategoryRepository);
 
-  Stream<AsyncValue<List<TodoCategory>>> watchCategories() {
-    return _remoteCategoryRepository.watchCategories();
-  }
-
-  Stream<AsyncValue<List<TodoTask>>> watchTasksByCategoryId(String categoryId) {
-    return _remoteCategoryRepository.watchTasksByCategoryId(categoryId);
+  Stream<AsyncValue<List<TodoTask>>> subscribeTasks(String categoryId) {
+    return _remoteCategoryRepository.subscribeTasks(categoryId);
   }
 
   Future<void> addTask({
@@ -37,5 +32,16 @@ class CategoryService {
 
   Future<void> addCategory({required String name, required Color color}) async {
     return _remoteCategoryRepository.addCategory(name: name, color: color);
+  }
+
+  Future<void> editCategory({
+    required String name,
+    required Color color,
+  }) async {
+    return _remoteCategoryRepository.editCategory(name: name, color: color);
+  }
+
+  Future<void> deleteCategory(String id) async {
+    return _remoteCategoryRepository.deleteCategory(id);
   }
 }
