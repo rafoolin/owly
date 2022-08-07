@@ -20,6 +20,11 @@ class RemoteCategoryRepository {
         updateAt
         userId
         createdAt
+        taskCount: tasks_aggregate {
+          aggregate {
+            count
+          }
+        }
       }
     }''';
 
@@ -109,6 +114,50 @@ class RemoteCategoryRepository {
     });
   }
 
+  Stream<AsyncValue<TodoCategory>> subscribeCategory(String categoryId) {
+    const query = '''subscription (\$id: uuid!) {
+      categories_by_pk(id: \$id) {
+        __typename
+        id
+        name
+        color
+        updateAt
+        userId
+        createdAt
+        taskCount: tasks_aggregate {
+          aggregate {
+            count
+          }
+        }
+      }
+    }''';
+
+    return _qlClient
+        .subscribe(SubscriptionOptions(
+      document: gql(query),
+      variables: {'id': categoryId},
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+    ))
+        .map((result) {
+      if (result.isLoading) {
+        return const AsyncLoading();
+      }
+
+      if (result.hasException) {
+        return AsyncError(result.exception!);
+      }
+
+      final category = result.data!['categories_by_pk'];
+      // TODO:: Cover it in converter
+      final taskCount = category['taskCount']['aggregate']['count'];
+      category['totalTasks'] = taskCount;
+      if (category != null) {
+        return AsyncData(TodoCategory.fromJson(category));
+      }
+      return AsyncError(Exception('Category do not exist!'));
+    });
+  }
+
   Future<void> addTask({
     required String title,
     required String categoryId,
@@ -162,8 +211,9 @@ class RemoteCategoryRepository {
   }
 
   Future<void> editCategory({
+    required String id,
     required String name,
-    required Color color,
+    Color? color,
   }) async {
     const mutation = '''mutation (\$id: uuid!, \$name: String!, 
         \$color: bigint = 0) {
@@ -177,8 +227,9 @@ class RemoteCategoryRepository {
       document: gql(mutation),
       fetchPolicy: FetchPolicy.cacheAndNetwork,
       variables: {
+        'id': id,
         'name': name,
-        'color': color.value,
+        if (color != null) 'color': color.value,
       },
     ));
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../data/remote_category_repository.dart';
+import '../domain/todo_category.dart';
 import '../domain/todo_sub_task.dart';
 import '../domain/todo_task.dart';
 
@@ -12,6 +13,10 @@ class CategoryService {
 
   Stream<AsyncValue<List<TodoTask>>> subscribeTasks(String categoryId) {
     return _remoteCategoryRepository.subscribeTasks(categoryId);
+  }
+
+  Stream<AsyncValue<TodoCategory>> subscribeCategory(String categoryId) {
+    return _remoteCategoryRepository.subscribeCategory(categoryId);
   }
 
   Future<void> addTask({
@@ -35,10 +40,15 @@ class CategoryService {
   }
 
   Future<void> editCategory({
+    required String id,
     required String name,
-    required Color color,
+    Color? color,
   }) async {
-    return _remoteCategoryRepository.editCategory(name: name, color: color);
+    return _remoteCategoryRepository.editCategory(
+      id: id,
+      name: name,
+      color: color,
+    );
   }
 
   Future<void> deleteCategory(String id) async {

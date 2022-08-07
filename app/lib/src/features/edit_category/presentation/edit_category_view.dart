@@ -7,19 +7,31 @@ import '../../../common/widgets/app_padding.dart';
 import '../../task_management/presentation/task_management_providers.dart';
 
 class EditCategoryView extends HookConsumerWidget {
-  static const path = '/editCategory';
-  const EditCategoryView({Key? key}) : super(key: key);
+  static const path = '/editCategory/:id';
+  final String id;
+  const EditCategoryView({Key? key, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(addCategoryStateNotifierProvider);
-    final notifier = ref.watch(addCategoryStateNotifierProvider.notifier);
+    final state = ref.watch(editCategoryStateNotifierProvider(id));
+    final notifier = ref.watch(editCategoryStateNotifierProvider(id).notifier);
+    final category = state.editedCategory;
+
     final nameCtrl = useTextEditingController();
+
+    useEffect(() {
+      if (state.name == null && state.initial != null) {
+        Future.microtask(() {
+          nameCtrl.text = state.initial!.name;
+        });
+      }
+      return;
+    }, [state.initial]);
 
     return WillPopScope(
       onWillPop: () async => notifier.discardDialog(context),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Add New Category')),
+        appBar: AppBar(title: const Text('Edit Category')),
         body: ListView(
           padding: AppPadding.padding,
           children: [
@@ -27,7 +39,6 @@ class EditCategoryView extends HookConsumerWidget {
               controller: nameCtrl,
               onChanged: notifier.changeName,
               maxLength: 120,
-              autofocus: true,
               decoration: const InputDecoration(
                 prefixIcon: Icon(
                   FontAwesomeIcons.layerGroup,
@@ -47,13 +58,13 @@ class EditCategoryView extends HookConsumerWidget {
             ListTile(
               leading: const Icon(FontAwesomeIcons.palette, color: Colors.grey),
               title: Text(
-                (state.color ?? Colors.transparent)
+                (category?.color ?? Colors.transparent)
                     .value
                     .toRadixString(16)
                     .padLeft(8, '0')
                     .toUpperCase(),
               ),
-              trailing: CircleAvatar(backgroundColor: state.color),
+              trailing: CircleAvatar(backgroundColor: category?.color),
               onTap: () => notifier.showColorPicker(context),
             ),
             AppPadding.vertical(flex: 2),
@@ -61,9 +72,9 @@ class EditCategoryView extends HookConsumerWidget {
               alignment: MainAxisAlignment.spaceAround,
               children: [
                 TextButton(
-                  onPressed: state.canCreateCategory
+                  onPressed: state.canSaveChanges
                       ? () async {
-                          await notifier.addCategory();
+                          await notifier.editCategory();
                           Navigator.of(context).pop();
                         }
                       : null,

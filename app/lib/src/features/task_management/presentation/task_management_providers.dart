@@ -16,6 +16,7 @@ import '../data/remote_task_repository.dart';
 import '../domain/edit_task.dart';
 import '../domain/todo_category.dart';
 import '../domain/todo_task.dart';
+import 'category_state_notifier.dart';
 import 'category_tasks_state_notifier.dart';
 import 'edit_task_state_notifier.dart';
 import 'task_state_notifier.dart';
@@ -97,16 +98,20 @@ final addCategoryStateNotifierProvider =
   },
 );
 
-final editCategoryStateNotifierProvider =
-    StateNotifierProvider.autoDispose<EditCategoryStateNotifier, EditCategory>(
-  (ref) {
-    final categoryService = ref.watch(categoryServiceProvider);
-    return EditCategoryStateNotifier(categoryService);
-  },
-);
+final editCategoryStateNotifierProvider = StateNotifierProvider.autoDispose
+    .family<EditCategoryStateNotifier, EditCategory, String>((ref, id) {
+  final categoryService = ref.watch(categoryServiceProvider);
+  return EditCategoryStateNotifier(categoryService, id);
+});
 
 final categoryTasksProvider =
     StreamProvider.autoDispose.family<List<TodoTask>, String>((ref, id) {
   final categoryService = ref.watch(categoryServiceProvider);
   return categoryService.subscribeTasks(id).map((s) => s.value ?? []);
+});
+final categoryStateNotifierProvider = StateNotifierProvider.autoDispose
+    .family<CategoryStateNotifier, AsyncValue<TodoCategory>, String>((ref, id) {
+  final taskService = ref.watch(categoryServiceProvider);
+
+  return CategoryStateNotifier(taskService, id);
 });

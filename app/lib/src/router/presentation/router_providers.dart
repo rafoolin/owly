@@ -13,6 +13,7 @@ import '../../features/authentication/presentation/forgot_password_view.dart';
 import '../../features/authentication/presentation/sign_in_view.dart';
 import '../../features/authentication/presentation/sign_up_with_email_view.dart';
 import '../../features/categories/presentation/categories_view.dart';
+import '../../features/edit_category/presentation/edit_category_view.dart';
 import '../../features/home/presentation/home_view.dart';
 import '../../features/profile/presentation/edit_profile_view.dart';
 import '../../features/profile/presentation/profile_view.dart';
@@ -126,6 +127,13 @@ final routerProvider = Provider<GoRouter>(
           path: CategoriesView.path,
           builder: (BuildContext context, GoRouterState state) =>
               const CategoriesView(),
+        ),
+
+        /// Edit Category view
+        GoRoute(
+          path: EditCategoryView.path,
+          builder: (BuildContext context, GoRouterState state) =>
+              EditCategoryView(id: state.params['id']!),
         ),
 
         /// In progress view

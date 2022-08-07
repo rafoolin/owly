@@ -22,5 +22,9 @@ class EditCategory with _$EditCategory {
           color: color ?? initial!.color,
         );
 
-  bool get changed => name != initial?.name || color != initial?.color;
+  bool get changed =>
+      (name != null && name != initial?.name) ||
+      (color != null && color != initial?.color);
+
+  bool get canSaveChanges => initial != null && changed;
 }
