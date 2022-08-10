@@ -6,10 +6,9 @@ import '../domain/todo_task.dart';
 
 class RemoteTaskRepository {
   final GraphQLClient _qlClient;
-  final String taskId;
-  RemoteTaskRepository(this._qlClient, this.taskId);
+  RemoteTaskRepository(this._qlClient);
 
-  Stream<AsyncValue<TodoTask>> subscribeTask() {
+  Stream<AsyncValue<TodoTask>> subscribeTask(String taskId) {
     const query = '''subscription (\$id: uuid!) {
       tasks_by_pk(id: \$id) {
         __typename
@@ -61,7 +60,7 @@ class RemoteTaskRepository {
     });
   }
 
-  Stream<AsyncValue<TodoTask>> watchTask() {
+  Stream<AsyncValue<TodoTask>> watchTask(String taskId) {
     const query = '''query (\$id: uuid!) {
       tasks_by_pk(id: \$id) {
         __typename
@@ -115,7 +114,7 @@ class RemoteTaskRepository {
     });
   }
 
-  Future<void> markTaskAsDone({bool completed = false}) async {
+  Future<void> markTaskAsDone(String taskId, {bool completed = false}) async {
     const query = '''mutation (\$id: uuid!, \$completed: Boolean = false) {
       update_tasks_by_pk(pk_columns: {id: \$id}, _set: {completed: \$completed}) {
         __typename
@@ -148,22 +147,43 @@ class RemoteTaskRepository {
     ));
   }
 
-  Future<void> deleteTask() async {
-    const query = '''mutation (\$id: uuid!) {
-      delete_tasks_by_pk(id: \$id) {
-        __typename
-        id
-      }
-    }''';
+  Future<void> addTask({
+    required String title,
+    required String categoryId,
+    required DateTime dueDatetime,
+    String? note,
+    List<TodoSubTask> subTasks = const [],
+  }) async {
+    const mutation = '''mutation (\$categoryId: uuid!, 
+      \$dueDatetime: timestamptz!, \$note: String, \$title: String!, 
+      \$sub_tasks: [sub_tasks_insert_input!] = []) {
+    insert_tasks_one(object: {categoryId: \$categoryId, 
+    dueDatetime: \$dueDatetime, note: \$note, title: \$title, 
+    sub_tasks: {data: \$sub_tasks}}) {
+      id
+    }
+  }
+''';
 
     await _qlClient.mutate(MutationOptions(
-      document: gql(query),
-      variables: {'id': taskId},
+      document: gql(mutation),
       fetchPolicy: FetchPolicy.cacheAndNetwork,
+      variables: {
+        'title': title,
+        'categoryId': categoryId,
+        'dueDatetime': dueDatetime.toIso8601String(),
+        if (note != null) 'note': note,
+        'sub_tasks': subTasks
+            .map(
+              (s) => {'title': s.title},
+            )
+            .toList(),
+      },
     ));
   }
 
-  Future<void> editTask({
+  Future<void> editTask(
+    String taskId, {
     required String? title,
     required String? categoryId,
     required DateTime? dueDatetime,
@@ -211,6 +231,21 @@ class RemoteTaskRepository {
         if (removedSubTasks.isNotEmpty)
           'removed_ids': removedSubTasks.map((s) => s.id).toList(),
       },
+    ));
+  }
+
+  Future<void> deleteTask(String taskId) async {
+    const query = '''mutation (\$id: uuid!) {
+      delete_tasks_by_pk(id: \$id) {
+        __typename
+        id
+      }
+    }''';
+
+    await _qlClient.mutate(MutationOptions(
+      document: gql(query),
+      variables: {'id': taskId},
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
     ));
   }
 }

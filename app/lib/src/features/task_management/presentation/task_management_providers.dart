@@ -6,10 +6,8 @@ import '../add_category/presentation/add_category_state_notifier.dart';
 
 import '../add_task/domain/add_task.dart';
 import '../add_task/presentation/add_task_state_notifier.dart';
-import '../application/all_categories_service.dart';
 import '../application/category_service.dart';
 import '../application/task_service.dart';
-import '../data/remote_all_categories_repository.dart';
 import '../data/remote_category_repository.dart';
 import '../data/remote_task_repository.dart';
 import '../domain/todo_category.dart';
@@ -28,26 +26,14 @@ final _remoteCategoryRepositoryProvider =
   return RemoteCategoryRepository(gqlClient);
 });
 
-final _remoteAllCategoriesRepositoryProvider =
-    Provider<RemoteAllCategoriesRepository>((ref) {
-  final gqlClient = ref.watch(graphQLClientProvider);
-  return RemoteAllCategoriesRepository(gqlClient);
-});
-
 final categoryServiceProvider = Provider.autoDispose<CategoryService>((ref) {
   final remoteCategoryRepo = ref.watch(_remoteCategoryRepositoryProvider);
   return CategoryService(remoteCategoryRepo);
 });
 
-final _allCategoriesServiceProvider =
-    Provider.autoDispose<AllCategoriesService>((ref) {
-  final repo = ref.watch(_remoteAllCategoriesRepositoryProvider);
-  return AllCategoriesService(repo);
-});
-
 final allCategoriesProvider =
     StreamProvider.autoDispose<List<TodoCategory>>((ref) {
-  final repo = ref.watch(_allCategoriesServiceProvider);
+  final repo = ref.watch(categoryServiceProvider);
   return repo.subscribeCategories().map((event) => event.value ?? []);
 });
 
@@ -60,34 +46,33 @@ final categoryTasksStateNotifierProvider = StateNotifierProvider.autoDispose
 );
 
 final _remoteTaskRepositoryProvider =
-    Provider.autoDispose.family<RemoteTaskRepository, String>((ref, id) {
+    Provider.autoDispose<RemoteTaskRepository>((ref) {
   final gqlClient = ref.watch(graphQLClientProvider);
-  return RemoteTaskRepository(gqlClient, id);
+  return RemoteTaskRepository(gqlClient);
 });
 
-final taskServiceProvider =
-    Provider.autoDispose.family<TaskService, String>((ref, id) {
-  final remoteTaskRepo = ref.watch(_remoteTaskRepositoryProvider(id));
+final taskServiceProvider = Provider.autoDispose<TaskService>((ref) {
+  final remoteTaskRepo = ref.watch(_remoteTaskRepositoryProvider);
   return TaskService(remoteTaskRepo);
 });
 
 final taskStateNotifierProvider = StateNotifierProvider.autoDispose
     .family<TaskStateNotifier, AsyncValue<TodoTask>, String>((ref, id) {
-  final taskService = ref.watch(taskServiceProvider(id));
+  final taskService = ref.watch(taskServiceProvider);
 
-  return TaskStateNotifier(taskService);
+  return TaskStateNotifier(taskService, id);
 });
 
 final editTaskStateNotifierProvider = StateNotifierProvider.autoDispose
     .family<EditTaskStateNotifier, EditTask, String>((ref, id) {
-  final taskService = ref.watch(taskServiceProvider(id));
+  final taskService = ref.watch(taskServiceProvider);
 
-  return EditTaskStateNotifier(taskService);
+  return EditTaskStateNotifier(taskService, id);
 });
 
 final addTaskStateNotifierProvider = StateNotifierProvider.autoDispose
     .family<AddTaskStateNotifier, AddTask, String?>((ref, id) {
-  final taskService = ref.watch(categoryServiceProvider);
+  final taskService = ref.watch(taskServiceProvider);
   return AddTaskStateNotifier(taskService, id);
 });
 

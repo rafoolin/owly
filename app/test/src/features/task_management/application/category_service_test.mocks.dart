@@ -4,7 +4,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
-import 'dart:ui' as _i8;
+import 'dart:ui' as _i7;
 
 import 'package:hooks_riverpod/hooks_riverpod.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
@@ -12,8 +12,6 @@ import 'package:owly/src/features/task_management/data/remote_category_repositor
     as _i2;
 import 'package:owly/src/features/task_management/domain/todo_category.dart'
     as _i5;
-import 'package:owly/src/features/task_management/domain/todo_sub_task.dart'
-    as _i7;
 import 'package:owly/src/features/task_management/domain/todo_task.dart' as _i6;
 
 // ignore_for_file: type=lint
@@ -37,6 +35,12 @@ class MockRemoteCategoryRepository extends _i1.Mock
   }
 
   @override
+  _i3.Stream<_i4.AsyncValue<List<_i5.TodoCategory>>> subscribeCategories() =>
+      (super.noSuchMethod(Invocation.method(#subscribeCategories, []),
+              returnValue:
+                  _i3.Stream<_i4.AsyncValue<List<_i5.TodoCategory>>>.empty())
+          as _i3.Stream<_i4.AsyncValue<List<_i5.TodoCategory>>>);
+  @override
   _i3.Stream<_i4.AsyncValue<List<_i5.TodoCategory>>> watchCategories() =>
       (super.noSuchMethod(Invocation.method(#watchCategories, []),
               returnValue:
@@ -56,32 +60,14 @@ class MockRemoteCategoryRepository extends _i1.Mock
               returnValue: _i3.Stream<_i4.AsyncValue<_i5.TodoCategory>>.empty())
           as _i3.Stream<_i4.AsyncValue<_i5.TodoCategory>>);
   @override
-  _i3.Future<void> addTask(
-          {String? title,
-          String? categoryId,
-          DateTime? dueDatetime,
-          String? note,
-          List<_i7.TodoSubTask>? subTasks = const []}) =>
-      (super.noSuchMethod(
-              Invocation.method(#addTask, [], {
-                #title: title,
-                #categoryId: categoryId,
-                #dueDatetime: dueDatetime,
-                #note: note,
-                #subTasks: subTasks
-              }),
-              returnValue: _i3.Future<void>.value(),
-              returnValueForMissingStub: _i3.Future<void>.value())
-          as _i3.Future<void>);
-  @override
-  _i3.Future<void> addCategory({String? name, _i8.Color? color}) =>
+  _i3.Future<void> addCategory({String? name, _i7.Color? color}) =>
       (super.noSuchMethod(
               Invocation.method(#addCategory, [], {#name: name, #color: color}),
               returnValue: _i3.Future<void>.value(),
               returnValueForMissingStub: _i3.Future<void>.value())
           as _i3.Future<void>);
   @override
-  _i3.Future<void> editCategory({String? id, String? name, _i8.Color? color}) =>
+  _i3.Future<void> editCategory({String? id, String? name, _i7.Color? color}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #editCategory, [], {#id: id, #name: name, #color: color}),

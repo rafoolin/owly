@@ -30,7 +30,7 @@ void main() async {
 
   setUp(() {
     mockGraphQLClient = generateMockGraphQLClient();
-    remoteTaskRepository = RemoteTaskRepository(mockGraphQLClient, taskId);
+    remoteTaskRepository = RemoteTaskRepository(mockGraphQLClient);
   });
 
   // TODO:: Test subscription
@@ -99,7 +99,7 @@ void main() async {
 
       when(() => result.isLoading).thenReturn(true);
       expect(
-        remoteTaskRepository.watchTask(),
+        remoteTaskRepository.watchTask(taskId),
         emits(const AsyncLoading<TodoTask>()),
       );
       verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
@@ -113,7 +113,7 @@ void main() async {
       when(() => result.exception).thenReturn(OperationException());
 
       expect(
-        remoteTaskRepository.watchTask(),
+        remoteTaskRepository.watchTask(taskId),
         emits(isA<AsyncError>()),
       );
       verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
@@ -127,11 +127,11 @@ void main() async {
       when(() => result.data).thenReturn(jsonData);
 
       expect(
-        remoteTaskRepository.watchTask(),
+        remoteTaskRepository.watchTask(taskId),
         emits(isA<AsyncData>()),
       );
       verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
-      remoteTaskRepository.watchTask().listen((event) {
+      remoteTaskRepository.watchTask(taskId).listen((event) {
         expect(event.value?.id, contains(finalData.id));
         expect(event.value?.subTasks.first, finalData.subTasks.first);
       });
@@ -203,7 +203,7 @@ void main() async {
 
       when(() => result.isLoading).thenReturn(true);
       expect(
-        remoteTaskRepository.watchTask(),
+        remoteTaskRepository.watchTask(taskId),
         emits(const AsyncLoading<TodoTask>()),
       );
       verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
@@ -217,7 +217,7 @@ void main() async {
       when(() => result.exception).thenReturn(OperationException());
 
       expect(
-        remoteTaskRepository.watchTask(),
+        remoteTaskRepository.watchTask(taskId),
         emits(isA<AsyncError>()),
       );
       verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
@@ -231,11 +231,11 @@ void main() async {
       when(() => result.data).thenReturn(jsonData);
 
       expect(
-        remoteTaskRepository.watchTask(),
+        remoteTaskRepository.watchTask(taskId),
         emits(isA<AsyncData>()),
       );
       verify(() => mockGraphQLClient.watchQuery(captureAny())).called(1);
-      remoteTaskRepository.watchTask().listen((event) {
+      remoteTaskRepository.watchTask(taskId).listen((event) {
         expect(event.value?.id, contains(finalData.id));
         expect(event.value?.subTasks.first, finalData.subTasks.first);
       });

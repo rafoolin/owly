@@ -10,7 +10,8 @@ import '../domain/edit_task.dart';
 
 class EditTaskStateNotifier extends StateNotifier<EditTask> {
   final TaskService _taskService;
-  EditTaskStateNotifier(this._taskService) : super(EditTask()) {
+  final String taskId;
+  EditTaskStateNotifier(this._taskService, this.taskId) : super(EditTask()) {
     watchTask();
   }
   StreamSubscription<AsyncValue<TodoTask>>? _subTask;
@@ -18,7 +19,7 @@ class EditTaskStateNotifier extends StateNotifier<EditTask> {
   void watchTask() {
     _subTask?.cancel();
     _subTask = _taskService
-        .watchTask()
+        .watchTask(taskId)
         .listen((task) => state = state.copyWith(initialTask: task.value));
   }
 
@@ -54,6 +55,7 @@ class EditTaskStateNotifier extends StateNotifier<EditTask> {
 
   Future<void> editTask() async {
     await _taskService.editTask(
+      taskId,
       title: state.title,
       categoryId: state.categoryId,
       dueDatetime: state.dueDatetime,

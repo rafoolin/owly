@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../application/category_service.dart';
+import '../../application/task_service.dart';
 import '../../domain/todo_sub_task.dart';
 import '../domain/add_task.dart';
 
 class AddTaskStateNotifier extends StateNotifier<AddTask> {
-  final CategoryService _categoryService;
+  final TaskService _taskService;
 
-  AddTaskStateNotifier(this._categoryService, String? _categoryId)
+  AddTaskStateNotifier(this._taskService, String? _categoryId)
       : super(AddTask(initialCategoryId: _categoryId));
 
   void changeTitle(String title) {
@@ -45,7 +45,7 @@ class AddTaskStateNotifier extends StateNotifier<AddTask> {
 
   Future<void> addTask() async {
     if (!state.canCreateTask) return;
-    await _categoryService.addTask(
+    await _taskService.addTask(
       title: state.title!,
       categoryId: state.categoryId ?? state.initialCategoryId!,
       dueDatetime: state.dueDatetime!,
