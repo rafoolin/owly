@@ -6,8 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../app_flavor/presentation/app_flavor_providers.dart';
 import '../../../../common/screens/in_progress_view.dart';
 import '../../../authentication/presentation/auth_providers.dart';
-import '../../../categories/presentation/categories_view.dart';
 import '../../../profile/presentation/profile_view.dart';
+import '../../../task_management/categories/presentation/categories_view.dart';
 
 class HomeDrawer extends HookConsumerWidget {
   const HomeDrawer({Key? key}) : super(key: key);
