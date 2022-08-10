@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../common/widgets/app_padding.dart';
-import '../../../add_category/presentation/add_category_view.dart';
+import '../../add_category/presentation/add_category_view.dart';
 import '../task_management_providers.dart';
 
 class CategorySection extends HookConsumerWidget {

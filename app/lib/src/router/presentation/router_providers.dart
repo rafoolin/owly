@@ -6,7 +6,6 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 
 import '../../common/screens/error_view.dart';
 import '../../common/screens/in_progress_view.dart';
-import '../../features/add_category/presentation/add_category_view.dart';
 import '../../features/add_task/presentation/add_task_view.dart';
 import '../../features/authentication/presentation/auth_providers.dart';
 import '../../features/authentication/presentation/forgot_password_view.dart';
@@ -17,6 +16,7 @@ import '../../features/edit_category/presentation/edit_category_view.dart';
 import '../../features/home/presentation/home_view.dart';
 import '../../features/profile/presentation/edit_profile_view.dart';
 import '../../features/profile/presentation/profile_view.dart';
+import '../../features/task_management/add_category/presentation/add_category_view.dart';
 import '../../features/task_management/presentation/category_view.dart';
 import '../../features/task_management/presentation/edit_task_view.dart';
 import '../../features/task_management/presentation/task_view.dart';
