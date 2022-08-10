@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../application/task_service.dart';
+import '../../application/task_service.dart';
+import '../../domain/todo_sub_task.dart';
+import '../../domain/todo_task.dart';
 import '../domain/edit_task.dart';
-import '../domain/todo_sub_task.dart';
-import '../domain/todo_task.dart';
 
 class EditTaskStateNotifier extends StateNotifier<EditTask> {
   final TaskService _taskService;

@@ -12,14 +12,14 @@ import '../application/task_service.dart';
 import '../data/remote_all_categories_repository.dart';
 import '../data/remote_category_repository.dart';
 import '../data/remote_task_repository.dart';
-import '../domain/edit_task.dart';
 import '../domain/todo_category.dart';
 import '../domain/todo_task.dart';
 import '../edit_category/domain/edit_category.dart';
 import '../edit_category/presentation/edit_category_state_notifier.dart';
+import '../edit_task/domain/edit_task.dart';
+import '../edit_task/presentation/edit_task_state_notifier.dart';
 import 'category_state_notifier.dart';
 import 'category_tasks_state_notifier.dart';
-import 'edit_task_state_notifier.dart';
 import 'task_state_notifier.dart';
 
 final _remoteCategoryRepositoryProvider =

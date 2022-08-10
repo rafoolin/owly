@@ -9,7 +9,7 @@ import '../../../common/screens/error_view.dart';
 import '../../../common/widgets/app_padding.dart';
 import '../../../common/widgets/expandable_text.dart';
 import '../domain/todo_task.dart';
-import 'edit_task_view.dart';
+import '../edit_task/presentation/edit_task_view.dart';
 import 'task_management_providers.dart';
 
 class TaskView extends HookConsumerWidget {

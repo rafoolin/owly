@@ -17,8 +17,8 @@ import '../../features/profile/presentation/profile_view.dart';
 import '../../features/task_management/add_category/presentation/add_category_view.dart';
 import '../../features/task_management/add_task/presentation/add_task_view.dart';
 import '../../features/task_management/edit_category/presentation/edit_category_view.dart';
+import '../../features/task_management/edit_task/presentation/edit_task_view.dart';
 import '../../features/task_management/presentation/category_view.dart';
-import '../../features/task_management/presentation/edit_task_view.dart';
 import '../../features/task_management/presentation/task_view.dart';
 import 'router_notifier.dart';
 

@@ -3,10 +3,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../common/widgets/app_padding.dart';
-import 'task_management_providers.dart';
-import 'task_view.dart';
-import 'widgets/category_section.dart';
+import '../../../../common/widgets/app_padding.dart';
+import '../../presentation/task_management_providers.dart';
+import '../../presentation/task_view.dart';
+import '../../presentation/widgets/category_section.dart';
 
 class EditTaskView extends HookConsumerWidget {
   static const path = 'editTask';
