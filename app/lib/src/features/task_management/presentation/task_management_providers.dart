@@ -4,8 +4,6 @@ import '../../../client/presentation/client_providers.dart';
 import '../add_category/domain/add_category.dart';
 import '../add_category/presentation/add_category_state_notifier.dart';
 
-import '../../edit_category/domain/edit_category.dart';
-import '../../edit_category/presentation/edit_category_state_notifier.dart';
 import '../add_task/domain/add_task.dart';
 import '../add_task/presentation/add_task_state_notifier.dart';
 import '../application/all_categories_service.dart';
@@ -17,6 +15,8 @@ import '../data/remote_task_repository.dart';
 import '../domain/edit_task.dart';
 import '../domain/todo_category.dart';
 import '../domain/todo_task.dart';
+import '../edit_category/domain/edit_category.dart';
+import '../edit_category/presentation/edit_category_state_notifier.dart';
 import 'category_state_notifier.dart';
 import 'category_tasks_state_notifier.dart';
 import 'edit_task_state_notifier.dart';
