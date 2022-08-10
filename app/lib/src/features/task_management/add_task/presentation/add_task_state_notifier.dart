@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../task_management/application/category_service.dart';
-import '../../task_management/domain/todo_sub_task.dart';
+import '../../application/category_service.dart';
+import '../../domain/todo_sub_task.dart';
 import '../domain/add_task.dart';
 
 class AddTaskStateNotifier extends StateNotifier<AddTask> {

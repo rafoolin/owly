@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../task_management/domain/todo_sub_task.dart';
+import '../../domain/todo_sub_task.dart';
 
 part 'add_task.freezed.dart';
 

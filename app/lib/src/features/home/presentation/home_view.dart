@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/widgets/app_padding.dart';
-import '../../add_task/presentation/add_task_view.dart';
+import '../../task_management/add_task/presentation/add_task_view.dart';
 import 'home_providers.dart';
 import 'widgets/home_drawer.dart';
 import 'widgets/task_card.dart';
