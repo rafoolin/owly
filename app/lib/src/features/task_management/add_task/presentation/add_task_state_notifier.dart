@@ -3,24 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../application/task_service.dart';
-import '../domain/edit_task.dart';
-import '../domain/todo_sub_task.dart';
-import '../domain/todo_task.dart';
+import '../../application/task_service.dart';
+import '../../domain/todo_sub_task.dart';
+import '../domain/add_task.dart';
 
-class EditTaskStateNotifier extends StateNotifier<EditTask> {
+class AddTaskStateNotifier extends StateNotifier<AddTask> {
   final TaskService _taskService;
-  EditTaskStateNotifier(this._taskService) : super(EditTask()) {
-    watchTask();
-  }
-  StreamSubscription<AsyncValue<TodoTask>>? _subTask;
 
-  void watchTask() {
-    _subTask?.cancel();
-    _subTask = _taskService
-        .watchTask()
-        .listen((task) => state = state.copyWith(initialTask: task.value));
-  }
+  AddTaskStateNotifier(this._taskService, String? _categoryId)
+      : super(AddTask(initialCategoryId: _categoryId));
 
   void changeTitle(String title) {
     state = state.copyWith(title: title.trim());
@@ -39,27 +30,27 @@ class EditTaskStateNotifier extends StateNotifier<EditTask> {
   }
 
   void addSubtask(String title) {
-    state = state.copyWith(addedSubTasks: [
-      ...state.addedSubTasks,
-      TodoSubTask.fromTitle(title: title.trim(), taskId: state.initialTask!.id)
-    ]);
-  }
-
-  void removeSubtask(TodoSubTask subTask) {
+    if (title.trim().isEmpty) return;
     state = state.copyWith(
-      removedSubTasks: [...state.removedSubTasks, subTask],
-      addedSubTasks: [...state.addedSubTasks]..remove(subTask),
+      subTasks: [
+        ...state.subTasks,
+        TodoSubTask.fromTitle(title: title.trim(), taskId: '')
+      ],
     );
   }
 
-  Future<void> editTask() async {
-    await _taskService.editTask(
-      title: state.title,
-      categoryId: state.categoryId,
-      dueDatetime: state.dueDatetime,
+  void removeSubtask(TodoSubTask subTask) {
+    state = state.copyWith(subTasks: [...state.subTasks]..remove(subTask));
+  }
+
+  Future<void> addTask() async {
+    if (!state.canCreateTask) return;
+    await _taskService.addTask(
+      title: state.title!,
+      categoryId: state.categoryId ?? state.initialCategoryId!,
+      dueDatetime: state.dueDatetime!,
       note: state.note,
-      addedSubTasks: state.addedSubTasks,
-      removedSubTasks: state.removedSubTasks,
+      subTasks: state.subTasks,
     );
   }
 
@@ -97,8 +88,7 @@ class EditTaskStateNotifier extends StateNotifier<EditTask> {
   }
 
   Future<void> showCalendar(BuildContext context) async {
-    final now = DateTime.now().toLocal();
-    final initialDate = state.editedVersion?.dueDatetime.toLocal() ?? now;
+    final initialDate = DateTime.now().toLocal();
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: initialDate,
@@ -122,11 +112,5 @@ class EditTaskStateNotifier extends StateNotifier<EditTask> {
         state = state.copyWith(dueDatetime: finalDateTime);
       }
     }
-  }
-
-  @override
-  void dispose() {
-    _subTask?.cancel();
-    super.dispose();
   }
 }

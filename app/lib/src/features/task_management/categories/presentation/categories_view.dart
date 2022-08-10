@@ -3,9 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../add_category/presentation/add_category_view.dart';
-import '../../task_management/presentation/task_management_providers.dart';
-import '../../task_management/presentation/widgets/todo_category_card.dart';
+import '../../../task_management/add_category/presentation/add_category_view.dart';
+import '../../../task_management/presentation/task_management_providers.dart';
+import '../../../task_management/presentation/widgets/todo_category_card.dart';
 
 class CategoriesView extends HookConsumerWidget {
   static const path = '/categoriesView';

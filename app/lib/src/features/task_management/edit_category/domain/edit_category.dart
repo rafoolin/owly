@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../task_management/domain/todo_category.dart';
+import '../../domain/todo_category.dart';
 
 part 'edit_category.freezed.dart';
 

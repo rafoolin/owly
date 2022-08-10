@@ -4,22 +4,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../task_management/application/category_service.dart';
-import '../domain/add_category.dart';
+import '../../application/category_service.dart';
+import '../../domain/todo_category.dart';
+import '../domain/edit_category.dart';
 
-class AddCategoryStateNotifier extends StateNotifier<AddCategory> {
+class EditCategoryStateNotifier extends StateNotifier<EditCategory> {
   final CategoryService _categoryService;
-  AddCategoryStateNotifier(this._categoryService) : super(AddCategory());
+  final String id;
+  EditCategoryStateNotifier(this._categoryService, this.id)
+      : super(EditCategory()) {
+    _subscribeCategory();
+  }
+
+  StreamSubscription<AsyncValue<TodoCategory>>? _sub;
+
+  void _subscribeCategory() {
+    _sub?.cancel();
+    _sub = _categoryService
+        .subscribeCategory(id)
+        .listen((category) => state = state.copyWith(initial: category.value));
+  }
 
   void changeName(String name) {
     state = state.copyWith(name: name.trim());
   }
 
-  Future<void> addCategory() async {
-    if (!state.canCreateCategory) return;
-    await _categoryService.addCategory(
-      name: state.name!,
-      color: state.color ?? Colors.transparent,
+  Future<void> editCategory() async {
+    if (!state.canSaveChanges) return;
+    await _categoryService.editCategory(
+      id: id,
+      name: state.name ?? state.initial!.name,
+      color: state.color ?? state.initial!.color,
     );
   }
 
@@ -64,7 +79,7 @@ class AddCategoryStateNotifier extends StateNotifier<AddCategory> {
           title: const Text('Pick a Color!'),
           children: [
             HueRingPicker(
-              pickerColor: state.color ?? Colors.white,
+              pickerColor: state.color ?? state.initial?.color ?? Colors.white,
               onColorChanged: (color) {
                 state = state.copyWith(color: color);
               },
@@ -73,5 +88,11 @@ class AddCategoryStateNotifier extends StateNotifier<AddCategory> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _sub?.cancel();
   }
 }

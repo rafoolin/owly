@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'todo_sub_task.dart';
-import 'todo_task.dart';
+import '../../domain/todo_sub_task.dart';
+import '../../domain/todo_task.dart';
 
 part 'edit_task.freezed.dart';
 

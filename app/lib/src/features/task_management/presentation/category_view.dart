@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/widgets/app_padding.dart';
-import '../../add_task/presentation/add_task_view.dart';
-import '../../edit_category/presentation/edit_category_view.dart';
 import '../../home/presentation/widgets/task_card.dart';
+import '../add_task/presentation/add_task_view.dart';
+import '../edit_category/presentation/edit_category_view.dart';
 import 'task_management_providers.dart';
 
 class CategoryView extends HookConsumerWidget {
