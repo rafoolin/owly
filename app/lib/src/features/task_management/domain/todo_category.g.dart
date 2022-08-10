@@ -16,6 +16,7 @@ Map<String, dynamic> _$TodoCategoryToJson(TodoCategory instance) =>
       'color': _$JsonConverterToJson<int, Color>(
           instance.color, const ColorConverter().toJson),
       'createdAt': instance.createdAt.toIso8601String(),
+      'totalTasks': instance.totalTasks,
       'updatedAt': instance.updatedAt?.toIso8601String(),
     };
 
@@ -33,6 +34,7 @@ _$_TodoCategory _$$_TodoCategoryFromJson(Map<String, dynamic> json) =>
       color: _$JsonConverterFromJson<int, Color>(
           json['color'], const ColorConverter().fromJson),
       createdAt: DateTime.parse(json['createdAt'] as String),
+      totalTasks: json['totalTasks'] as int,
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
@@ -46,6 +48,7 @@ Map<String, dynamic> _$$_TodoCategoryToJson(_$_TodoCategory instance) =>
       'color': _$JsonConverterToJson<int, Color>(
           instance.color, const ColorConverter().toJson),
       'createdAt': instance.createdAt.toIso8601String(),
+      'totalTasks': instance.totalTasks,
       'updatedAt': instance.updatedAt?.toIso8601String(),
     };
 

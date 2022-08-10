@@ -38,6 +38,7 @@ void main() async {
         name: 'name',
         userId: 'userId',
         createdAt: time,
+        totalTasks: 0,
       )
     ];
     test('Success', () async {
@@ -77,33 +78,31 @@ void main() async {
       ),
     ];
     test('Success', () async {
-      when(remoteCategoryRepository.watchTasksByCategoryId(categoryId))
+      when(remoteCategoryRepository.subscribeTasks(categoryId))
           .thenAnswer((_) => Stream.value(AsyncData(finalData)));
       expect(
-        remoteCategoryRepository.watchTasksByCategoryId(categoryId),
+        remoteCategoryRepository.subscribeTasks(categoryId),
         emits(isA<AsyncData<List<TodoTask>>>()),
       );
-      verify(remoteCategoryRepository.watchTasksByCategoryId(categoryId))
-          .called(1);
+      verify(remoteCategoryRepository.subscribeTasks(categoryId)).called(1);
 
-      remoteCategoryRepository.watchTasksByCategoryId(categoryId).listen(
+      remoteCategoryRepository.subscribeTasks(categoryId).listen(
         (event) {
           expect(event.value, contains(finalData.first));
         },
       );
     });
     test('Failure', () async {
-      when(remoteCategoryRepository.watchTasksByCategoryId(categoryId))
+      when(remoteCategoryRepository.subscribeTasks(categoryId))
           .thenAnswer((_) => Stream.value(AsyncError(Exception())));
 
-      remoteCategoryRepository.watchTasksByCategoryId(categoryId).listen(
+      remoteCategoryRepository.subscribeTasks(categoryId).listen(
         (event) {
           expect(event, isA<AsyncError>());
         },
       );
 
-      verify(remoteCategoryRepository.watchTasksByCategoryId(categoryId))
-          .called(1);
+      verify(remoteCategoryRepository.subscribeTasks(categoryId)).called(1);
     });
   });
 }

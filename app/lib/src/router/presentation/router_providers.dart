@@ -6,15 +6,18 @@ import 'package:nhost_sdk/nhost_sdk.dart';
 
 import '../../common/screens/error_view.dart';
 import '../../common/screens/in_progress_view.dart';
+import '../../features/add_category/presentation/add_category_view.dart';
+import '../../features/add_task/presentation/add_task_view.dart';
 import '../../features/authentication/presentation/auth_providers.dart';
 import '../../features/authentication/presentation/forgot_password_view.dart';
 import '../../features/authentication/presentation/sign_in_view.dart';
 import '../../features/authentication/presentation/sign_up_with_email_view.dart';
+import '../../features/categories/presentation/categories_view.dart';
+import '../../features/edit_category/presentation/edit_category_view.dart';
 import '../../features/home/presentation/home_view.dart';
 import '../../features/profile/presentation/edit_profile_view.dart';
 import '../../features/profile/presentation/profile_view.dart';
 import '../../features/task_management/presentation/category_view.dart';
-import '../../features/task_management/presentation/category_tasks_view.dart';
 import '../../features/task_management/presentation/edit_task_view.dart';
 import '../../features/task_management/presentation/task_view.dart';
 import 'router_notifier.dart';
@@ -96,17 +99,41 @@ final routerProvider = Provider<GoRouter>(
         GoRoute(
           path: CategoryView.path,
           builder: (BuildContext context, GoRouterState state) =>
-              const CategoryView(),
-          routes: [
-            /// Category Tasks view
-            GoRoute(
-              path: CategoryTasksView.path,
-              builder: (BuildContext context, GoRouterState state) =>
-                  CategoryTasksView(
-                categoryId: state.params['id']!,
-              ),
-            ),
-          ],
+              CategoryView(id: state.params['id']!),
+        ),
+
+        /// Add Tasks view
+        GoRoute(
+          path: AddTaskView.path,
+          builder: (BuildContext context, GoRouterState state) =>
+              const AddTaskView(),
+        ),
+
+        GoRoute(
+          path: AddTaskView.categoryPath,
+          builder: (BuildContext context, GoRouterState state) =>
+              AddTaskView(id: state.params['id']!),
+        ),
+
+        /// Add Category view
+        GoRoute(
+          path: AddCategoryView.path,
+          builder: (BuildContext context, GoRouterState state) =>
+              const AddCategoryView(),
+        ),
+
+        /// Categories view
+        GoRoute(
+          path: CategoriesView.path,
+          builder: (BuildContext context, GoRouterState state) =>
+              const CategoriesView(),
+        ),
+
+        /// Edit Category view
+        GoRoute(
+          path: EditCategoryView.path,
+          builder: (BuildContext context, GoRouterState state) =>
+              EditCategoryView(id: state.params['id']!),
         ),
 
         /// In progress view

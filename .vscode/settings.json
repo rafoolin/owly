@@ -4,6 +4,7 @@
         "autofocus",
         "circleci",
         "cirrusci",
+        "colorpicker",
         "Cupertino",
         "Datetime",
         "hasura",
@@ -15,6 +16,7 @@
         "Schyler",
         "subloc",
         "subosito",
+        "timestamptz",
         "xcconfig"
     ]
 }

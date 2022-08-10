@@ -18,7 +18,7 @@ class CategoryTasksStateNotifier
 
   void watchTasks() {
     sub = _categoryService
-        .watchTasksByCategoryId(categoryId)
+        .subscribeTasks(categoryId)
         .listen((tasks) => state = tasks);
   }
 

@@ -41,6 +41,24 @@ MockQueryResult generateMockWatchQuery(MockGraphQLClient graphQLClient) {
   return result;
 }
 
+MockQueryResult generateMockSubscribe(MockGraphQLClient graphQLClient) {
+  registerFallbackValue(_FakeWatchQueryOptions());
+  registerFallbackValue(_FakeSubscriptionOptions());
+  final query = MockObservableQuery();
+  final result = MockQueryResult();
+  final queryManager = graphQLClient.queryManager;
+
+  when(query.close).thenReturn(QueryLifecycle.closed);
+  when(() => query.stream).thenAnswer((_) => Stream.value(result));
+  when(() => query.latestResult).thenReturn(result);
+  // ignore: void_checks
+  when(() => query.onData(any())).thenReturn(() {});
+  when(() => graphQLClient.subscribe(any())).thenAnswer((_) => query.stream);
+  when(() => queryManager.subscribe(any())).thenAnswer((_) => query.stream);
+
+  return result;
+}
+
 MockQueryResult generateMockMutation(MockGraphQLClient graphQLClient) {
   registerFallbackValue(_FakeMutationOptions());
 
@@ -60,6 +78,8 @@ class MockQueryManager extends Mock implements QueryManager {}
 class MockQueryResult extends Mock implements QueryResult {}
 
 class _FakeWatchQueryOptions extends Fake implements WatchQueryOptions {}
+
+class _FakeSubscriptionOptions extends Fake implements SubscriptionOptions {}
 
 class MockObservableQuery extends Mock implements ObservableQuery {}
 

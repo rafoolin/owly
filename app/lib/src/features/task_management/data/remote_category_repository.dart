@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../domain/todo_category.dart';
+import '../domain/todo_sub_task.dart';
 import '../domain/todo_task.dart';
 
 class RemoteCategoryRepository {
@@ -18,6 +20,11 @@ class RemoteCategoryRepository {
         updateAt
         userId
         createdAt
+        taskCount: tasks_aggregate {
+          aggregate {
+            count
+          }
+        }
       }
     }''';
 
@@ -40,39 +47,42 @@ class RemoteCategoryRepository {
       if (result.data != null) {
         final categories = result.data!['categories'] as List;
         return AsyncData(
-          categories.map((json) => TodoCategory.fromJson(json)).toList(),
+          categories.map((json) {
+            // TODO:: Cover it in converter
+            final taskCount = json['taskCount']['aggregate']['count'];
+            json['totalTasks'] = taskCount;
+            return TodoCategory.fromJson(json);
+          }).toList(),
         );
       }
       return const AsyncData([]);
     });
   }
 
-  Stream<AsyncValue<List<TodoTask>>> watchTasksByCategoryId(String categoryId) {
-    const query = '''query (\$categoryId: uuid!) {
-      vm_user_tasks(where: {categoryId: {_eq: \$categoryId}}) {
+  Stream<AsyncValue<List<TodoTask>>> subscribeTasks(String categoryId) {
+    const query = '''subscription (\$categoryId: uuid!) {
+      tasks(where: {categoryId: {_eq: \$categoryId}}) {
         __typename
         id
+        userId
         title
         completed
         note
-        parentId
-        userId
         categoryId
+        categoryColor
+        dueDatetime
         createdAt
         createdAt
         completedAt
-        dateTime
         sub_tasks {
           __typename
           id
           title
           completed
-          completedAt
-          dateTime
+          dueAt
           note
-          parentId
           userId
-          categoryId
+          taskId
           createdAt
           updatedAt
         }
@@ -80,13 +90,11 @@ class RemoteCategoryRepository {
     }''';
 
     return _qlClient
-        .watchQuery(WatchQueryOptions(
-          fetchResults: true,
-          document: gql(query),
-          variables: {'categoryId': categoryId},
-          fetchPolicy: FetchPolicy.cacheAndNetwork,
-        ))
-        .stream
+        .subscribe(SubscriptionOptions(
+      document: gql(query),
+      variables: {'categoryId': categoryId},
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+    ))
         .map((result) {
       if (result.isLoading) {
         return const AsyncLoading();
@@ -97,12 +105,146 @@ class RemoteCategoryRepository {
       }
 
       if (result.data != null) {
-        final tasks = result.data!['vm_user_tasks'] as List;
+        final tasks = result.data!['tasks'] as List;
         return AsyncData(
           tasks.map((json) => TodoTask.fromJson(json)).toList(),
         );
       }
       return const AsyncData([]);
     });
+  }
+
+  Stream<AsyncValue<TodoCategory>> subscribeCategory(String categoryId) {
+    const query = '''subscription (\$id: uuid!) {
+      categories_by_pk(id: \$id) {
+        __typename
+        id
+        name
+        color
+        updateAt
+        userId
+        createdAt
+        taskCount: tasks_aggregate {
+          aggregate {
+            count
+          }
+        }
+      }
+    }''';
+
+    return _qlClient
+        .subscribe(SubscriptionOptions(
+      document: gql(query),
+      variables: {'id': categoryId},
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+    ))
+        .map((result) {
+      if (result.isLoading) {
+        return const AsyncLoading();
+      }
+
+      if (result.hasException) {
+        return AsyncError(result.exception!);
+      }
+
+      final category = result.data!['categories_by_pk'];
+      // TODO:: Cover it in converter
+      final taskCount = category['taskCount']['aggregate']['count'];
+      category['totalTasks'] = taskCount;
+      if (category != null) {
+        return AsyncData(TodoCategory.fromJson(category));
+      }
+      return AsyncError(Exception('Category do not exist!'));
+    });
+  }
+
+  Future<void> addTask({
+    required String title,
+    required String categoryId,
+    required DateTime dueDatetime,
+    String? note,
+    List<TodoSubTask> subTasks = const [],
+  }) async {
+    const mutation = '''mutation (\$categoryId: uuid!, 
+      \$dueDatetime: timestamptz!, \$note: String, \$title: String!, 
+      \$sub_tasks: [sub_tasks_insert_input!] = []) {
+    insert_tasks_one(object: {categoryId: \$categoryId, 
+    dueDatetime: \$dueDatetime, note: \$note, title: \$title, 
+    sub_tasks: {data: \$sub_tasks}}) {
+      id
+    }
+  }
+''';
+
+    await _qlClient.mutate(MutationOptions(
+      document: gql(mutation),
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+      variables: {
+        'title': title,
+        'categoryId': categoryId,
+        'dueDatetime': dueDatetime.toIso8601String(),
+        if (note != null) 'note': note,
+        'sub_tasks': subTasks
+            .map(
+              (s) => {'title': s.title},
+            )
+            .toList(),
+      },
+    ));
+  }
+
+  Future<void> addCategory({required String name, required Color color}) async {
+    const mutation = '''mutation (\$name: String!, \$color: bigint = 0) {
+      insert_categories_one(object: {name: \$name, color: \$color}) {
+        id
+      }
+    }''';
+
+    await _qlClient.mutate(MutationOptions(
+      document: gql(mutation),
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+      variables: {
+        'name': name,
+        'color': color.value,
+      },
+    ));
+  }
+
+  Future<void> editCategory({
+    required String id,
+    required String name,
+    Color? color,
+  }) async {
+    const mutation = '''mutation (\$id: uuid!, \$name: String!, 
+        \$color: bigint = 0) {
+      update_categories_by_pk(pk_columns: {id: \$id}, _set: {color: 
+      \$color, name: \$name}) {
+        id
+      }
+    }''';
+
+    await _qlClient.mutate(MutationOptions(
+      document: gql(mutation),
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+      variables: {
+        'id': id,
+        'name': name,
+        if (color != null) 'color': color.value,
+      },
+    ));
+  }
+
+  Future<void> deleteCategory(String id) async {
+    const mutation = '''mutation MyMutation(\$id: uuid!) {
+      delete_categories_by_pk(id: \$id) {
+        id
+      }
+    }''';
+
+    await _qlClient.mutate(MutationOptions(
+      document: gql(mutation),
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+      variables: {'id': id},
+    ));
   }
 }

@@ -1,6 +1,12 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../client/presentation/client_providers.dart';
+import '../../add_category/domain/add_category.dart';
+import '../../add_category/presentation/add_category_state_notifier.dart';
+import '../../add_task/domain/add_task.dart';
+import '../../add_task/presentation/add_task_state_notifier.dart';
+import '../../edit_category/domain/edit_category.dart';
+import '../../edit_category/presentation/edit_category_state_notifier.dart';
 import '../application/all_categories_service.dart';
 import '../application/category_service.dart';
 import '../application/task_service.dart';
@@ -32,19 +38,17 @@ final categoryServiceProvider = Provider.autoDispose<CategoryService>((ref) {
   return CategoryService(remoteCategoryRepo);
 });
 
-final allCategoriesServiceProvider =
+final _allCategoriesServiceProvider =
     Provider.autoDispose<AllCategoriesService>((ref) {
   final repo = ref.watch(_remoteAllCategoriesRepositoryProvider);
   return AllCategoriesService(repo);
 });
 
-final categoriesStateNotifierProvider = StateNotifierProvider.autoDispose<
-    CategoryStateNotifier, AsyncValue<List<TodoCategory>>>(
-  (ref) {
-    final categoryService = ref.watch(categoryServiceProvider);
-    return CategoryStateNotifier(categoryService);
-  },
-);
+final allCategoriesProvider =
+    StreamProvider.autoDispose<List<TodoCategory>>((ref) {
+  final repo = ref.watch(_allCategoriesServiceProvider);
+  return repo.subscribeCategories().map((event) => event.value ?? []);
+});
 
 final categoryTasksStateNotifierProvider = StateNotifierProvider.autoDispose
     .family<CategoryTasksStateNotifier, AsyncValue<List<TodoTask>>, String>(
@@ -76,7 +80,38 @@ final taskStateNotifierProvider = StateNotifierProvider.autoDispose
 final editTaskStateNotifierProvider = StateNotifierProvider.autoDispose
     .family<EditTaskStateNotifier, EditTask, String>((ref, id) {
   final taskService = ref.watch(taskServiceProvider(id));
-  final allCategoriesService = ref.watch(allCategoriesServiceProvider);
 
-  return EditTaskStateNotifier(taskService, allCategoriesService);
+  return EditTaskStateNotifier(taskService);
+});
+
+final addTaskStateNotifierProvider = StateNotifierProvider.autoDispose
+    .family<AddTaskStateNotifier, AddTask, String?>((ref, id) {
+  final taskService = ref.watch(categoryServiceProvider);
+  return AddTaskStateNotifier(taskService, id);
+});
+
+final addCategoryStateNotifierProvider =
+    StateNotifierProvider.autoDispose<AddCategoryStateNotifier, AddCategory>(
+  (ref) {
+    final categoryService = ref.watch(categoryServiceProvider);
+    return AddCategoryStateNotifier(categoryService);
+  },
+);
+
+final editCategoryStateNotifierProvider = StateNotifierProvider.autoDispose
+    .family<EditCategoryStateNotifier, EditCategory, String>((ref, id) {
+  final categoryService = ref.watch(categoryServiceProvider);
+  return EditCategoryStateNotifier(categoryService, id);
+});
+
+final categoryTasksProvider =
+    StreamProvider.autoDispose.family<List<TodoTask>, String>((ref, id) {
+  final categoryService = ref.watch(categoryServiceProvider);
+  return categoryService.subscribeTasks(id).map((s) => s.value ?? []);
+});
+final categoryStateNotifierProvider = StateNotifierProvider.autoDispose
+    .family<CategoryStateNotifier, AsyncValue<TodoCategory>, String>((ref, id) {
+  final taskService = ref.watch(categoryServiceProvider);
+
+  return CategoryStateNotifier(taskService, id);
 });
