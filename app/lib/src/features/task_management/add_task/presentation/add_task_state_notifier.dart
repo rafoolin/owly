@@ -13,6 +13,10 @@ class AddTaskStateNotifier extends StateNotifier<AddTask> {
   AddTaskStateNotifier(this._taskService, String? _categoryId)
       : super(AddTask(initialCategoryId: _categoryId));
 
+  void initialize({DateTime? dateTime}) {
+    state = state.copyWith(initialDueDatetime: dateTime);
+  }
+
   void changeTitle(String title) {
     state = state.copyWith(title: title.trim());
   }
@@ -48,7 +52,7 @@ class AddTaskStateNotifier extends StateNotifier<AddTask> {
     await _taskService.addTask(
       title: state.title!,
       categoryId: state.categoryId ?? state.initialCategoryId!,
-      dueDatetime: state.dueDatetime!,
+      dueDatetime: state.initialDueDatetime ?? state.dueDatetime!,
       note: state.note,
       subTasks: state.subTasks,
     );
@@ -87,8 +91,8 @@ class AddTaskStateNotifier extends StateNotifier<AddTask> {
     return result ?? false;
   }
 
-  Future<void> showCalendar(BuildContext context) async {
-    final initialDate = DateTime.now().toLocal();
+  Future<void> showCalendar(BuildContext context, {DateTime? init}) async {
+    final initialDate = init ?? DateTime.now().toLocal();
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: initialDate,

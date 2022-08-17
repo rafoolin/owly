@@ -1,0 +1,51 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:loop_page_view/loop_page_view.dart';
+
+import '../../../../client/presentation/client_providers.dart';
+import '../../../task_management/domain/todo_task.dart';
+import '../../application/overview_service.dart';
+import '../../data/remote_overview_repository.dart';
+import 'daily_tasks_state_notifier.dart';
+
+final dailyPageControllerProvider = Provider<LoopPageController>((ref) {
+  final controller = LoopPageController();
+
+  ref.onDispose(() => controller.dispose());
+  return controller;
+});
+
+final newYearDateTimeProvider = Provider<DateTime>((_) {
+  final now = DateTime.now().toLocal();
+  return DateTime(now.year, 01, 1);
+});
+
+final inDaysProvider = Provider.autoDispose.family<int, DateTime>((ref, date) {
+  final newYear = ref.watch(newYearDateTimeProvider);
+  return date.difference(newYear).inDays;
+});
+
+final midnightDateProvider = Provider<DateTime>((ref) {
+  final now = DateTime.now().toLocal();
+  return DateTime(now.year, now.month, now.day);
+});
+
+final _remoteOverviewRepositoryProvider =
+    Provider<RemoteOverviewRepository>((ref) {
+  final gqlClient = ref.watch(graphQLClientProvider);
+
+  return RemoteOverviewRepository(gqlClient);
+});
+
+final overviewServiceProvider = Provider<OverviewService>((ref) {
+  final repo = ref.watch(_remoteOverviewRepositoryProvider);
+  return OverviewService(repo);
+});
+
+final dailyTasksNotifierProvider = StateNotifierProvider.autoDispose
+    .family<DailyTasksNotifier, AsyncValue<List<TodoTask>>, DateTime>(
+  (ref, date) {
+    final service = ref.watch(overviewServiceProvider);
+
+    return DailyTasksNotifier(service, date);
+  },
+);

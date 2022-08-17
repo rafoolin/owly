@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -12,7 +14,9 @@ void main() {
       child: const MyApp(),
       overrides: [
         flavorConfigProvider.overrideWithValue(FlavorConfig(AppFlavor.dev)),
-        backendUrlProvider.overrideWithValue('http://localhost:1337'),
+        backendUrlProvider.overrideWithValue(
+          Platform.isIOS ? 'http://localhost:1337' : 'http://10.0.2.2:1337',
+        ),
       ],
     ),
   );

@@ -8,6 +8,7 @@
 - "!include public_categories.yaml"
 - "!include public_sub_tasks.yaml"
 - "!include public_tasks.yaml"
+- "!include public_vm_tasks_on_date.yaml"
 - "!include public_vm_today_tasks.yaml"
 - "!include public_vm_user_categories.yaml"
 - "!include storage_buckets.yaml"

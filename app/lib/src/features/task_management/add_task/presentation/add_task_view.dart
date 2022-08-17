@@ -10,8 +10,11 @@ import '../../presentation/widgets/category_section.dart';
 class AddTaskView extends HookConsumerWidget {
   static const path = '/addTask';
   static const categoryPath = '/category/:id/addTask';
+  static const dateTimePath = '/addTask/:date';
+
   final String? id;
-  const AddTaskView({Key? key, this.id}) : super(key: key);
+  final String? date;
+  const AddTaskView({Key? key, this.id, this.date}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,6 +24,19 @@ class AddTaskView extends HookConsumerWidget {
     final noteCtrl = useTextEditingController();
     final subTaskCtrl = useTextEditingController();
     useListenable(subTaskCtrl);
+    final now = DateTime.now().toLocal();
+    final passedDate = DateTime.tryParse(date ?? '')?.add(Duration(
+      hours: now.hour,
+      minutes: now.minute,
+      seconds: now.second,
+    ));
+
+    useEffect(() {
+      if (passedDate != null) {
+        Future.microtask(() => notifier.initialize(dateTime: passedDate));
+      }
+      return;
+    }, [passedDate]);
 
     return WillPopScope(
       onWillPop: () async => notifier.discardDialog(context),
@@ -52,9 +68,10 @@ class AddTaskView extends HookConsumerWidget {
             AppPadding.vertical(),
             CategorySection(
               selectedCategoryId: state.categoryId ?? state.initialCategoryId,
-              chosenDueDatetime: state.dueDatetime,
+              chosenDueDatetime: state.dueDatetime ?? passedDate,
               onCategoryChanged: id != null ? null : notifier.changeCategory,
-              onCalenderPressed: () => notifier.showCalendar(context),
+              onCalenderPressed: () =>
+                  notifier.showCalendar(context, init: passedDate),
             ),
             AppPadding.vertical(),
             Container(

@@ -10,6 +10,7 @@ class AddTask with _$AddTask {
     String? title,
     String? initialCategoryId,
     String? categoryId,
+    DateTime? initialDueDatetime,
     DateTime? dueDatetime,
     String? note,
     @Default([]) List<TodoSubTask> subTasks,
@@ -26,5 +27,5 @@ class AddTask with _$AddTask {
   bool get canCreateTask =>
       (title != null && title!.isNotEmpty) &&
       (categoryId != null || initialCategoryId != null) &&
-      (dueDatetime != null);
+      (initialDueDatetime != null || dueDatetime != null);
 }
