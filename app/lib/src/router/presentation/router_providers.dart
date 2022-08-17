@@ -11,6 +11,7 @@ import '../../features/authentication/presentation/forgot_password_view.dart';
 import '../../features/authentication/presentation/sign_in_view.dart';
 import '../../features/authentication/presentation/sign_up_with_email_view.dart';
 import '../../features/home/presentation/home_view.dart';
+import '../../features/overview/daily/presentation/daily_overview.dart';
 import '../../features/profile/presentation/edit_profile_view.dart';
 import '../../features/profile/presentation/profile_view.dart';
 import '../../features/task_management/add_category/presentation/add_category_view.dart';
@@ -115,6 +116,12 @@ final routerProvider = Provider<GoRouter>(
               AddTaskView(id: state.params['id']!),
         ),
 
+        GoRoute(
+          path: AddTaskView.dateTimePath,
+          builder: (BuildContext context, GoRouterState state) =>
+              AddTaskView(date: state.params['date']!),
+        ),
+
         /// Add Category view
         GoRoute(
           path: AddCategoryView.path,
@@ -134,6 +141,13 @@ final routerProvider = Provider<GoRouter>(
           path: EditCategoryView.path,
           builder: (BuildContext context, GoRouterState state) =>
               EditCategoryView(id: state.params['id']!),
+        ),
+
+        /// DailyOverview view
+        GoRoute(
+          path: DailyOverView.path,
+          builder: (BuildContext context, GoRouterState state) =>
+              const DailyOverView(),
         ),
 
         /// In progress view

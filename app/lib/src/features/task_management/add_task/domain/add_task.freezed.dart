@@ -19,6 +19,7 @@ mixin _$AddTask {
   String? get title => throw _privateConstructorUsedError;
   String? get initialCategoryId => throw _privateConstructorUsedError;
   String? get categoryId => throw _privateConstructorUsedError;
+  DateTime? get initialDueDatetime => throw _privateConstructorUsedError;
   DateTime? get dueDatetime => throw _privateConstructorUsedError;
   String? get note => throw _privateConstructorUsedError;
   List<TodoSubTask> get subTasks => throw _privateConstructorUsedError;
@@ -35,6 +36,7 @@ abstract class $AddTaskCopyWith<$Res> {
       {String? title,
       String? initialCategoryId,
       String? categoryId,
+      DateTime? initialDueDatetime,
       DateTime? dueDatetime,
       String? note,
       List<TodoSubTask> subTasks});
@@ -53,6 +55,7 @@ class _$AddTaskCopyWithImpl<$Res> implements $AddTaskCopyWith<$Res> {
     Object? title = freezed,
     Object? initialCategoryId = freezed,
     Object? categoryId = freezed,
+    Object? initialDueDatetime = freezed,
     Object? dueDatetime = freezed,
     Object? note = freezed,
     Object? subTasks = freezed,
@@ -70,6 +73,10 @@ class _$AddTaskCopyWithImpl<$Res> implements $AddTaskCopyWith<$Res> {
           ? _value.categoryId
           : categoryId // ignore: cast_nullable_to_non_nullable
               as String?,
+      initialDueDatetime: initialDueDatetime == freezed
+          ? _value.initialDueDatetime
+          : initialDueDatetime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       dueDatetime: dueDatetime == freezed
           ? _value.dueDatetime
           : dueDatetime // ignore: cast_nullable_to_non_nullable
@@ -96,6 +103,7 @@ abstract class _$$_AddTaskCopyWith<$Res> implements $AddTaskCopyWith<$Res> {
       {String? title,
       String? initialCategoryId,
       String? categoryId,
+      DateTime? initialDueDatetime,
       DateTime? dueDatetime,
       String? note,
       List<TodoSubTask> subTasks});
@@ -115,6 +123,7 @@ class __$$_AddTaskCopyWithImpl<$Res> extends _$AddTaskCopyWithImpl<$Res>
     Object? title = freezed,
     Object? initialCategoryId = freezed,
     Object? categoryId = freezed,
+    Object? initialDueDatetime = freezed,
     Object? dueDatetime = freezed,
     Object? note = freezed,
     Object? subTasks = freezed,
@@ -132,6 +141,10 @@ class __$$_AddTaskCopyWithImpl<$Res> extends _$AddTaskCopyWithImpl<$Res>
           ? _value.categoryId
           : categoryId // ignore: cast_nullable_to_non_nullable
               as String?,
+      initialDueDatetime: initialDueDatetime == freezed
+          ? _value.initialDueDatetime
+          : initialDueDatetime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       dueDatetime: dueDatetime == freezed
           ? _value.dueDatetime
           : dueDatetime // ignore: cast_nullable_to_non_nullable
@@ -155,6 +168,7 @@ class _$_AddTask extends _AddTask {
       {this.title,
       this.initialCategoryId,
       this.categoryId,
+      this.initialDueDatetime,
       this.dueDatetime,
       this.note,
       final List<TodoSubTask> subTasks = const []})
@@ -167,6 +181,8 @@ class _$_AddTask extends _AddTask {
   final String? initialCategoryId;
   @override
   final String? categoryId;
+  @override
+  final DateTime? initialDueDatetime;
   @override
   final DateTime? dueDatetime;
   @override
@@ -181,7 +197,7 @@ class _$_AddTask extends _AddTask {
 
   @override
   String toString() {
-    return 'AddTask(title: $title, initialCategoryId: $initialCategoryId, categoryId: $categoryId, dueDatetime: $dueDatetime, note: $note, subTasks: $subTasks)';
+    return 'AddTask(title: $title, initialCategoryId: $initialCategoryId, categoryId: $categoryId, initialDueDatetime: $initialDueDatetime, dueDatetime: $dueDatetime, note: $note, subTasks: $subTasks)';
   }
 
   @override
@@ -195,6 +211,8 @@ class _$_AddTask extends _AddTask {
             const DeepCollectionEquality()
                 .equals(other.categoryId, categoryId) &&
             const DeepCollectionEquality()
+                .equals(other.initialDueDatetime, initialDueDatetime) &&
+            const DeepCollectionEquality()
                 .equals(other.dueDatetime, dueDatetime) &&
             const DeepCollectionEquality().equals(other.note, note) &&
             const DeepCollectionEquality().equals(other._subTasks, _subTasks));
@@ -206,6 +224,7 @@ class _$_AddTask extends _AddTask {
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(initialCategoryId),
       const DeepCollectionEquality().hash(categoryId),
+      const DeepCollectionEquality().hash(initialDueDatetime),
       const DeepCollectionEquality().hash(dueDatetime),
       const DeepCollectionEquality().hash(note),
       const DeepCollectionEquality().hash(_subTasks));
@@ -221,6 +240,7 @@ abstract class _AddTask extends AddTask {
       {final String? title,
       final String? initialCategoryId,
       final String? categoryId,
+      final DateTime? initialDueDatetime,
       final DateTime? dueDatetime,
       final String? note,
       final List<TodoSubTask> subTasks}) = _$_AddTask;
@@ -232,6 +252,8 @@ abstract class _AddTask extends AddTask {
   String? get initialCategoryId;
   @override
   String? get categoryId;
+  @override
+  DateTime? get initialDueDatetime;
   @override
   DateTime? get dueDatetime;
   @override

@@ -1,0 +1,46 @@
+table:
+  name: vm_tasks_on_date
+  schema: public
+configuration:
+  custom_column_names:
+    category_color: categoryColor
+    category_id: categoryId
+    completed_at: completedAt
+    created_at: createdAt
+    due_date: dueDate
+    due_datetime: dueDatetime
+    index_value: indexValue
+    updated_at: updatedAt
+    user_id: userId
+  custom_root_fields: {}
+array_relationships:
+- name: sub_tasks
+  using:
+    manual_configuration:
+      column_mapping:
+        id: task_id
+      insertion_order: null
+      remote_table:
+        name: sub_tasks
+        schema: public
+select_permissions:
+- permission:
+    columns:
+    - category_color
+    - completed
+    - due_date
+    - index_value
+    - note
+    - title
+    - completed_at
+    - created_at
+    - due_datetime
+    - updated_at
+    - category_id
+    - id
+    - user_id
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+    limit: 100
+  role: me
