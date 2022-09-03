@@ -32,8 +32,11 @@ final inDaysProvider = Provider.autoDispose.family<int, DateTime>((ref, date) {
   return date.difference(newYear).inDays;
 });
 
-final midnightDateProvider = Provider<DateTime>((ref) {
-  final now = DateTime.now().toLocal();
+final midnightDateProvider = Provider.family<DateTime, int?>((ref, microEpoch) {
+  final now = microEpoch == null
+      ? DateTime.now().toLocal()
+      : DateTime.fromMicrosecondsSinceEpoch(microEpoch);
+
   return DateTime(now.year, now.month, now.day);
 });
 

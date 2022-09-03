@@ -51,6 +51,7 @@ class DailyTaskPage extends HookConsumerWidget {
         ),
         AppPadding.vertical(),
         ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: tasks.length,
           itemBuilder: (context, index) {

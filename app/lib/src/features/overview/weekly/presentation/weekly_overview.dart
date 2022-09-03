@@ -17,7 +17,7 @@ class WeeklyOverView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final midnight = ref.watch(midnightDateProvider);
+    final midnight = ref.watch(midnightDateProvider(null));
     final dateTime = useState(midnight);
     final controller = ref.watch(weeklyPageControllerProvider);
     final df = ref.watch(dashedDateFormatProvider);
