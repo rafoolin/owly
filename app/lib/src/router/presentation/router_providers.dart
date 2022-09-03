@@ -12,6 +12,7 @@ import '../../features/authentication/presentation/sign_in_view.dart';
 import '../../features/authentication/presentation/sign_up_with_email_view.dart';
 import '../../features/home/presentation/home_view.dart';
 import '../../features/overview/daily/presentation/daily_overview.dart';
+import '../../features/overview/weekly/presentation/weekly_overview.dart';
 import '../../features/profile/presentation/edit_profile_view.dart';
 import '../../features/profile/presentation/profile_view.dart';
 import '../../features/task_management/add_category/presentation/add_category_view.dart';
@@ -148,6 +149,13 @@ final routerProvider = Provider<GoRouter>(
           path: DailyOverView.path,
           builder: (BuildContext context, GoRouterState state) =>
               const DailyOverView(),
+        ),
+
+        /// WeeklyOverview view
+        GoRoute(
+          path: WeeklyOverView.path,
+          builder: (BuildContext context, GoRouterState state) =>
+              const WeeklyOverView(),
         ),
 
         /// In progress view

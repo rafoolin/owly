@@ -48,11 +48,16 @@ class AddTaskStateNotifier extends StateNotifier<AddTask> {
   }
 
   Future<void> addTask() async {
+    assert(
+      state.dueDatetime != null || state.initialDueDatetime != null,
+      'Either user has chosen a date for the task or '
+      'decided to stick to the default one',
+    );
     if (!state.canCreateTask) return;
     await _taskService.addTask(
       title: state.title!,
       categoryId: state.categoryId ?? state.initialCategoryId!,
-      dueDatetime: state.initialDueDatetime ?? state.dueDatetime!,
+      dueDatetime: state.dueDatetime ?? state.initialDueDatetime!,
       note: state.note,
       subTasks: state.subTasks,
     );

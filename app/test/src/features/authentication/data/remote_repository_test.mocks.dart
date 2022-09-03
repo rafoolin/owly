@@ -74,6 +74,7 @@ class MockAuthClient extends _i1.Mock implements _i3.AuthClient {
           String? password,
           String? locale,
           String? defaultRole,
+          Map<String, Object?>? metadata,
           List<String>? roles,
           String? displayName,
           String? redirectTo}) =>
@@ -83,6 +84,7 @@ class MockAuthClient extends _i1.Mock implements _i3.AuthClient {
             #password: password,
             #locale: locale,
             #defaultRole: defaultRole,
+            #metadata: metadata,
             #roles: roles,
             #displayName: displayName,
             #redirectTo: redirectTo
@@ -94,6 +96,7 @@ class MockAuthClient extends _i1.Mock implements _i3.AuthClient {
                 #password: password,
                 #locale: locale,
                 #defaultRole: defaultRole,
+                #metadata: metadata,
                 #roles: roles,
                 #displayName: displayName,
                 #redirectTo: redirectTo

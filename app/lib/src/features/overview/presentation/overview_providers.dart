@@ -1,13 +1,21 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:loop_page_view/loop_page_view.dart';
 
-import '../../../../client/presentation/client_providers.dart';
-import '../../../task_management/domain/todo_task.dart';
-import '../../application/overview_service.dart';
-import '../../data/remote_overview_repository.dart';
-import 'daily_tasks_state_notifier.dart';
+import '../../../client/presentation/client_providers.dart';
+import '../../task_management/domain/todo_task.dart';
+import '../application/overview_service.dart';
+import '../daily/presentation/daily_tasks_state_notifier.dart';
+import '../data/remote_overview_repository.dart';
+import '../weekly/domain/weekly_tasks.dart';
 
 final dailyPageControllerProvider = Provider<LoopPageController>((ref) {
+  final controller = LoopPageController();
+
+  ref.onDispose(() => controller.dispose());
+  return controller;
+});
+
+final weeklyPageControllerProvider = Provider<LoopPageController>((ref) {
   final controller = LoopPageController();
 
   ref.onDispose(() => controller.dispose());
@@ -47,5 +55,15 @@ final dailyTasksNotifierProvider = StateNotifierProvider.autoDispose
     final service = ref.watch(overviewServiceProvider);
 
     return DailyTasksNotifier(service, date);
+  },
+);
+
+final weeklyTasksProvider = StreamProvider.family<List<WeeklyTasks>, DateTime>(
+  (ref, from) {
+    final service = ref.watch(overviewServiceProvider);
+    final to = from.add(const Duration(days: 7));
+    return service
+        .subscribeTasksOnDateRange(from, to)
+        .map((event) => event.value ?? []);
   },
 );
