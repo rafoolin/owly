@@ -21,6 +21,7 @@ final user = User(
   isAnonymous: false,
   defaultRole: 'user',
   roles: ['user', 'own'],
+  metadata: {},
 );
 const taskId = 'task-id';
 

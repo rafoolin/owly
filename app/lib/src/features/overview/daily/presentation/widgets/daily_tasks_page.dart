@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../../common/controllers/common_providers.dart';
 import '../../../../../common/widgets/app_padding.dart';
 import '../../../../home/presentation/widgets/task_card.dart';
-import '../overview_providers.dart';
+import '../../../presentation/overview_providers.dart';
 
 class DailyTaskPage extends HookConsumerWidget {
   final DateTime dateTime;

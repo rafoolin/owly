@@ -19,6 +19,7 @@ final user = User(
   isAnonymous: false,
   defaultRole: 'user',
   roles: ['user', 'own'],
+  metadata: {},
 );
 
 @GenerateMocks([RemoteCategoryRepository])

@@ -17,6 +17,7 @@ final user = User(
   isAnonymous: false,
   defaultRole: 'user',
   roles: ['user', 'own'],
+  metadata: {},
 );
 final authResponse = AuthResponse(session: Session(user: user));
 
