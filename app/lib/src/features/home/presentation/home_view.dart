@@ -24,7 +24,7 @@ class HomeView extends HookConsumerWidget {
         child: const Icon(FontAwesomeIcons.plus),
         onPressed: () => context.push(AddTaskView.path),
       ),
-      appBar: AppBar(title: const Text('Hello')),
+      appBar: AppBar(title: const Text('Today')),
       body: state.when(
         data: (tasks) {
           return ListView.builder(

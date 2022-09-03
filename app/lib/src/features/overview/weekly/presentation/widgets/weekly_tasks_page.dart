@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../common/controllers/common_providers.dart';
 import '../../../../../common/widgets/app_padding.dart';
+import '../../../daily/presentation/daily_overview.dart';
 import '../../../presentation/overview_providers.dart';
 import '../../domain/weekly_tasks.dart';
 
@@ -68,7 +70,7 @@ class _ArrowDatePicker extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final df = ref.watch(abrMonthDayFormatProvider);
-    final to = from.add(const Duration(days: 6));
+    final to = from.add(const Duration(days: 8));
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,60 +116,64 @@ class _WeekdayCard extends HookConsumerWidget {
     final row = index ~/ 3;
     final column = index % 3;
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border(
-          top: row == 0 ? border : BorderSide.none,
-          right: border,
-          left: column == 0 ? border : BorderSide.none,
-          bottom: border,
+    return GestureDetector(
+      onTap: () => context.push(DailyOverView.microEpochPath.replaceFirst(
+          ':micro_epoch', date.microsecondsSinceEpoch.toString())),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(
+            top: row == 0 ? border : BorderSide.none,
+            right: border,
+            left: column == 0 ? border : BorderSide.none,
+            bottom: border,
+          ),
         ),
-      ),
-      child: Column(
-        children: [
-          AppPadding.vertical(),
-          Text(df.format(date)),
-          AppPadding.vertical(),
-          if (tasks.isEmpty)
-            const SizedBox()
-          else if (tasks.length > 6)
-            Wrap(
-              children: categoriesMap.keys.map(
-                (id) {
-                  final categoryTasks = categoriesMap[id]!;
-                  return Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: CircleAvatar(
-                      child: Center(child: Text('${categoryTasks.length}')),
-                      radius: 12,
-                      backgroundColor: categoryTasks.first.categoryColor,
-                    ),
-                  );
-                },
-              ).toList(),
-            )
-          else if (tasks.length <= 6)
-            Wrap(
-              children: tasks
-                  .map(
-                    (task) => Padding(
+        child: Column(
+          children: [
+            AppPadding.vertical(),
+            Text(df.format(date)),
+            AppPadding.vertical(),
+            if (tasks.isEmpty)
+              const SizedBox()
+            else if (tasks.length > 8)
+              Wrap(
+                children: categoriesMap.keys.map(
+                  (id) {
+                    final categoryTasks = categoriesMap[id]!;
+                    return Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: CircleAvatar(
-                        radius: 10,
-                        backgroundColor: task.categoryColor,
+                        child: Center(child: Text('${categoryTasks.length}')),
+                        radius: 12,
+                        backgroundColor: categoryTasks.first.categoryColor,
                       ),
-                    ),
-                  )
-                  .toList(),
-            )
-          else if (categoriesMap.keys.length > 6)
-            const Text(
-              'Too many thing for today!',
-              textAlign: TextAlign.center,
-            )
-          else
-            const SizedBox()
-        ],
+                    );
+                  },
+                ).toList(),
+              )
+            else if (tasks.length <= 8)
+              Wrap(
+                children: tasks
+                    .map(
+                      (task) => Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: CircleAvatar(
+                          radius: 10,
+                          backgroundColor: task.categoryColor,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              )
+            else if (categoriesMap.keys.length > 8)
+              const Text(
+                'Too many thing for today!',
+                textAlign: TextAlign.center,
+              )
+            else
+              const SizedBox()
+          ],
+        ),
       ),
     );
   }

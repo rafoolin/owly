@@ -144,11 +144,20 @@ final routerProvider = Provider<GoRouter>(
               EditCategoryView(id: state.params['id']!),
         ),
 
-        /// DailyOverview view
+        /// DailyOverview view for today
         GoRoute(
-          path: DailyOverView.path,
+          path: DailyOverView.todayPath,
           builder: (BuildContext context, GoRouterState state) =>
               const DailyOverView(),
+        ),
+
+        /// DailyOverview view on specific date
+        GoRoute(
+          path: DailyOverView.microEpochPath,
+          builder: (BuildContext context, GoRouterState state) {
+            final microEpoch = int.tryParse(state.params['micro_epoch']!);
+            return DailyOverView(microEpoch: microEpoch);
+          },
         ),
 
         /// WeeklyOverview view

@@ -11,13 +11,15 @@ import '../../presentation/overview_providers.dart';
 import 'widgets/daily_tasks_page.dart';
 
 class DailyOverView extends HookConsumerWidget {
-  static const path = '/overview/daily';
+  static const todayPath = '/overview/daily';
+  static const microEpochPath = '/overview/daily/:micro_epoch';
 
-  const DailyOverView({Key? key}) : super(key: key);
+  final int? microEpoch;
+  const DailyOverView({Key? key, this.microEpoch}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final midnight = ref.watch(midnightDateProvider);
+    final midnight = ref.watch(midnightDateProvider(microEpoch));
     final dateTime = useState(midnight);
     final controller = ref.watch(dailyPageControllerProvider);
     final df = ref.watch(dashedDateFormatProvider);
